@@ -85,38 +85,13 @@
   .logo-ring.loser { opacity: 0.5; filter: grayscale(60%); }
 
   /* ============ BRACKET STYLES (EXACT MOCKUP) ============ */
-  .bracket-wrapper {
-    position: relative;
-    overflow-x: auto;
-    padding: 40px 20px;
-  }
-  .bracket-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    min-width: max-content;
-    margin: 0 auto;
-  }
-  .bracket-side {
-    display: flex;
-    gap: 40px;
-  }
+  .bracket-wrapper { position: relative; overflow-x: auto; padding: 40px 20px; }
+  .bracket-container { display: flex; justify-content: center; align-items: center; gap: 40px; min-width: max-content; margin: 0 auto; }
+  .bracket-side { display: flex; gap: 40px; }
   .bracket-side.left { flex-direction: row; }
   .bracket-side.right { flex-direction: row-reverse; }
-
-  .bracket-round {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    gap: 20px;
-  }
-  .bracket-match-wrapper {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
+  .bracket-round { display: flex; flex-direction: column; justify-content: space-around; gap: 20px; }
+  .bracket-match-wrapper { position: relative; display: flex; flex-direction: column; gap: 20px; }
 
   .bracket-match {
     background: rgba(34, 34, 34, 0.95);
@@ -129,98 +104,40 @@
     z-index: 2;
     transition: all 0.2s ease-in-out;
   }
-  .bracket-match:hover {
-    transform: scale(1.05);
-    border-color: #ffffff;
-    box-shadow: 0 0 20px rgba(241, 196, 15, 0.4);
-  }
+  .bracket-match:hover { transform: scale(1.05); border-color: #ffffff; box-shadow: 0 0 20px rgba(241, 196, 15, 0.4); }
 
-  .bracket-team {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 0;
-    font-size: 15px;
-    font-weight: 600;
-    border-bottom: 1px dashed #444;
-  }
+  .bracket-team { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 15px; font-weight: 600; border-bottom: 1px dashed #444; }
   .bracket-team:last-of-type { border-bottom: none; }
   .bracket-team-name { color: #e0e0e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px;}
   .bracket-team-score { color: #f1c40f; font-weight: 700; font-family: 'JetBrains Mono', monospace;}
 
-  .bracket-match .bracket-time {
-    font-size: 11px;
-    color: #888;
-    text-align: center;
-    margin-top: 8px;
-    padding-top: 6px;
-    border-top: 1px solid #333;
-    font-family: 'JetBrains Mono', monospace;
-  }
+  .bracket-match .bracket-time { font-size: 11px; color: #888; text-align: center; margin-top: 8px; padding-top: 6px; border-top: 1px solid #333; font-family: 'JetBrains Mono', monospace; }
 
   /* Lines - Left Side */
-  .bracket-side.left .bracket-round.qf .bracket-match-wrapper::after {
-    content: ''; position: absolute; right: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1;
-  }
-  .bracket-side.left .bracket-round.qf .bracket-match-wrapper .bracket-match::after {
-    content: ''; position: absolute; right: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1;
-  }
+  .bracket-side.left .bracket-round.qf .bracket-match-wrapper::after { content: ''; position: absolute; right: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1; }
+  .bracket-side.left .bracket-round.qf .bracket-match-wrapper .bracket-match::after { content: ''; position: absolute; right: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1; }
   .bracket-side.left .bracket-round.sf { position: relative; }
-  .bracket-side.left .bracket-round.sf .bracket-match::after {
-    content: ''; position: absolute; right: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1;
-  }
-  .bracket-side.left .bracket-round.sf::after {
-    content: ''; position: absolute; right: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1;
-  }
+  .bracket-side.left .bracket-round.sf .bracket-match::after { content: ''; position: absolute; right: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1; }
+  .bracket-side.left .bracket-round.sf::after { content: ''; position: absolute; right: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1; }
 
   /* Lines - Right Side (Mirrored) */
-  .bracket-side.right .bracket-round.qf .bracket-match-wrapper::after {
-    content: ''; position: absolute; left: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1;
-  }
-  .bracket-side.right .bracket-round.qf .bracket-match-wrapper .bracket-match::after {
-    content: ''; position: absolute; left: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1;
-  }
+  .bracket-side.right .bracket-round.qf .bracket-match-wrapper::after { content: ''; position: absolute; left: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1; }
+  .bracket-side.right .bracket-round.qf .bracket-match-wrapper .bracket-match::after { content: ''; position: absolute; left: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1; }
   .bracket-side.right .bracket-round.sf { position: relative; }
-  .bracket-side.right .bracket-round.sf .bracket-match::after {
-    content: ''; position: absolute; left: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1;
-  }
-  .bracket-side.right .bracket-round.sf::after {
-    content: ''; position: absolute; left: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1;
-  }
+  .bracket-side.right .bracket-round.sf .bracket-match::after { content: ''; position: absolute; left: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1; }
+  .bracket-side.right .bracket-round.sf::after { content: ''; position: absolute; left: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1; }
 
   /* Center Trophy */
-  .bracket-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0 40px;
-    position: relative;
-  }
-  .trophy-icon {
-    font-size: 100px;
-    filter: drop-shadow(0 0 30px rgba(241, 196, 15, 0.8));
-    animation: float 3s ease-in-out infinite;
-  }
-  .final-label {
-    margin-top: 20px;
-    color: #f1c40f;
-    font-size: 22px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
-    white-space: nowrap;
-  }
+  .bracket-center { display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 40px; position: relative; }
+  .trophy-icon { font-size: 100px; filter: drop-shadow(0 0 30px rgba(241, 196, 15, 0.8)); animation: float 3s ease-in-out infinite; }
+  .final-label { margin-top: 20px; color: #f1c40f; font-size: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px rgba(241, 196, 15, 0.5); white-space: nowrap; }
 
   /* Responsive Bracket */
   @media (max-width: 1024px) {
     .bracket-container { flex-direction: column; gap: 60px; }
     .bracket-side { flex-direction: column !important; gap: 30px; align-items: center; }
     .bracket-side.left .bracket-round.qf .bracket-match-wrapper::after, .bracket-side.left .bracket-round.qf .bracket-match-wrapper .bracket-match::after, .bracket-side.left .bracket-round.sf::after, .bracket-side.left .bracket-round.sf .bracket-match::after,
-    .bracket-side.right .bracket-round.qf .bracket-match-wrapper::after, .bracket-side.right .bracket-round.qf .bracket-match-wrapper .bracket-match::after, .bracket-side.right .bracket-round.sf::after, .bracket-side.right .bracket-round.sf .bracket-match::after {
-      display: none;
-    }
+    .bracket-side.right .bracket-round.qf .bracket-match-wrapper::after, .bracket-side.right .bracket-round.qf .bracket-match-wrapper .bracket-match::after, .bracket-side.right .bracket-round.sf::after, .bracket-side.right .bracket-round.sf .bracket-match::after { display: none; }
     .bracket-match-wrapper { flex-direction: row; flex-wrap: wrap; justify-content: center; }
     .bracket-center { margin: 40px 0; order: -1; }
     .bracket-match { width: 100%; max-width: 300px; }
@@ -452,7 +369,10 @@
 // CONFIG
 // ================================================================
 const CONFIG = {
+  // 👇👇👇 แก้ไขลิงก์ตรงนี้ 👇👇👇
+  // นำลิงก์ CSV ที่ได้จาก Publish to web มาใส่แทนที่ข้อความด้านล่างนี้
   SCORE_SHEET_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWb9ZjnqXGwVDlJ3zc5QfeNIcOLlWFoHgmBLrxDOLeYtzeNV1T63bWw79-WLdqGiriB8mjSNI8erSP/pub?gid=0&single=true&output=csv",
+  
   REFRESH_INTERVAL: 30000,
   ENABLE_SOUND: true,
 };
@@ -481,14 +401,6 @@ const FALLBACK_DATA = [
   { no: 15, date: "7 ต.ค. 69", time: "12:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านแม่ตูบ", teamB: "โรงเรียนบ้านแม่บวน", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายวัฒธีระ หนูขาว" },
   { no: 16, date: "7 ต.ค. 69", time: "14:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านฉิมพลี", teamB: "โรงเรียนบ้านแม่ตูบ", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายมติชน รู้เที่ยง" },
   { no: 17, date: "7 ต.ค. 69", time: "15:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านแม่บวน", teamB: "โรงเรียนบ้านเกาะหลวง", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายมานพ บุปผาศรีธารา" },
-  
-  // วอลเลย์บอลชาย
-  { no: 18, date: "6 ต.ค. 69", time: "09:00", sport: "วอลเลย์บอลชาย", teamA: "โรงเรียนบ้านเกาะหลวง", teamB: "โรงเรียนบ้านแม่บวน", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายมนตรี ก๋องตา" },
-  { no: 19, date: "6 ต.ค. 69", time: "10:00", sport: "วอลเลย์บอลชาย", teamA: "โรงเรียนบ้านไร่", teamB: "โรงเรียนชุมชนบ้านดอยเต่า", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายเอกพล ตายา" },
-  { no: 20, date: "6 ต.ค. 69", time: "12:00", sport: "วอลเลย์บอลชาย", teamA: "โรงเรียนบ้านเกาะหลวง", teamB: "โรงเรียนบ้านไร่", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นางชลธิชา ไชยแก้ว" },
-  { no: 21, date: "6 ต.ค. 69", time: "13:00", sport: "วอลเลย์บอลชาย", teamA: "โรงเรียนบ้านแม่บวน", teamB: "โรงเรียนชุมชนบ้านดอยเต่า", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายประการ เมืองมานิตย์" },
-  { no: 22, date: "6 ต.ค. 69", time: "15:00", sport: "วอลเลย์บอลชาย", teamA: "โรงเรียนบ้านเกาะหลวง", teamB: "โรงเรียนชุมชนบ้านดอยเต่า", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นางสาวอนุศรา นาใจ" },
-  { no: 23, date: "6 ต.ค. 69", time: "16:00", sport: "วอลเลย์บอลชาย", teamA: "โรงเรียนบ้านแม่บวน", teamB: "โรงเรียนบ้านไร่", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นางสาวดวงฤดี สิงขบรรจง" },
 ];
 
 // ================================================================
@@ -503,7 +415,7 @@ const LOGO_MAP = {
   "โรงเรียนบ้านแม่บวน": "maebuan.jpg", "บ้านแม่บวน": "maebuan.jpg", "แม่บวน": "maebuan.jpg", "แม่บวบ": "maebuan.jpg",
   "โรงเรียนบ้านไร่": "banrai.jpg", "บ้านไร่": "banrai.jpg", "ไร่": "banrai.jpg",
   "โรงเรียนบ้านฉิมพลี": "shimplee.jpg", "บ้านฉิมพลี": "shimplee.jpg", "ฉิมพลี": "shimplee.jpg",
-  "โรงเรียนชุมชนบ้านดอยเต่า": "choomchon.jpg", "ชุมชนบ้านดอยเต่า": "choomchon.jpg", "ชุมชนดอยเต่า": "choomchon.jpg", "ชุมชนบ้านดอยเต่า": "choomchon.jpg",
+  "โรงเรียนชุมชนบ้านดอยเต่า": "choomchon.jpg", "ชุมชนบ้านดอยเต่า": "choomchon.jpg", "ชุมชนดอยเต่า": "choomchon.jpg",
   "โรงเรียนบ้านถิ่นสำราญ": "tinsamran.jpg", "บ้านถิ่นสำราญ": "tinsamran.jpg", "ถิ่นสำราญ": "tinsamran.jpg",
   "โรงเรียนบ้านผาจุก": "phajook.jpg", "บ้านผาจุก": "phajook.jpg", "ผาจุก": "phajook.jpg",
   "โรงเรียนบ้านสันติสุข": "santisuk.jpg", "บ้านสันติสุข": "santisuk.jpg", "สันติสุข": "santisuk.jpg",
@@ -689,7 +601,7 @@ function initBracket() { setInterval(fetchBracketData, CONFIG.REFRESH_INTERVAL);
 
 async function fetchBracketData() {
   const url = CONFIG.SCORE_SHEET_URL;
-  if (!url) { setConnectionStatus("error", "ยังไม่ตั้งค่า"); loadFallbackData(); return; }
+  if (!url || url.includes("2PACX-1vTWb9")) { setConnectionStatus("error", "ยังไม่ตั้งค่าลิงก์"); loadFallbackData(); return; }
   try {
     setConnectionStatus("loading", "กำลังโหลด...");
     document.getElementById('fallbackWarning').classList.add('hidden');
@@ -752,7 +664,7 @@ function detectChanges(newMatches) { const changes = []; newMatches.forEach(m =>
 
 function renderSportTabs() {
   let sports = [...new Set(allMatches.map(m => m.sport).filter(Boolean))].sort();
-  if (sports.length === 0) sports = ["ฟุตบอลชาย", "ฟุตบอลหญิง", "วอลเลย์บอลชาย"]; // Default fallback
+  if (sports.length === 0) sports = ["ฟุตบอลชาย", "ฟุตบอลหญิง"]; 
   if (!selectedSport || !sports.includes(selectedSport)) selectedSport = sports[0];
   
   document.getElementById("bracketSportTabs").innerHTML = sports.map(s => {
