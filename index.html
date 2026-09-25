@@ -73,6 +73,7 @@
   .page-view { display: none; }
   .page-view.active { display: block; animation: fadeIn 0.4s ease-in-out; }
 
+  /* ============ LOGO RING ============ */
   .logo-ring { position: relative; width: 44px; height: 44px; min-width: 44px; min-height: 44px; border-radius: 50%; overflow: hidden; border: 2px solid rgba(255,255,255,0.3); background: linear-gradient(135deg, #4C1D95, #6B21A8); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease; }
   .logo-ring.lg { width: 64px; height: 64px; min-width: 64px; min-height: 64px; border-width: 3px; }
   .logo-ring.xl { width: 96px; height: 96px; min-width: 96px; min-height: 96px; border-width: 3px; }
@@ -83,60 +84,76 @@
   .logo-ring.winner { border-color: #FCD34D; box-shadow: 0 0 20px rgba(252,211,77,0.6); }
   .logo-ring.loser { opacity: 0.5; filter: grayscale(60%); }
 
-  .bracket-wrapper { position: relative; overflow-x: auto; padding: 40px 20px; }
-  .bracket-container { display: flex; justify-content: center; align-items: center; gap: 40px; min-width: max-content; margin: 0 auto; }
-  .bracket-side { display: flex; gap: 40px; }
-  .bracket-side.left { flex-direction: row; }
-  .bracket-side.right { flex-direction: row-reverse; }
-  .bracket-round { display: flex; flex-direction: column; justify-content: space-around; gap: 20px; }
-  .bracket-match-wrapper { position: relative; display: flex; flex-direction: column; gap: 20px; }
-
+  /* ============ BRACKET MATCH CARD ============ */
   .bracket-match {
     background: rgba(34, 34, 34, 0.95);
     border: 2px solid #f1c40f;
     border-radius: 10px;
     padding: 12px;
-    width: 220px;
+    width: 240px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
     position: relative;
     z-index: 2;
     transition: all 0.2s ease-in-out;
   }
-  .bracket-match:hover { transform: scale(1.05); border-color: #ffffff; box-shadow: 0 0 20px rgba(241, 196, 15, 0.4); }
-
-  .bracket-team { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 15px; font-weight: 600; border-bottom: 1px dashed #444; }
+  .bracket-match:hover { transform: scale(1.03); border-color: #ffffff; box-shadow: 0 0 20px rgba(241, 196, 15, 0.4); }
+  .bracket-team { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 15px; font-weight: 600; border-bottom: 1px dashed #444; gap: 6px; }
   .bracket-team:last-of-type { border-bottom: none; }
-  .bracket-team-name { color: #e0e0e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px;}
-  .bracket-team-score { color: #f1c40f; font-weight: 700; font-family: 'JetBrains Mono', monospace;}
-
+  .bracket-team-name { color: #e0e0e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+  .bracket-team-score { color: #f1c40f; font-weight: 700; font-family: 'JetBrains Mono', monospace; min-width: 24px; text-align: center; }
   .bracket-match .bracket-time { font-size: 11px; color: #888; text-align: center; margin-top: 8px; padding-top: 6px; border-top: 1px solid #333; font-family: 'JetBrains Mono', monospace; }
+  .team-winner .bracket-team-name { color: #FCD34D; font-weight: 800; }
+  .team-loser { opacity: 0.45; }
 
-  .bracket-side.left .bracket-round.qf .bracket-match-wrapper::after { content: ''; position: absolute; right: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1; }
-  .bracket-side.left .bracket-round.qf .bracket-match-wrapper .bracket-match::after { content: ''; position: absolute; right: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1; }
-  .bracket-side.left .bracket-round.sf { position: relative; }
-  .bracket-side.left .bracket-round.sf .bracket-match::after { content: ''; position: absolute; right: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1; }
-  .bracket-side.left .bracket-round.sf::after { content: ''; position: absolute; right: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1; }
-
-  .bracket-side.right .bracket-round.qf .bracket-match-wrapper::after { content: ''; position: absolute; left: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1; }
-  .bracket-side.right .bracket-round.qf .bracket-match-wrapper .bracket-match::after { content: ''; position: absolute; left: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1; }
-  .bracket-side.right .bracket-round.sf { position: relative; }
-  .bracket-side.right .bracket-round.sf .bracket-match::after { content: ''; position: absolute; left: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1; }
-  .bracket-side.right .bracket-round.sf::after { content: ''; position: absolute; left: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1; }
-
-  .bracket-center { display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 40px; position: relative; }
-  .trophy-icon { font-size: 100px; filter: drop-shadow(0 0 30px rgba(241, 196, 15, 0.8)); animation: float 3s ease-in-out infinite; }
-  .final-label { margin-top: 20px; color: #f1c40f; font-size: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px rgba(241, 196, 15, 0.5); white-space: nowrap; }
-
-  @media (max-width: 1024px) {
-    .bracket-container { flex-direction: column; gap: 60px; }
-    .bracket-side { flex-direction: column !important; gap: 30px; align-items: center; }
-    .bracket-side.left .bracket-round.qf .bracket-match-wrapper::after, .bracket-side.left .bracket-round.qf .bracket-match-wrapper .bracket-match::after, .bracket-side.left .bracket-round.sf::after, .bracket-side.left .bracket-round.sf .bracket-match::after,
-    .bracket-side.right .bracket-round.qf .bracket-match-wrapper::after, .bracket-side.right .bracket-round.qf .bracket-match-wrapper .bracket-match::after, .bracket-side.right .bracket-round.sf::after, .bracket-side.right .bracket-round.sf .bracket-match::after { display: none; }
-    .bracket-match-wrapper { flex-direction: row; flex-wrap: wrap; justify-content: center; }
-    .bracket-center { margin: 40px 0; order: -1; }
-    .bracket-match { width: 100%; max-width: 300px; }
+  /* ============ BRACKET FLOW (NEW LAYOUT) ============ */
+  .bracket-flow {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    overflow-x: auto;
+    padding: 20px 0;
+    align-items: flex-start;
+  }
+  .bracket-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 260px;
+    flex-shrink: 0;
+  }
+  .bracket-column-title {
+    font-family: 'Kanit', sans-serif;
+    font-weight: 700;
+    color: #FCD34D;
+    font-size: 14px;
+    text-align: center;
+    padding: 8px 12px;
+    background: linear-gradient(135deg, rgba(107,33,168,0.6), rgba(107,33,168,0.3));
+    border-radius: 10px;
+    border: 1px solid rgba(252,211,77,0.3);
+    white-space: nowrap;
+  }
+  .bracket-column-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .bracket-column .bracket-match {
+    width: 100%;
+  }
+  .bracket-column-body .champion-card-v2 {
+    background: linear-gradient(135deg, rgba(252,211,77,0.2), rgba(245,158,11,0.1));
+    border: 2px solid #FCD34D;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+  }
+  @media (max-width: 768px) {
+    .bracket-flow { flex-direction: column; }
+    .bracket-column { min-width: 100%; }
   }
 
+  /* ============ GROUP TABLE ============ */
   .group-table { background: rgba(30,27,75,0.6); border: 1px solid rgba(252,211,77,0.3); border-radius: 1rem; overflow: hidden; }
   .group-table th { background: linear-gradient(180deg, rgba(107,33,168,0.6), rgba(107,33,168,0.3)); color: #FCD34D; font-family: 'Kanit', sans-serif; padding: 8px 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
   .group-table td { padding: 8px 6px; color: white; font-size: 13px; border-top: 1px solid rgba(255,255,255,0.05); }
@@ -358,7 +375,7 @@
 
 <script>
 // ================================================================
-// CONFIG ✅ ใส่ลิงก์ CSV ของคุณแล้ว
+// CONFIG
 // ================================================================
 const CONFIG = {
   SCORE_SHEET_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWb9ZjnqXGwVDlJ3zc5QfeNIcOLlWFoHgmBLrxDOLeYtzeNV1T63bWw79-WLdqGiriB8mjSNI8erSP/pub?gid=0&single=true&output=csv",
@@ -370,23 +387,17 @@ const CONFIG = {
 // FALLBACK DATA
 // ================================================================
 const FALLBACK_DATA = [
-  { no: 1, date: "6 ต.ค. 69", time: "08:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านฉิมพลี", teamB: "โรงเรียนบ้านโปง", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายทนงศักดิ์ แก้ววงษ์" },
-  { no: 2, date: "6 ต.ค. 69", time: "09:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านเกาะหลวง", teamB: "โรงเรียนบ้านแม่บวน", group: "B", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายวัฒธีระ หนูขาว" },
-  { no: 3, date: "6 ต.ค. 69", time: "10:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านฉิมพลี", teamB: "โรงเรียนบ้านแม่ตูบ", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายเจษฎา ถาเป็ง" },
-  { no: 4, date: "6 ต.ค. 69", time: "11:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านเกาะหลวง", teamB: "โรงเรียนชุมชนบ้านดอยเต่า", group: "B", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายมานพ บุปผาศรีธารา" },
-  { no: 5, date: "6 ต.ค. 69", time: "12:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านโปง", teamB: "โรงเรียนบ้านแม่ตูบ", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายมติชน รู้เที่ยง" },
-  { no: 6, date: "6 ต.ค. 69", time: "13:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านแม่บวน", teamB: "โรงเรียนชุมชนบ้านดอยเต่า", group: "B", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายทนงศักดิ์ แก้ววงษ์" },
+  { no: 1, date: "6 ต.ค. 69", time: "08:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านฉิมพลี", teamB: "โรงเรียนบ้านโปง", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
+  { no: 2, date: "6 ต.ค. 69", time: "09:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านเกาะหลวง", teamB: "โรงเรียนบ้านแม่บวน", group: "B", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
+  { no: 3, date: "6 ต.ค. 69", time: "10:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านฉิมพลี", teamB: "โรงเรียนบ้านแม่ตูบ", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
+  { no: 4, date: "6 ต.ค. 69", time: "11:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านเกาะหลวง", teamB: "โรงเรียนชุมชนบ้านดอยเต่า", group: "B", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
+  { no: 5, date: "6 ต.ค. 69", time: "12:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านโปง", teamB: "โรงเรียนบ้านแม่ตูบ", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
+  { no: 6, date: "6 ต.ค. 69", time: "13:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านแม่บวน", teamB: "โรงเรียนชุมชนบ้านดอยเต่า", group: "B", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
   { no: 7, date: "7 ต.ค. 69", time: "09:00", sport: "ฟุตบอลชาย", teamA: "ที่ 1 สาย A", teamB: "ที่ 2 สาย B", group: "รอง", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
   { no: 8, date: "7 ต.ค. 69", time: "10:00", sport: "ฟุตบอลชาย", teamA: "ที่ 1 สาย B", teamB: "ที่ 2 สาย A", group: "รอง", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
   { no: 9, date: "7 ต.ค. 69", time: "13:00", sport: "ฟุตบอลชาย", teamA: "ผู้แพ้คู่ 7", teamB: "ผู้แพ้คู่ 8", group: "ชิงที่ 3", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
   { no: 10, date: "7 ต.ค. 69", time: "14:30", sport: "ฟุตบอลชาย", teamA: "มัธยม", teamB: "VIP", group: "พิเศษ", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
   { no: 11, date: "7 ต.ค. 69", time: "15:30", sport: "ฟุตบอลชาย", teamA: "ผู้ชนะคู่ 7", teamB: "ผู้ชนะคู่ 8", group: "ชิงที่ 1", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
-  { no: 12, date: "6 ต.ค. 69", time: "14:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านแม่ตูบ", teamB: "โรงเรียนบ้านเกาะหลวง", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายเจษฎา ถาเป็ง" },
-  { no: 13, date: "6 ต.ค. 69", time: "15:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านแม่บวน", teamB: "โรงเรียนบ้านฉิมพลี", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายทนงศักดิ์ แก้ววงษ์" },
-  { no: 14, date: "7 ต.ค. 69", time: "11:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านเกาะหลวง", teamB: "โรงเรียนบ้านฉิมพลี", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายมติชน รู้เที่ยง" },
-  { no: 15, date: "7 ต.ค. 69", time: "12:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านแม่ตูบ", teamB: "โรงเรียนบ้านแม่บวน", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายวัฒธีระ หนูขาว" },
-  { no: 16, date: "7 ต.ค. 69", time: "14:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านฉิมพลี", teamB: "โรงเรียนบ้านแม่ตูบ", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายมติชน รู้เที่ยง" },
-  { no: 17, date: "7 ต.ค. 69", time: "15:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านแม่บวน", teamB: "โรงเรียนบ้านเกาะหลวง", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายมานพ บุปผาศรีธารา" },
 ];
 
 // ================================================================
@@ -410,7 +421,7 @@ const LOGO_MAP = {
 
 function getLogoPath(teamName) {
   if (!teamName) return null;
-  const clean = teamName.trim().replace("ที่ 1 สาย ", "").replace("ที่ 2 สาย ", "").replace("ผู้ชนะคู่ ", "").replace("ผู้แพ้คู่ ", "");
+  const clean = teamName.trim().replace(/^(ที่\s*[12๑๒]\s*สาย\s*[A-Za-z]|ผู้ชนะคู่\s*\d+|ผู้แพ้คู่\s*\d+)$/,'').trim();
   if (LOGO_MAP[clean]) return LOGO_MAP[clean];
   for (const key in LOGO_MAP) {
     if (clean.includes(key)) return LOGO_MAP[key];
@@ -543,13 +554,13 @@ const DATA = {
 };
 
 // ================================================================
-// PAGE NAVIGATION & HOME RENDER
+// PAGE NAVIGATION
 // ================================================================
 let bracketInitialized = false;
 let currentTab = 'group';
 let currentSportMatches = [];
-let groupStandings = {}; // เก็บผลการจัดอันดับของแต่ละกลุ่ม
-let matchResults = {};   // เก็บผลการแข่งขันของแต่ละคู่
+let groupStandings = {};
+let matchResults = {};
 
 function showPage(page) {
   document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
@@ -587,16 +598,28 @@ let usingFallback = false;
 
 function initBracket() { setInterval(fetchBracketData, CONFIG.REFRESH_INTERVAL); document.addEventListener("visibilitychange", () => { if (!document.hidden && document.getElementById("page-bracket").classList.contains("active")) fetchBracketData(); }); }
 
-// ✅ ฟังก์ชันใหม่: ประมวลผลข้อมูลการแข่งขันเพื่อหาผู้เข้ารอบ
+// ================================================================
+// NORMALIZE
+// ================================================================
+function normalizeSport(s) {
+  return (s || "").replace(/[\s\u00A0\u200B]+/g, '').trim().toLowerCase();
+}
+
+// ================================================================
+// PROCESS TOURNAMENT DATA
+// ================================================================
 function processTournamentData(matches) {
   groupStandings = {};
   matchResults = {};
 
-  // 1. คำนวณตารางคะแนนรอบแบ่งกลุ่ม
-  const groupMatches = matches.filter(m => ["A","B","C","D"].includes((m.group || "").trim()));
+  const groupMatches = matches.filter(m => {
+    const g = (m.group || "").trim().toUpperCase();
+    return ["A","B","C","D"].includes(g);
+  });
+  
   groupMatches.forEach(m => {
-    const g = m.group;
-    const sport = m.sport.trim(); // ✅ Trim ชื่อกีฬา
+    const g = (m.group || "").trim().toUpperCase();
+    const sport = normalizeSport(m.sport);
     
     if (!groupStandings[sport]) groupStandings[sport] = {};
     if (!groupStandings[sport][g]) groupStandings[sport][g] = {};
@@ -626,7 +649,6 @@ function processTournamentData(matches) {
     }
   });
 
-  // จัดอันดับกลุ่ม
   Object.keys(groupStandings).forEach(sport => {
     Object.keys(groupStandings[sport]).forEach(g => {
       groupStandings[sport][g] = Object.values(groupStandings[sport][g]).sort((a, b) => {
@@ -637,11 +659,10 @@ function processTournamentData(matches) {
     });
   });
 
-  // 2. คำนวณผลการแข่งขันรอบ Knockout (ผู้ชนะ/ผู้แพ้)
   matches.forEach(m => {
     if (m.status === "finished" && !isNaN(+m.scoreA) && !isNaN(+m.scoreB)) {
       const a = +m.scoreA, b = +m.scoreB;
-      const sport = m.sport.trim(); // ✅ Trim ชื่อกีฬา
+      const sport = normalizeSport(m.sport);
       if (!matchResults[sport]) matchResults[sport] = {};
       
       if (a > b) { matchResults[sport][m.no] = { winner: m.teamA, loser: m.teamB }; }
@@ -651,59 +672,71 @@ function processTournamentData(matches) {
   });
 }
 
-// ✅ ฟังก์ชันใหม่: ถอดรหัสชื่อทีมจากข้อความ Placeholder (ปรับให้ยืดหยุ่นขึ้นมาก)
-function resolveTeamName(placeholder, sport) {
-  if (!placeholder) return placeholder;
-  const clean = placeholder.trim();
-  const sportKey = sport.trim();
-
-  // รูปแบบ: "ที่ 1 สาย A" หรือ "ที่ 1 สายA" หรือ "ที่1 สาย A" (รองรับเลขไทย ๑ ด้วย)
-  const group1Match = clean.match(/ที่\s*([1๑])\s*สาย\s*([A-Za-z])/i);
-  if (group1Match) {
-    const g = group1Match[2].toUpperCase();
-    if (groupStandings[sportKey] && groupStandings[sportKey][g] && groupStandings[sportKey][g][0]) {
-      return groupStandings[sportKey][g][0].name;
-    }
+// ================================================================
+// FIND (Helper)
+// ================================================================
+function findStandings(sportKey) {
+  if (groupStandings[sportKey]) return groupStandings[sportKey];
+  for (const key of Object.keys(groupStandings)) {
+    if (key === sportKey || key.includes(sportKey) || sportKey.includes(key)) return groupStandings[key];
   }
-  
-  // รูปแบบ: "ที่ 2 สาย B"
-  const group2Match = clean.match(/ที่\s*([2๒])\s*สาย\s*([A-Za-z])/i);
-  if (group2Match) {
-    const g = group2Match[2].toUpperCase();
-    if (groupStandings[sportKey] && groupStandings[sportKey][g] && groupStandings[sportKey][g][1]) {
-      return groupStandings[sportKey][g][1].name;
-    }
-  }
-
-  // รูปแบบ: "ผู้ชนะคู่ 63" หรือ "ผู้ชนะคู่ที่ 63" หรือ "ผู้ชนะ คู่ 63"
-  const winnerMatch = clean.match(/ผู้ชนะ\s*คู่\s*(?:ที่)?\s*(\d+)/i);
-  if (winnerMatch) {
-    const matchNo = winnerMatch[1];
-    if (matchResults[sportKey] && matchResults[sportKey][matchNo] && matchResults[sportKey][matchNo].winner) {
-      return matchResults[sportKey][matchNo].winner;
-    }
-  }
-
-  // รูปแบบ: "ผู้แพ้คู่ 63"
-  const loserMatch = clean.match(/ผู้แพ้\s*คู่\s*(?:ที่)?\s*(\d+)/i);
-  if (loserMatch) {
-    const matchNo = loserMatch[1];
-    if (matchResults[sportKey] && matchResults[sportKey][matchNo] && matchResults[sportKey][matchNo].loser) {
-      return matchResults[sportKey][matchNo].loser;
-    }
-  }
-
-  return placeholder; // ถ้าไม่ตรงกับรูปแบบใดเลย ให้คืนค่าเดิม
+  return null;
 }
 
+function findMatchResult(sportKey, matchNo) {
+  if (matchResults[sportKey] && matchResults[sportKey][matchNo]) return matchResults[sportKey][matchNo];
+  for (const key of Object.keys(matchResults)) {
+    if ((key === sportKey || key.includes(sportKey) || sportKey.includes(key)) && matchResults[key][matchNo]) {
+      return matchResults[key][matchNo];
+    }
+  }
+  for (const key of Object.keys(matchResults)) {
+    if (matchResults[key][matchNo]) return matchResults[key][matchNo];
+  }
+  return null;
+}
+
+// ================================================================
+// RESOLVE TEAM NAME (จาก Placeholder)
+// ================================================================
+function resolveTeamName(placeholder, sport) {
+  if (!placeholder) return placeholder;
+  const clean = String(placeholder).trim();
+  const sportKey = normalizeSport(sport);
+
+  const groupMatch = clean.match(/ที่\s*([1๑2๒])\s*สาย\s*([A-Za-z])/i);
+  if (groupMatch) {
+    const rank = (groupMatch[1] === '๑' || groupMatch[1] === '1') ? 0 : 1;
+    const groupLetter = groupMatch[2].toUpperCase();
+    const standings = findStandings(sportKey);
+    if (standings && standings[groupLetter] && standings[groupLetter][rank]) {
+      return standings[groupLetter][rank].name;
+    }
+  }
+
+  const wm = clean.match(/ผู้ชนะ\s*คู่\s*(?:ที่)?\s*(\d+)/i);
+  const lm = clean.match(/ผู้แพ้\s*คู่\s*(?:ที่)?\s*(\d+)/i);
+  
+  if (wm || lm) {
+    const no = (wm || lm)[1];
+    const wantWinner = !!wm;
+    const result = findMatchResult(sportKey, no);
+    if (result) {
+      const name = wantWinner ? result.winner : result.loser;
+      if (name) return name;
+    }
+  }
+
+  return placeholder;
+}
+
+// ================================================================
+// FETCH DATA
+// ================================================================
 async function fetchBracketData() {
   const url = CONFIG.SCORE_SHEET_URL;
   
-  if (!url) { 
-    setConnectionStatus("error", "ยังไม่ตั้งค่า URL"); 
-    loadFallbackData(); 
-    return; 
-  }
+  if (!url) { setConnectionStatus("error", "ยังไม่ตั้งค่า URL"); loadFallbackData(); return; }
   
   try {
     setConnectionStatus("loading", "กำลังโหลด...");
@@ -721,7 +754,6 @@ async function fetchBracketData() {
     allMatches = matches;
     previousMatchState = Object.fromEntries(matches.map(m => [m.no, { scoreA: m.scoreA, scoreB: m.scoreB, status: m.status }]));
     
-    // ✅ ประมวลผลข้อมูลการแข่งขันเพื่อหาผู้เข้ารอบ
     processTournamentData(allMatches);
     
     usingFallback = false;
@@ -745,7 +777,7 @@ async function fetchBracketData() {
 function loadFallbackData() {
   usingFallback = true;
   allMatches = [...FALLBACK_DATA];
-  processTournamentData(allMatches); // ✅ ประมวลผลข้อมูลสำรองด้วย
+  processTournamentData(allMatches);
   document.getElementById('fallbackWarning').classList.remove('hidden');
   renderSportTabs();
   renderBracketContent();
@@ -780,7 +812,6 @@ function parseCSV(csv) {
   return rows;
 }
 function parseCSVLine(line) { const result = []; let current = ""; let inQuotes = false; for (let i = 0; i < line.length; i++) { const char = line[i]; if (char === '"') inQuotes = !inQuotes; else if (char === "," && !inQuotes) { result.push(current); current = ""; } else current += char; } result.push(current); return result.map(v => v.trim().replace(/^"|"$/g, "")); }
-
 function detectChanges(newMatches) { const changes = []; newMatches.forEach(m => { const prev = previousMatchState[m.no]; if (!prev) return; if (prev.scoreA !== m.scoreA || prev.scoreB !== m.scoreB) changes.push(m); }); return changes; }
 
 function renderSportTabs() {
@@ -809,8 +840,8 @@ function renderBracketContent() {
   }
   
   const sport = selectedSport;
-  const groupMatches = currentSportMatches.filter(m => ["A","B","C","D"].includes((m.group || "").trim()));
-  const knockoutMatches = currentSportMatches.filter(m => { const g = (m.group || "").trim(); return !["A","B","C","D","-",""].includes(g); });
+  const groupMatches = currentSportMatches.filter(m => ["A","B","C","D"].includes((m.group || "").trim().toUpperCase()));
+  const knockoutMatches = currentSportMatches.filter(m => { const g = (m.group || "").trim().toUpperCase(); return !["A","B","C","D","-",""].includes(g); });
 
   let html = `
     <div class="glass-dark rounded-3xl p-6 md:p-8 mb-6">
@@ -833,10 +864,13 @@ function renderBracketContent() {
     </div>
   `;
 
-  // Tab Content: Group Stage (ใช้ groupStandings ที่คำนวณไว้แล้ว)
+  // ============ GROUP STAGE ============
   html += `<div id="content-group" class="tab-content ${currentTab === 'group' ? '' : 'hidden'}">`;
-  if (groupMatches.length > 0 && groupStandings[sport]) {
-    const groups = groupStandings[sport];
+  const sportKey = normalizeSport(sport);
+  const standingsForSport = findStandings(sportKey);
+  
+  if (groupMatches.length > 0 && standingsForSport) {
+    const groups = standingsForSport;
     html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-4">`;
     Object.keys(groups).sort().forEach(g => {
       html += `<div class="group-table">
@@ -858,88 +892,59 @@ function renderBracketContent() {
   }
   html += `</div>`;
 
-  // Tab Content: Knockout Stage
+  // ============ KNOCKOUT STAGE ============
   html += `<div id="content-knockout" class="tab-content ${currentTab === 'knockout' ? '' : 'hidden'}">`;
   
-  const qfMatches = knockoutMatches.filter(m => { const g = (m.group || ""); return g.includes("ก่อนรอง") || g.includes("8 ทีม") || g.includes("รอบ 8"); });
-  const sfMatches = knockoutMatches.filter(m => { const g = (m.group || ""); return g.includes("รอง") && !g.includes("ชิง"); });
-  const finalMatches = knockoutMatches.filter(m => { const g = (m.group || ""); return g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ"); });
-  const thirdMatches = knockoutMatches.filter(m => (m.group || "").includes("ชิงที่ 3"));
+  const r16Matches = knockoutMatches.filter(m => { const g = (m.group || "").trim().toUpperCase(); return g.includes("16") && !g.includes("8"); });
+  const qfMatches = knockoutMatches.filter(m => { const g = (m.group || "").trim().toUpperCase(); return (g.includes("8") || g.includes("ก่อนรอง") || g.includes("QF") || g.includes("รอบ 8")) && !g.includes("16"); });
+  const sfMatches = knockoutMatches.filter(m => { const g = (m.group || "").trim().toUpperCase(); return (g.includes("รอง") || g.includes("SF") || g.includes("รองชนะเลิศ")) && !g.includes("ชิง") && !g.includes("ก่อนรอง"); });
+  const finalMatches = knockoutMatches.filter(m => { const g = (m.group || "").trim().toUpperCase(); return (g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ") || g.includes("Final")); });
+  const thirdMatches = knockoutMatches.filter(m => (m.group || "").trim().toUpperCase().includes("ชิงที่ 3"));
   const specialMatches = knockoutMatches.filter(m => (m.group || "").includes("พิเศษ"));
 
-  if (qfMatches.length > 0 || sfMatches.length > 0 || finalMatches.length > 0 || thirdMatches.length > 0) {
-    html += `<div class="bracket-wrapper"><div class="bracket-container">`;
+  if (r16Matches.length > 0 || qfMatches.length > 0 || sfMatches.length > 0 || finalMatches.length > 0 || thirdMatches.length > 0 || specialMatches.length > 0) {
+    html += `<div class="bracket-flow">`;
 
-    html += `<div class="bracket-side left">`;
-    if (qfMatches.length > 0) {
-      html += `<div class="bracket-round qf">`;
-      for (let i = 0; i < qfMatches.length; i += 2) {
-        html += `<div class="bracket-match-wrapper">`;
-        html += renderBracketMatch(qfMatches[i]);
-        if (qfMatches[i+1]) html += renderBracketMatch(qfMatches[i+1]);
-        html += `</div>`;
-      }
-      html += `</div>`;
+    if (r16Matches.length > 0) {
+      html += `<div class="bracket-column"><h3 class="bracket-column-title">รอบ 16 ทีม</h3><div class="bracket-column-body">${r16Matches.map(m => renderBracketMatch(m)).join("")}</div></div>`;
     }
-    if (sfMatches.length > 0) { html += `<div class="bracket-round sf">${sfMatches.map(m => renderBracketMatch(m)).join("")}</div>`; }
-    if (finalMatches.length > 0) { html += `<div class="bracket-round final">${renderBracketMatch(finalMatches[0])}</div>`; }
-    html += `</div>`;
-
-    html += `<div class="bracket-center">
-      <div class="trophy-icon">🏆</div>
-      <div class="final-label">รอบชิงชนะเลิศ</div>`;
-    const champion = finalMatches[0] ? getWinner(finalMatches[0]) : null;
-    if (champion) {
-      const realChampion = resolveTeamName(champion, sport);
-      html += `<div class="champion-card-v2 winner-glow">
-        <div class="text-3xl mb-2 text-center">👑</div>
-        <div class="flex justify-center mb-2">
-          <div class="logo-ring lg winner">
-            <div class="logo-fallback" style="font-size:30px">🏫</div>
-            ${getLogoPath(realChampion) ? `<img src="${getLogoPath(realChampion)}" onerror="this.style.display='none';">` : ''}
+    if (qfMatches.length > 0) {
+      html += `<div class="bracket-column"><h3 class="bracket-column-title">รอบ 8 ทีม (ก่อนรอง)</h3><div class="bracket-column-body">${qfMatches.map(m => renderBracketMatch(m)).join("")}</div></div>`;
+    }
+    if (sfMatches.length > 0) {
+      html += `<div class="bracket-column"><h3 class="bracket-column-title">รอบรองชนะเลิศ</h3><div class="bracket-column-body">${sfMatches.map(m => renderBracketMatch(m)).join("")}</div></div>`;
+    }
+    if (finalMatches.length > 0) {
+      html += `<div class="bracket-column"><h3 class="bracket-column-title">รอบชิงชนะเลิศ</h3><div class="bracket-column-body">${finalMatches.map(m => renderBracketMatch(m)).join("")}</div></div>`;
+    }
+    
+    if (finalMatches[0]) {
+      const champion = getWinner(finalMatches[0]);
+      if (champion) {
+        const realChampion = resolveTeamName(champion, sport);
+        html += `<div class="bracket-column"><h3 class="bracket-column-title">🏆 แชมป์</h3><div class="bracket-column-body">
+          <div class="champion-card-v2 winner-glow">
+            <div class="text-3xl mb-2 text-center">👑</div>
+            <div class="flex justify-center mb-2">
+              <div class="logo-ring lg winner">
+                <div class="logo-fallback" style="font-size:30px">🏫</div>
+                ${getLogoPath(realChampion) ? `<img src="${getLogoPath(realChampion)}" onerror="this.style.display='none';">` : ''}
+              </div>
+            </div>
+            <p class="font-heading font-black text-lg text-yellow-200 text-center">${shortTeamName(realChampion)}</p>
+            <p class="text-yellow-300/60 text-xs text-center mt-1 tracking-widest">CHAMPION 2569</p>
           </div>
-        </div>
-        <p class="font-heading font-black text-lg text-yellow-200 text-center">${shortTeamName(realChampion)}</p>
-        <p class="text-yellow-300/60 text-xs text-center mt-1 tracking-widest">CHAMPION 2569</p>
-      </div>`;
-    }
-    html += `</div>`;
-
-    html += `<div class="bracket-side right">`;
-    if (finalMatches.length > 0) { html += `<div class="bracket-round final">${renderBracketMatch(finalMatches[0])}</div>`; }
-    if (sfMatches.length > 0) { html += `<div class="bracket-round sf">${sfMatches.map(m => renderBracketMatch(m)).join("")}</div>`; }
-    if (qfMatches.length > 0) {
-      html += `<div class="bracket-round qf">`;
-      for (let i = 0; i < qfMatches.length; i += 2) {
-        html += `<div class="bracket-match-wrapper">`;
-        html += renderBracketMatch(qfMatches[i]);
-        if (qfMatches[i+1]) html += renderBracketMatch(qfMatches[i+1]);
-        html += `</div>`;
+        </div></div>`;
       }
-      html += `</div>`;
     }
-    html += `</div>`;
 
-    html += `</div>`;
-    
     if (thirdMatches.length > 0) {
-      html += `<div class="mt-8 pt-8 border-t border-white/10">
-        <h3 class="font-heading font-bold text-lg text-secondary mb-4 text-center">🥉 รอบชิงที่ 3</h3>
-        <div class="flex justify-center gap-6">
-          ${thirdMatches.map(m => renderBracketMatch(m)).join("")}
-        </div>
-      </div>`;
+      html += `<div class="bracket-column"><h3 class="bracket-column-title">🥉 ชิงที่ 3</h3><div class="bracket-column-body">${thirdMatches.map(m => renderBracketMatch(m)).join("")}</div></div>`;
     }
-    
     if (specialMatches.length > 0) {
-      html += `<div class="mt-8 pt-8 border-t border-white/10">
-        <h3 class="font-heading font-bold text-lg text-secondary mb-4 text-center">⭐ รายการพิเศษ</h3>
-        <div class="flex justify-center gap-6">
-          ${specialMatches.map(m => renderBracketMatch(m)).join("")}
-        </div>
-      </div>`;
+      html += `<div class="bracket-column"><h3 class="bracket-column-title">⭐ พิเศษ</h3><div class="bracket-column-body">${specialMatches.map(m => renderBracketMatch(m)).join("")}</div></div>`;
     }
-    
+
     html += `</div>`;
   } else {
     html += `<div class="text-center py-20 text-white/50"><div class="text-6xl mb-4">⏳</div><p>ยังไม่มีข้อมูลการแข่งขันรอบ Knockout</p><p class="text-sm mt-2">กรุณากรอกข้อมูลใน Google Sheet คอลัมน์ group เป็น "รอง", "ชิงที่ 1", "ชิงที่ 3"</p></div>`;
@@ -958,7 +963,9 @@ function switchTab(tab) {
   document.getElementById('content-knockout').classList.toggle('hidden', tab !== 'knockout');
 }
 
-// ✅ แก้ไข renderBracketMatch: ให้ถอดรหัสชื่อทีมก่อนแสดงผล
+// ================================================================
+// RENDER MATCH CARD (Resolve ทีมจริงก่อนแสดง)
+// ================================================================
 function renderBracketMatch(m) {
   const realTeamA = resolveTeamName(m.teamA, m.sport);
   const realTeamB = resolveTeamName(m.teamB, m.sport);
@@ -969,7 +976,6 @@ function renderBracketMatch(m) {
   const scoreA = isUpcoming ? "-" : m.scoreA;
   const scoreB = isUpcoming ? "-" : m.scoreB;
   
-  // เช็คผู้ชนะจากชื่อทีมเดิม (Placeholder) เพื่อให้ตรงกับ Logic การเก็บผล
   const winner = getWinner(m);
   const aWon = winner && winner === m.teamA;
   const bWon = winner && winner === m.teamB;
@@ -1008,7 +1014,7 @@ function playSound() { try { const ctx = new (window.AudioContext || window.webk
 // ================================================================
 document.addEventListener("DOMContentLoaded", () => {
   startCountdown(); renderStats(); renderSports(); renderAthletics(); renderCommittees(); renderSchools();
-  console.log("✅ Doytao Sports 2026 - Auto Resolve Knockout Teams (Robust Regex)");
+  console.log("✅ Doytao Sports 2026 - Column Bracket Layout");
 });
 </script>
 
