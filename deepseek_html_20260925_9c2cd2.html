@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>กีฬา-กรีฑา ดอยเต่าสหศึกษา 2569 | Live Scoreboard</title>
+<meta name="description" content="การแข่งขันกีฬา-กรีฑานักเรียน เครือข่ายพัฒนาการศึกษาดอยเต่าสหศึกษา ปีการศึกษา 2569" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700;900&family=Sarabun:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: { extend: {
+      colors: {
+        primary: { DEFAULT: '#6B21A8', 50: '#FAF5FF', 100: '#F3E8FF', 500: '#A855F7', 600: '#9333EA', 700: '#7E22CE', 800: '#6B21A8', 900: '#581C87' },
+        secondary: { DEFAULT: '#F59E0B', 500: '#F59E0B', 600: '#D97706' },
+        accent: '#DC2626', dark: '#1E1B4B',
+      },
+      fontFamily: {
+        heading: ['Kanit', 'sans-serif'],
+        body: ['Sarabun', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+      },
+    }}
+  }
+</script>
+<style>
+  * { scroll-behavior: smooth; }
+  body { font-family: 'Sarabun', sans-serif; background-color: #FAFAF9; color: #1E1B4B; }
+  h1, h2, h3, h4, h5 { font-family: 'Kanit', sans-serif; }
+
+  .gradient-mesh {
+    background:
+      radial-gradient(at 20% 20%, rgba(107, 33, 168, 0.4) 0px, transparent 50%),
+      radial-gradient(at 80% 30%, rgba(245, 158, 11, 0.25) 0px, transparent 50%),
+      radial-gradient(at 50% 80%, rgba(220, 38, 38, 0.2) 0px, transparent 50%),
+      linear-gradient(135deg, #1E1B4B 0%, #4C1D95 50%, #6B21A8 100%);
+  }
+  .scoreboard-bg {
+    background:
+      radial-gradient(at 20% 20%, rgba(107, 33, 168, 0.4) 0px, transparent 50%),
+      radial-gradient(at 80% 30%, rgba(245, 158, 11, 0.2) 0px, transparent 50%),
+      linear-gradient(135deg, #0F0A1F 0%, #1E1B4B 50%, #2D1B4E 100%);
+    min-height: 100vh;
+  }
+  .glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .glass-dark {
+    background: rgba(30, 27, 75, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .zebra tbody tr:nth-child(even) { background-color: rgba(107, 33, 168, 0.04); }
+  .zebra tbody tr:hover { background-color: rgba(245, 158, 11, 0.1); transition: background-color 0.2s; }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: #F1F5F9; }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #6B21A8, #F59E0B); border-radius: 10px; }
+
+  .tab-btn { transition: all 0.3s ease; }
+  .tab-btn.active {
+    background: linear-gradient(135deg, #6B21A8, #A855F7);
+    color: white;
+    box-shadow: 0 10px 25px rgba(107, 33, 168, 0.3);
+    transform: translateY(-2px);
+  }
+  .tab-panel { display: none; animation: fadeIn 0.4s ease-in-out; }
+  .tab-panel.active { display: block; }
+
+  .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
+  .accordion-content.open { max-height: 8000px; }
+
+  .countdown-box {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1rem;
+    padding: 1rem 1.5rem;
+    min-width: 80px;
+    text-align: center;
+  }
+
+  .live-pulse { animation: livePulse 1.5s ease-in-out infinite; }
+  @keyframes livePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+    50% { box-shadow: 0 0 0 12px rgba(220, 38, 38, 0); }
+  }
+  .score-flash { animation: scoreFlash 1.5s ease-out; }
+  @keyframes scoreFlash {
+    0% { background-color: rgba(245, 158, 11, 0.6); transform: scale(1.02); }
+    100% { background-color: transparent; transform: scale(1); }
+  }
+  .score-digit {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 900;
+    text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+  }
+  .marquee { display: inline-block; padding-left: 100%; animation: marquee 40s linear infinite; }
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+  .ticker { background: linear-gradient(90deg, #DC2626, #F59E0B); }
+  .live-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 12px; border-radius: 9999px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  }
+  .live-badge::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor; animation: blink 1s infinite;
+  }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  .animate-fade-in { animation: fadeIn 0.6s ease-in-out; }
+  .animate-slide-up { animation: slideUp 0.8s ease-out; }
+  .animate-float { animation: float 3s ease-in-out infinite; }
+  .animate-spin-fast { animation: spin 1s linear infinite; }
+
+  .page-view { display: none; }
+  .page-view.active { display: block; animation: fadeIn 0.4s ease-in-out; }
+
+  @media print {
+    .no-print { display: none !important; }
+    body { background: white; }
+  }
+</style>
+</head>
+<body class="antialiased">
+
+<!-- ============ NAVBAR ============ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent no-print">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 md:h-20">
+      <a href="#" onclick="showPage('home')" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-primary-700 to-secondary flex items-center justify-center group-hover:scale-110 transition shadow-lg">
+          <span class="text-2xl">🏆</span>
+        </div>
+        <div class="hidden sm:block">
+          <p class="font-heading font-bold text-white text-sm md:text-base leading-tight">ดอยเต่าสหศึกษา</p>
+          <p class="text-secondary text-xs font-mono">กีฬา-กรีฑา 2569</p>
+        </div>
+      </a>
+      <div class="hidden lg:flex items-center gap-1">
+        <button onclick="showPage('home'); scrollToId('home')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition font-medium text-sm">หน้าหลัก</button>
+        <button onclick="showPage('home'); scrollToId('schedule')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition font-medium text-sm">โปรแกรม</button>
+        <button onclick="showPage('home'); scrollToId('athletics')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition font-medium text-sm">กรีฑา</button>
+        <button onclick="showPage('home'); scrollToId('announcement')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition font-medium text-sm">คณะกรรมการ</button>
+        <button onclick="showPage('home'); scrollToId('schools')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition font-medium text-sm">โรงเรียน</button>
+        <button onclick="showPage('scoreboard')" id="navScoreboard" class="px-4 py-2 rounded-lg bg-accent text-white hover:bg-red-700 transition font-medium text-sm flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span> LIVE
+        </button>
+      </div>
+      <button id="menuToggle" class="lg:hidden text-white p-2" aria-label="Toggle menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="mobileMenu" class="lg:hidden glass-dark border-t border-white/10 hidden">
+    <div class="px-4 py-4 space-y-1">
+      <button onclick="showPage('home'); scrollToId('home'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition">🏠 หน้าหลัก</button>
+      <button onclick="showPage('home'); scrollToId('schedule'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition">📅 โปรแกรมการแข่งขัน</button>
+      <button onclick="showPage('home'); scrollToId('athletics'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition">🏃 กรีฑา</button>
+      <button onclick="showPage('home'); scrollToId('announcement'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition">👥 คณะกรรมการ</button>
+      <button onclick="showPage('home'); scrollToId('meeting'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition">💰 งบประมาณ</button>
+      <button onclick="showPage('home'); scrollToId('schools'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition">🏫 โรงเรียน</button>
+      <button onclick="showPage('scoreboard'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg bg-accent text-white font-bold">🔴 LIVE Scoreboard</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ PAGE: HOME ============ -->
+<div id="page-home" class="page-view active">
+
+<section id="home" class="relative min-h-screen flex items-center justify-center gradient-mesh overflow-hidden">
+  <div class="absolute inset-0 opacity-20">
+    <div class="absolute top-20 left-10 w-64 h-64 rounded-full bg-secondary blur-3xl animate-float"></div>
+    <div class="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-primary-500 blur-3xl animate-float" style="animation-delay: 1s;"></div>
+    <div class="absolute top-1/2 left-1/2 w-72 h-72 rounded-full bg-accent blur-3xl animate-float" style="animation-delay: 2s;"></div>
+  </div>
+  <div class="relative z-10 max-w-7xl mx-auto px-4 py-32 text-center">
+    <div class="mb-8 animate-fade-in">
+      <span class="inline-block px-4 py-2 rounded-full glass text-secondary text-sm font-medium mb-6">🏆 ปีการศึกษา 2569</span>
+    </div>
+    <h1 class="font-heading font-black text-4xl md:text-6xl lg:text-7xl text-white mb-6 leading-tight animate-slide-up">
+      การแข่งขันกีฬา-กรีฑา<br>
+      <span class="bg-gradient-to-r from-secondary via-yellow-300 to-secondary bg-clip-text text-transparent">ดอยเต่าสหศึกษา</span>
+    </h1>
+    <p class="text-white/80 text-lg md:text-xl max-w-3xl mx-auto mb-12 animate-slide-up">
+      เครือข่ายพัฒนาการศึกษาดอยเต่าสหศึกษา ปีการศึกษา 2569<br>
+      สนามกีฬาองค์การบริหารส่วนตำบลโป่งทุ่ง อำเภอดอยเต่า จังหวัดเชียงใหม่
+    </p>
+    <div class="mb-12">
+      <p class="text-secondary font-medium mb-4 text-sm tracking-widest uppercase">นับถอยหลังสู่วันแข่งขัน</p>
+      <div id="countdown" class="flex gap-3 md:gap-4 justify-center flex-wrap"></div>
+    </div>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in">
+      <button onclick="scrollToId('schedule')" class="px-8 py-4 bg-gradient-to-r from-secondary to-yellow-500 text-dark font-heading font-bold rounded-xl hover:shadow-2xl hover:scale-105 transition">📅 ดูโปรแกรมการแข่งขัน</button>
+      <button onclick="showPage('scoreboard')" class="px-8 py-4 bg-accent text-white font-heading font-bold rounded-xl hover:bg-red-700 transition flex items-center justify-center gap-2">
+        <span class="w-3 h-3 rounded-full bg-white animate-pulse"></span> 🔴 LIVE Scoreboard
+      </button>
+    </div>
+    <div class="mt-16 text-white/60 text-sm font-mono">วันที่ 5 - 8 ตุลาคม พ.ศ. 2569</div>
+  </div>
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+    <div class="w-6 h-10 rounded-full border-2 border-white/40 flex items-start justify-center p-2">
+      <div class="w-1 h-2 bg-white/60 rounded-full"></div>
+    </div>
+  </div>
+</section>
+
+<section class="py-16 px-4 bg-white shadow-sm">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6" id="statsGrid"></div>
+  </div>
+</section>
+
+<section class="py-20 px-4 bg-gradient-to-b from-white to-primary-50">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12">
+      <span class="inline-block px-4 py-1 rounded-full bg-primary-100 text-primary-800 text-sm font-medium mb-3">ประเภทกีฬา</span>
+      <h2 class="font-heading font-bold text-4xl md:text-5xl text-dark mb-4">การแข่งขัน 13 รายการ</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">การแข่งขันกีฬาหลากหลายประเภท ครอบคลุมทุกระดับชั้น</p>
+    </div>
+    <div id="sportsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+  </div>
+</section>
+
+<section id="schedule" class="py-20 px-4 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12">
+      <span class="inline-block px-4 py-1 rounded-full bg-secondary/20 text-secondary-600 text-sm font-medium mb-3">โปรแกรมการแข่งขัน</span>
+      <h2 class="font-heading font-bold text-4xl md:text-5xl text-dark mb-4">ตารางการแข่งขัน</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">เลือกประเภทกีฬาเพื่อดูตารางและกติกาฉบับเต็ม</p>
+    </div>
+    <div class="flex flex-wrap gap-2 justify-center mb-8 no-print" id="sportsTabs"></div>
+    <div id="sportsPanels"></div>
+  </div>
+</section>
+
+<section id="athletics" class="py-20 px-4 bg-gradient-to-br from-primary-900 via-primary-800 to-dark text-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12">
+      <span class="inline-block px-4 py-1 rounded-full glass text-secondary text-sm font-medium mb-3">กรีฑา</span>
+      <h2 class="font-heading font-bold text-4xl md:text-5xl mb-4">ประเภทการแข่งขันกรีฑา</h2>
+    </div>
+    <div class="glass rounded-2xl p-6 overflow-x-auto mb-8">
+      <h3 class="font-heading font-bold text-2xl mb-4 text-secondary">🏃 ประเภทการแข่งขัน</h3>
+      <table class="w-full text-sm zebra">
+        <thead class="bg-white/10">
+          <tr>
+            <th rowspan="2" class="px-3 py-2 text-left">ลำดับ</th>
+            <th rowspan="2" class="px-3 py-2 text-left">รายการ</th>
+            <th colspan="5" class="px-3 py-2 text-center border-l border-white/20">ชาย</th>
+            <th colspan="5" class="px-3 py-2 text-center border-l border-white/20">หญิง</th>
+          </tr>
+          <tr>
+            <th class="px-2 py-2 border-l border-white/20">อ.</th>
+            <th class="px-2 py-2">8</th>
+            <th class="px-2 py-2">10</th>
+            <th class="px-2 py-2">12</th>
+            <th class="px-2 py-2">15</th>
+            <th class="px-2 py-2 border-l border-white/20">อ.</th>
+            <th class="px-2 py-2">8</th>
+            <th class="px-2 py-2">10</th>
+            <th class="px-2 py-2">12</th>
+            <th class="px-2 py-2">15</th>
+          </tr>
+        </thead>
+        <tbody id="athleticsTable"></tbody>
+      </table>
+    </div>
+    <div class="glass rounded-2xl p-6 max-w-2xl mx-auto">
+      <h3 class="font-heading font-bold text-xl mb-4 text-secondary">📅 การนับอายุ</h3>
+      <table class="w-full text-sm">
+        <thead class="bg-white/10">
+          <tr>
+            <th class="px-4 py-2 text-left">รุ่นอายุ (ปี)</th>
+            <th class="px-4 py-2 text-left">ปี พ.ศ. เกิด</th>
+          </tr>
+        </thead>
+        <tbody id="ageTable" class="zebra"></tbody>
+      </table>
+      <p class="text-red-300 text-xs mt-4 text-center">เอกสารขอเป็นสำเนาบัตรประชาชน หรือสำเนาสูติบัตร (ใบเกิด)</p>
+    </div>
+  </div>
+</section>
+
+<section id="announcement" class="py-20 px-4 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12">
+      <span class="inline-block px-4 py-1 rounded-full bg-primary-100 text-primary-800 text-sm font-medium mb-3">ประกาศ</span>
+      <h2 class="font-heading font-bold text-4xl md:text-5xl text-dark mb-4">คณะกรรมการดำเนินงาน</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">ประกาศเครือข่ายพัฒนาการศึกษาดอยเต่าสหศึกษา เรื่อง แต่งตั้งข้าราชการครูและบุคลากรทางการศึกษาปฏิบัติหน้าที่ดำเนินงานจัดการแข่งขันกีฬา-กรีฑานักเรียน</p>
+    </div>
+    <div id="committeesList" class="space-y-4"></div>
+  </div>
+</section>
+
+<section id="meeting" class="py-20 px-4 bg-gradient-to-b from-primary-50 to-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12">
+      <span class="inline-block px-4 py-1 rounded-full bg-secondary/20 text-secondary-600 text-sm font-medium mb-3">มติที่ประชุม</span>
+      <h2 class="font-heading font-bold text-4xl md:text-5xl text-dark mb-4">งบประมาณและมติที่ประชุม</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">การประชุมคณะกรรมการบริหารเครือข่าย ครั้งที่ 7/2569</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12" id="budgetCards"></div>
+    <div class="bg-white rounded-2xl p-8 shadow-lg border border-primary-100 mb-8">
+      <h3 class="font-heading font-bold text-2xl mb-6 text-primary-800">🏆 ถ้วยรางวัล</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="trophyList"></div>
+    </div>
+    <div class="bg-white rounded-2xl p-8 shadow-lg border border-primary-100">
+      <h3 class="font-heading font-bold text-2xl mb-6 text-primary-800">📋 ระเบียบวาระการประชุม</h3>
+      <div id="meetingAgenda" class="space-y-4"></div>
+    </div>
+  </div>
+</section>
+
+<section id="schools" class="py-20 px-4 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12">
+      <span class="inline-block px-4 py-1 rounded-full bg-secondary/20 text-secondary-600 text-sm font-medium mb-3">เครือข่าย</span>
+      <h2 class="font-heading font-bold text-4xl md:text-5xl text-dark mb-4">โรงเรียนในเครือข่าย</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">โรงเรียนในเครือข่ายพัฒนาการศึกษาดอยเต่าสหศึกษา</p>
+    </div>
+    <div id="schoolsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+  </div>
+</section>
+
+<footer class="bg-dark text-white py-12 px-4">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary-700 to-secondary flex items-center justify-center">
+            <span class="text-2xl">🏆</span>
+          </div>
+          <div>
+            <p class="font-heading font-bold">ดอยเต่าสหศึกษา</p>
+            <p class="text-secondary text-xs">กีฬา-กรีฑา 2569</p>
+          </div>
+        </div>
+        <p class="text-white/60 text-sm">การแข่งขันกีฬา-กรีฑานักเรียน เครือข่ายพัฒนาการศึกษาดอยเต่าสหศึกษา ปีการศึกษา 2569</p>
+      </div>
+      <div>
+        <h4 class="font-heading font-bold mb-4 text-secondary">ลิงก์</h4>
+        <ul class="space-y-2 text-sm">
+          <li><button onclick="scrollToId('home')" class="text-white/70 hover:text-secondary transition">หน้าหลัก</button></li>
+          <li><button onclick="scrollToId('schedule')" class="text-white/70 hover:text-secondary transition">โปรแกรมการแข่งขัน</button></li>
+          <li><button onclick="scrollToId('athletics')" class="text-white/70 hover:text-secondary transition">กรีฑา</button></li>
+          <li><button onclick="showPage('scoreboard')" class="text-accent hover:text-red-400 transition font-medium">🔴 LIVE Scoreboard</button></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-heading font-bold mb-4 text-secondary">สถานที่แข่งขัน</h4>
+        <p class="text-white/70 text-sm leading-relaxed">
+          สนามกีฬาองค์การบริหารส่วนตำบลโป่งทุ่ง<br>
+          อำเภอดอยเต่า จังหวัดเชียงใหม่
+        </p>
+      </div>
+    </div>
+    <div class="border-t border-white/10 pt-6 text-center">
+      <p class="text-white/60 text-sm mb-2">ประกาศ ณ วันที่ 23 กันยายน พ.ศ. 2569</p>
+      <p class="text-white/80 text-sm">(นายวีระ สุรินทร์) ผู้อำนวยการโรงเรียนบ้านถิ่นสำราญ ประธานเครือข่ายพัฒนาการศึกษาดอยเต่าสหศึกษา</p>
+      <p class="text-white/40 text-xs mt-4">© 2026 Doytao Sports Network. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+</div>
+
+<!-- ============ PAGE: SCOREBOARD ============ -->
+<div id="page-scoreboard" class="page-view scoreboard-bg text-white">
+
+<div class="ticker text-white text-sm font-medium py-2 overflow-hidden no-print">
+  <div class="marquee">
+    🏆 ยินดีต้อนรับสู่การแข่งขันกีฬา-กรีฑา ดอยเต่าสหศึกษา 2569 🏆 &nbsp;&nbsp;&nbsp;&nbsp;
+    📅 วันที่ 5 - 8 ตุลาคม พ.ศ. 2569 &nbsp;&nbsp;&nbsp;&nbsp;
+    📍 สนามกีฬาองค์การบริหารส่วนตำบลโป่งทุ่ง &nbsp;&nbsp;&nbsp;&nbsp;
+    🔴 ติดตามผลการแข่งขันแบบเรียลไทม์
+  </div>
+</div>
+
+<header class="glass-dark border-b border-white/10 sticky top-20 z-30 no-print">
+  <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between flex-wrap gap-3">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary-700 to-secondary flex items-center justify-center">
+        <span class="text-xl">🔴</span>
+      </div>
+      <div>
+        <p class="font-heading font-bold text-white">Live Scoreboard</p>
+        <p class="text-secondary text-xs font-mono">Real-time Results</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <div id="connectionStatus" class="flex items-center gap-2 text-xs glass-dark px-3 py-2 rounded-full">
+        <span class="w-2 h-2 rounded-full bg-gray-400" id="statusDot"></span>
+        <span id="statusText" class="text-white/70">กำลังโหลด...</span>
+      </div>
+      <button onclick="fetchScores()" class="glass-dark p-2.5 rounded-full hover:bg-white/10 transition" title="รีเฟรช">
+        <svg id="refreshIcon" class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+        </svg>
+      </button>
+      <button onclick="toggleFullscreen()" class="glass-dark p-2.5 rounded-full hover:bg-white/10 transition" title="เต็มหน้าจอ">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<section class="max-w-7xl mx-auto px-4 py-6">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+    <div class="glass-dark rounded-2xl p-4 text-center">
+      <div class="text-3xl font-heading font-black text-accent" id="statLive">0</div>
+      <div class="text-xs text-white/60 mt-1">🔴 กำลังแข่ง</div>
+    </div>
+    <div class="glass-dark rounded-2xl p-4 text-center">
+      <div class="text-3xl font-heading font-black text-green-400" id="statFinished">0</div>
+      <div class="text-xs text-white/60 mt-1">✅ จบแล้ว</div>
+    </div>
+    <div class="glass-dark rounded-2xl p-4 text-center">
+      <div class="text-3xl font-heading font-black text-yellow-400" id="statUpcoming">0</div>
+      <div class="text-xs text-white/60 mt-1">⏳ รอแข่ง</div>
+    </div>
+    <div class="glass-dark rounded-2xl p-4 text-center">
+      <div class="text-3xl font-heading font-black text-primary-400" id="statTotal">0</div>
+      <div class="text-xs text-white/60 mt-1">📊 ทั้งหมด</div>
+    </div>
+  </div>
+</section>
+
+<section id="liveSection" class="max-w-7xl mx-auto px-4 pb-6 hidden">
+  <h2 class="font-heading font-bold text-2xl text-white mb-4 flex items-center gap-3">
+    <span class="w-3 h-3 rounded-full bg-accent live-pulse"></span>
+    กำลังแข่งขันอยู่ตอนนี้
+  </h2>
+  <div id="liveMatches" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
+</section>
+
+<section class="max-w-7xl mx-auto px-4 pb-6">
+  <div class="glass-dark rounded-2xl p-4">
+    <div class="flex flex-wrap items-center gap-3">
+      <span class="text-sm text-white/60 font-medium">🔍 กรอง:</span>
+      <select id="filterSport" class="bg-white/10 border border-white/20 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-secondary cursor-pointer">
+        <option value="">ทุกประเภทกีฬา</option>
+      </select>
+      <select id="filterStatus" class="bg-white/10 border border-white/20 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-secondary cursor-pointer">
+        <option value="">ทุกสถานะ</option>
+        <option value="live">🔴 กำลังแข่ง</option>
+        <option value="finished">✅ จบแล้ว</option>
+        <option value="upcoming">⏳ รอแข่ง</option>
+      </select>
+      <select id="filterDate" class="bg-white/10 border border-white/20 text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-secondary cursor-pointer">
+        <option value="">ทุกวันที่</option>
+        <option value="5 ต.ค.69">5 ต.ค.69</option>
+        <option value="6 ต.ค.69">6 ต.ค.69</option>
+        <option value="7 ต.ค.69">7 ต.ค.69</option>
+        <option value="8 ต.ค.69">8 ต.ค.69</option>
+      </select>
+      <button onclick="resetFilters()" class="text-xs text-white/60 hover:text-secondary transition underline">ล้างตัวกรอง</button>
+      <div class="ml-auto flex items-center gap-2 text-xs text-white/60">
+        <span>อัปเดต:</span>
+        <span id="lastUpdate" class="font-mono text-secondary">-</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="max-w-7xl mx-auto px-4 pb-16">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="font-heading font-bold text-2xl text-white">📋 ตารางการแข่งขัน</h2>
+    <span id="matchCount" class="text-sm text-white/60"></span>
+  </div>
+  <div id="allMatches" class="space-y-3"></div>
+  <div id="emptyState" class="hidden text-center py-20">
+    <div class="text-6xl mb-4">🔍</div>
+    <p class="text-white/60 text-lg">ไม่พบการแข่งขันที่ตรงกับเงื่อนไข</p>
+    <button onclick="resetFilters()" class="mt-4 px-6 py-2 bg-secondary text-dark rounded-lg font-medium hover:bg-yellow-500 transition">ล้างตัวกรอง</button>
+  </div>
+  <div id="loadingState" class="text-center py-20">
+    <div class="inline-block w-12 h-12 border-4 border-secondary border-t-transparent rounded-full animate-spin-fast"></div>
+    <p class="text-white/60 mt-4">กำลังโหลดข้อมูล...</p>
+  </div>
+</section>
+
+<footer class="glass-dark border-t border-white/10 py-8 px-4 text-center">
+  <p class="text-white/60 text-sm">© 2026 Doytao Sports Network | Live Scoreboard v2.0</p>
+  <p class="text-white/40 text-xs mt-2">อัปเดตทุก 30 วินาที · ครูแก้คะแนนได้ที่ Google Sheet</p>
+</footer>
+
+</div>
+
+<!-- ============ TOAST ============ -->
+<div id="toast" class="fixed bottom-6 right-6 z-50 hidden">
+  <div class="glass-dark rounded-2xl p-4 shadow-2xl border border-white/20 min-w-[300px]">
+    <div class="flex items-start gap-3">
+      <div class="text-2xl">🔔</div>
+      <div class="flex-1">
+        <p id="toastTitle" class="font-heading font-bold text-white"></p>
+        <p id="toastMessage" class="text-sm text-white/70 mt-1"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ================================================================
+// CONFIG
+// ================================================================
+const CONFIG = {
+  SCORE_SHEET_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWb9ZjnqXGwVDlJ3zc5QfeNIcOLlWFoHgmBLrxDOLeYtzeNV1T63bWw79-WLdqGiriB8mjSNI8erSP/pub?gid=0&single=true&output=csv",
+  REFRESH_INTERVAL: 30000,
+  ENABLE_SOUND: true,
+};
+
+// ================================================================
+// DATA
+// ================================================================
+const DATA = {
+  stats: [
+    { label: "โรงเรียนในเครือข่าย", value: 12, suffix: "แห่ง", icon: "🏫" },
+    { label: "ประเภทกีฬา", value: 13, suffix: "รายการ", icon: "🏆" },
+    { label: "วันแข่งขัน", value: 4, suffix: "วัน", icon: "📅" },
+    { label: "นักกีฬา", value: 500, suffix: "+ คน", icon: "🏃" }
+  ],
+  sports: [
+    { id: 1, name: "ฟุตบอลระดับอนุบาล", icon: "⚽", category: "ฟุตบอล", gender: "-", level: "อนุบาล", teams: 8 },
+    { id: 2, name: "ฟุตบอลชาย", icon: "⚽", category: "ฟุตบอล", gender: "ชาย", level: "ป.1-6", teams: 6 },
+    { id: 3, name: "ฟุตบอลหญิง", icon: "⚽", category: "ฟุตบอล", gender: "หญิง", level: "ป.1-6", teams: 4 },
+    { id: 4, name: "แชร์บอลหญิง ป.1-3", icon: "🏐", category: "แชร์บอล", gender: "หญิง", level: "ป.1-3", teams: 8 },
+    { id: 5, name: "แชร์บอลชาย ป.1-3", icon: "🏐", category: "แชร์บอล", gender: "ชาย", level: "ป.1-3", teams: 6 },
+    { id: 6, name: "วอลเลย์บอลชาย", icon: "🏐", category: "วอลเลย์บอล", gender: "ชาย", level: "-", teams: 4 },
+    { id: 7, name: "วอลเลย์บอลหญิง", icon: "🏐", category: "วอลเลย์บอล", gender: "หญิง", level: "-", teams: 6 },
+    { id: 8, name: "เซปักตะกร้อชาย", icon: "🥅", category: "เซปักตะกร้อ", gender: "ชาย", level: "-", teams: 7 },
+    { id: 9, name: "เซปักตะกร้อหญิง", icon: "🥅", category: "เซปักตะกร้อ", gender: "หญิง", level: "-", teams: 6 },
+    { id: 10, name: "เปตองชาย", icon: "🎯", category: "เปตอง", gender: "ชาย", level: "-", teams: 10 },
+    { id: 11, name: "เปตองหญิง", icon: "🎯", category: "เปตอง", gender: "หญิง", level: "-", teams: 11 },
+    { id: 12, name: "เทเบิลเทนนิสชาย", icon: "🏓", category: "เทเบิลเทนนิส", gender: "ชาย", level: "-", teams: 10 },
+    { id: 13, name: "เทเบิลเทนนิสหญิง", icon: "🏓", category: "เทเบิลเทนนิส", gender: "หญิง", level: "-", teams: 10 }
+  ],
+  schools: [
+    { name: "โรงเรียนบ้านโป่ง", director: "นายนพดล สุริยะสาร", size: "large" },
+    { name: "โรงเรียนบ้านแม่ตุบ", director: "นางสาวยุพิน มูลสืบ", size: "large" },
+    { name: "โรงเรียนบ้านเกาะหลวง", director: "นายมนต์ชัย รัตนวรรณี", size: "large" },
+    { name: "โรงเรียนบ้านโป่งทุ่ง", director: "นายนิติพงษ์ ปิยาโน", size: "small" },
+    { name: "โรงเรียนบ้านงิ้วสูง", director: "นางสาวศิริลักษณ์ ผ่องพันธ์", size: "small" },
+    { name: "โรงเรียนบ้านแม่บวน", director: "ว่าที่ ร.ต.ธิติพงศ์ ต่อติด", size: "small" },
+    { name: "โรงเรียนบ้านไร่", director: "นายชโยทิต น้ำดอกไม้", size: "medium" },
+    { name: "โรงเรียนบ้านฉิมพลี", director: "นายณรงค์ศักดิ์ อินทะรส", size: "small" },
+    { name: "โรงเรียนชุมชนบ้านดอยเต่า", director: "นายอธิพงษ์ ดาวเวียงกัน", size: "large" },
+    { name: "โรงเรียนบ้านถิ่นสำราญ", director: "นายวีระ สุรินทร์", size: "small" },
+    { name: "โรงเรียนบ้านผาจุก", director: "นายศิริศักดิ์ จันทร์อ้าย", size: "small" },
+    { name: "โรงเรียนบ้านสันติสุข", director: "นางสาวณัฐธิดา สุภาพกุล", size: "small" }
+  ],
+  athletics: [
+    { no: 1, name: "50 เมตร", male: ["อ"], female: ["อ"] },
+    { no: 2, name: "70 เมตร", male: ["อ"], female: ["อ"] },
+    { no: 3, name: "80 เมตร", male: ["8","10"], female: ["8","10"] },
+    { no: 4, name: "100 เมตร", male: ["8","10","12","15"], female: ["8","10","12","15"] },
+    { no: 5, name: "200 เมตร", male: ["12","15"], female: ["12","15"] },
+    { no: 6, name: "400 เมตร", male: ["12","15"], female: ["12","15"] },
+    { no: 7, name: "800 เมตร", male: ["12","15"], female: ["12","15"] },
+    { no: 8, name: "4 x 50 เมตร", male: ["อ","8","10"], female: ["อ","8","10"] },
+    { no: 9, name: "4 x 100 เมตร", male: ["8","10","12","15"], female: ["8","10","12","15"] },
+    { no: 10, name: "4 x 200 เมตร", male: ["12","15"], female: ["12","15"] },
+    { no: 11, name: "4 x 400 เมตร", male: ["12","15"], female: ["12","15"] }
+  ],
+  ageReference: [
+    { age: "อนุบาล", year: "พ.ศ. 2563 - 2565" },
+    { age: "8", year: "พ.ศ. 2561 - 2562" },
+    { age: "10", year: "พ.ศ. 2559 - 2560" },
+    { age: "12", year: "พ.ศ. 2557 - 2558" },
+    { age: "15", year: "พ.ศ. 2554 - 2556" }
+  ],
+  budget: [
+    { schoolSize: "โรงเรียนที่มีจำนวนนักเรียน มากกว่า 80 คน", amount: 4100, icon: "🏫", gradient: "from-primary-700 to-primary-900" },
+    { schoolSize: "โรงเรียนที่มีจำนวนนักเรียน มากกว่า 40 ไม่เกิน 80 คน", amount: 3100, icon: "🏫", gradient: "from-secondary-600 to-secondary-500" },
+    { schoolSize: "โรงเรียนที่มีจำนวนนักเรียน ต่ำกว่า 40 คน", amount: 2100, icon: "🏫", gradient: "from-accent to-red-800" }
+  ],
+  trophies: [
+    { name: "ถ้วยกีฬาระดับประถมศึกษา", awards: "ชนะเลิศ / รองชนะเลิศอันดับหนึ่ง / รองชนะเลิศอันดับสอง", color: "primary" },
+    { name: "ถ้วยกีฬาระดับมัธยมศึกษา", awards: "ชนะเลิศ", color: "primary" },
+    { name: "ถ้วยพาเหรด โรงเรียนมากกว่า 80 คน", awards: "ชนะเลิศ / รองชนะเลิศอันดับหนึ่ง / รองชนะเลิศอันดับสอง", color: "secondary" },
+    { name: "ถ้วยพาเหรด โรงเรียนต่ำกว่า 80 คน", awards: "ชนะเลิศ / รองชนะเลิศอันดับหนึ่ง / รองชนะเลิศอันดับสอง", color: "secondary" },
+    { name: "ถ้วยกองเชียร์ โรงเรียนมากกว่า 80 คน", awards: "ชนะเลิศ / รองชนะเลิศอันดับหนึ่ง / รองชนะเลิศอันดับสอง", color: "accent" },
+    { name: "ถ้วยกองเชียร์ โรงเรียนต่ำกว่า 80 คน", awards: "ชนะเลิศ / รองชนะเลิศอันดับหนึ่ง / รองชนะเลิศอันดับสอง", color: "accent" },
+    { name: "ถ้วยกรีฑารวม", awards: "ชนะเลิศ", color: "gold" }
+  ],
+  meeting: {
+    title: "การประชุมคณะกรรมการบริหารเครือข่ายพัฒนาคุณภาพการศึกษา ดอยเต่าสหศึกษา ครั้งที่ 7/2569",
+    date: "วันพฤหัสบดี ที่ 24 เดือน กันยายน พ.ศ. 2569",
+    startTime: "14.30 น.",
+    attendees: ["นายนพดล สุริยะสาร","นางสาวยุพิน มูลสืบ","นายมนต์ชัย รัตนวรรณี","นางสาวศิริลักษณ์ ผ่องพันธ์","นายนิติพงษ์ ปิยาโน","นายณรงค์ศักดิ์ อินทะรส","นายอธิพงษ์ ดาวเวียงกัน","นายชโยทิต น้ำดอกไม้","นางสาวกนกลักษณ์ หอมขจร","นางสาวณัฐธิดา สุภาพกุล","ว่าที่ ร.ต.ธิติพงศ์ ต่อติด","นายวีระ สุรินทร์"],
+    agenda: [
+      { no: "1", title: "เรื่องที่ประธานแจ้งให้ทราบ", items: ["ขอขอบคุณในการให้ความร่วมมือการดำเนินงาน","การบริหารอัตรากำลังพนักงานราชการและบุคลากรสนับสนุนการปฏิบัติงานให้ราชการ"] },
+      { no: "2", title: "เรื่องรับรองการประชุมครั้งที่ 6/2569", resolution: "ที่ประชุมรับรองการประชุม" },
+      { no: "3", title: "เรื่องเสนอเพื่อทราบและเรื่องสืบเนื่อง", resolution: "ไม่มี" },
+      { no: "4", title: "เรื่องเสนอเพื่อพิจารณา", items: [
+        { no: "4.1", title: "พิจารณา อีม ขบวนพาเหรด - สีสันวัฒนธรรมไทย", resolution: "ที่ประชุมเห็นชอบ" },
+        { no: "4.2", title: "พิจารณานักกีฬาอาวุโส - ผอ.ยุพิน มูลสืบ", resolution: "ที่ประชุมเห็นชอบ" },
+        { no: "4.3", title: "พิจารณานักกีฬาวิ่งคบเพลิง - นักกีฬา โรงเรียนบ้านโปง", resolution: "ที่ประชุมเห็นชอบ" },
+        { no: "4.5", title: "พิจารณาการแข่งขันกรีฑารุ่นอายุ 12 ปี รายการ 400 เมตร 12 ปีชาย, 400 เมตร 12 ปีหญิง, 800 เมตร 12 ปีชาย มีทีมร่วมการแข่งขัน เพียง 1 ทีม ขอยกเลิกการแข่งขัน", resolution: "ที่ประชุมเห็นชอบ" },
+        { no: "4.6", title: "พิจารณาถ้วยรางวัล", resolution: "ที่ประชุมเห็นชอบ" },
+        { no: "4.7", title: "พิจารณางบประมาณการดำเนินงานการแข่งขันกีฬาเครือข่ายฯ", resolution: "ที่ประชุมเห็นชอบ" }
+      ]}
+    ]
+  },
+  committees: [
+    { title: "1. คณะกรรมการฝ่ายอำนวยการ", icon: "👔", members: [
+      { name: "นายวีระ สุรินทร์", role: "ผู้อำนวยการโรงเรียนบ้านถิ่นสำราญ", position: "ประธานกรรมการ" },
+      { name: "นางสาวยุพิน มูลสืบ", role: "ผู้อำนวยการโรงเรียนบ้านแม่ตุบ", position: "กรรมการ" },
+      { name: "นายนพดล สุริยะสาร", role: "ผู้อำนวยการโรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นายมนต์ชัย รัตนวรรณี", role: "ผู้อำนวยการโรงเรียนบ้านเกาะหลวง", position: "กรรมการ" },
+      { name: "ว่าที่ ร.ต.ธิติพงศ์ ต่อติด", role: "ผู้อำนวยการโรงเรียนบ้านแม่บวน", position: "กรรมการ" },
+      { name: "นายอธิพงษ์ ดาวเวียงกัน", role: "ผู้อำนวยการโรงเรียนชุมชนบ้านดอยเต่า", position: "กรรมการ" },
+      { name: "นางสาวศิริลักษณ์ ผ่องพันธ์", role: "ผู้อำนวยการโรงเรียนบ้านงิ้วสูง", position: "กรรมการ" },
+      { name: "นายชโยทิต น้ำดอกไม้", role: "ผู้อำนวยการโรงเรียนบ้านไร่", position: "กรรมการ" },
+      { name: "นายนิติพงษ์ ปิยาโน", role: "ผู้อำนวยการโรงเรียนบ้านโป่งทุ่ง", position: "กรรมการ" },
+      { name: "นางสาวณัฐธิดา สุภาพกุล", role: "รก.ผู้อำนวยการโรงเรียนบ้านสันติสุข", position: "กรรมการ" },
+      { name: "นางสาวกนกลักษณ์ หอมขจร", role: "รองผู้อำนวยการโรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นายณรงค์ศักดิ์ อินทะรส", role: "ผู้อำนวยการโรงเรียนบ้านฉิมพลี", position: "กรรมการ/เลขานุการ" }
+    ]},
+    { title: "2. คณะกรรมการฝ่ายจัดการแข่งขัน", icon: "⚙️", members: [
+      { name: "นายณรงค์ศักดิ์ อินทะรส", role: "ผู้อำนวยการโรงเรียนบ้านฉิมพลี", position: "ประธานกรรมการ" },
+      { name: "นายสรรค์วัฒน์ สมป้อม", role: "ครู คศ.2 โรงเรียนบ้านฉิมพลี", position: "กรรมการ" },
+      { name: "นายเอกพล ตายา", role: "ครู คศ.3 โรงเรียนบ้านเกาะหลวง", position: "กรรมการ" },
+      { name: "นายมนตรี ก๋องตา", role: "ครู คศ.3 โรงเรียนบ้านถิ่นสำราญ", position: "กรรมการ" },
+      { name: "นายเจษฎา ถาเป็ง", role: "ครู คศ.3 โรงเรียนบ้านแม่บวน", position: "กรรมการ" },
+      { name: "นายทนงศักดิ์ แก้ววงษ์", role: "ครู คศ.2 โรงเรียนบ้านแม่ตุบ", position: "กรรมการ" },
+      { name: "นายวรรณเศรษฐ์ ศรีสวัสดิ์", role: "ครู คศ.1 โรงเรียนบ้านแม่ตุบ", position: "กรรมการ" },
+      { name: "นายมานพ บุปผาศรีธารา", role: "ครูอัตราจ้าง โรงเรียนบ้านงิ้วสูง", position: "กรรมการ" },
+      { name: "นายมติชน รู้เที่ยง", role: "พนักงานราชการโรงเรียนบ้านแม่บวน", position: "กรรมการ" },
+      { name: "นางสาวพิมพ์ประกาย วิริยาภิบาล", role: "ครูอัตราจ้าง โรงเรียนบ้านไร่", position: "กรรมการ" },
+      { name: "นายรัตติศาสตร์ อินต๊ะ", role: "ครู คศ.3 โรงเรียนบ้านโป่ง", position: "กรรมการ/เลขานุการ" }
+    ]},
+    { title: "3. คณะกรรมการฝ่ายสถานที่", icon: "🏟️", members: [
+      { name: "นายนพดล สุริยะสาร", role: "ผู้อำนวยการโรงเรียนบ้านโป่ง", position: "ประธานกรรมการ" },
+      { name: "นางสาวกนกลักษณ์ หอมขจร", role: "รองผู้อำนวยการโรงเรียนบ้านโป่ง", position: "รองประธาน" },
+      { name: "นางสาวพิกุล ชมภู", role: "ครู คศ.1 โรงเรียนบ้านผาจุก", position: "กรรมการ" },
+      { name: "นางนัฏฐ์ฉัตร ปู่ดี", role: "ครู คศ.2 โรงเรียนบ้านสันติสุข", position: "กรรมการ" },
+      { name: "นางสาวดวงทอง ใจแก้วหลวง", role: "ครู คศ.1 โรงเรียนบ้านถิ่นสำราญ", position: "กรรมการ" },
+      { name: "นางสาวอัมรินทร์ กิระแก้ว", role: "ครู คศ.2 โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นางสาวอนุศรา นาใจ", role: "ครู คศ.1 โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นางสาวศุภกา เรือนวงศ์", role: "ครู คศ.1 โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นางสาวอุไรวรรณ ยิ่งหงษ์", role: "ครู คศ.2 โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นางสาววารุณี ยศคำ", role: "ครู คศ.2 โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นายพลพัฒน์ จอมมูล", role: "ครู คศ.1 โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นางสาวดวงดาว คำใส", role: "ครู คศ.1 โรงเรียนบ้านงิ้วสูง", position: "กรรมการ" },
+      { name: "นางสาวกิตติยา แก้วคำตา", role: "ครู คศ.1 โรงเรียนบ้านงิ้วสูง", position: "กรรมการ" },
+      { name: "นางสาวภาวิณี ปัญญาจักร์", role: "ครู คศ.3 โรงเรียนบ้านโป่ง", position: "กรรมการและเลขานุการ" }
+    ]},
+    { title: "4. คณะกรรมการฝ่ายตัดสินกีฬาฟุตบอล", icon: "⚖️", members: [
+      { name: "นายนิติพงษ์ ปิยาโน", role: "ผู้อำนวยการโรงเรียนบ้านโป่งทุ่ง", position: "ประธานกรรมการ" },
+      { name: "นายรัตติศาสตร์ อินต๊ะ", role: "ครู คศ.3 โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นายทนงศักดิ์ แก้ววงษ์", role: "ครู คศ.2 โรงเรียนบ้านแม่ตุบ", position: "กรรมการ" },
+      { name: "นายตรีวุธ ปูนพันธ์ฉาย", role: "ครู คศ.2 โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นายวัฒธีระ หนูขาว", role: "ครูอัตราจ้าง โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นายเจษฎา ถาเป็ง", role: "ครู คศ.3 โรงเรียนบ้านแม่บวน", position: "กรรมการ" },
+      { name: "นายมานพ บุปผาศรีธารา", role: "ครูอัตราจ้าง โรงเรียนบ้านงิ้วสูง", position: "กรรมการ" },
+      { name: "นายทวีศักดิ์ สิงห์ทะ", role: "ครู โรงเรียนบ้านเกาะหลวง", position: "กรรมการ" },
+      { name: "นายเฉลิมพล จันทร์แดง", role: "ครู คศ.2 โรงเรียนบ้านไร่", position: "กรรมการ" },
+      { name: "นายมติชน รู้เที่ยง", role: "พนักงานราชการโรงเรียนบ้านแม่บวน", position: "กรรมการ/เลขานุการ" }
+    ]},
+    { title: "5. คณะกรรมการฝ่ายตัดสินกีฬาวอลเลย์บอล", icon: "🏐", members: [
+      { name: "นางสาวกนกลักษณ์ หอมขจร", role: "รองผู้อำนวยการโรงเรียนบ้านโป่ง", position: "ประธานกรรมการ" },
+      { name: "นางชลธิชา ไชยแก้ว", role: "ครู คศ.3 โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นางนัฏฐ์ฉัตร ปู่ดี", role: "ครู คศ.1 โรงเรียนบ้านสันติสุข", position: "กรรมการ" },
+      { name: "นายมนตรี ก๋องตา", role: "ครู คศ.3 โรงเรียนบ้านถิ่นสำราญ", position: "กรรมการ" },
+      { name: "นางสาวอนุศรา นาใจ", role: "ครู คศ.1 โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นางสาววณีษฐ์ มาคำ", role: "ครู โรงเรียนบ้านโป่งทุ่ง", position: "กรรมการ" },
+      { name: "นายประการ เมืองมานิตย์", role: "ครู คศ.1 โรงเรียนบ้านโป่งทุ่ง", position: "กรรมการ" },
+      { name: "นางสาวดวงฤดี สิงขรบรรจง", role: "ครู โรงเรียนชุมชนบ้านดอยเต่า", position: "กรรมการ" },
+      { name: "นางสาวสิรินดา ชมภูเทพ", role: "ครูอัตราจ้าง โรงเรียนบ้านฉิมพลี", position: "กรรมการ" },
+      { name: "นางสาวพิมพ์ประกาย วิริยาภิบาล", role: "ครูอัตราจ้าง โรงเรียนบ้านไร่", position: "กรรมการ" },
+      { name: "นายเอกพล ตายา", role: "ครู คศ.3 โรงเรียนบ้านเกาะหลวง", position: "กรรมการ/เลขานุการ" }
+    ]},
+    { title: "6. คณะกรรมการฝ่ายตัดสินกีฬาเปตอง", icon: "🎯", members: [
+      { name: "นายชโยทิต น้ำดอกไม้", role: "ผู้อำนวยการโรงเรียนบ้านไร่", position: "ประธานกรรมการ" },
+      { name: "นางนาลักษณ์ คำมะนาง", role: "ครู คศ.3 โรงเรียนบ้านเกาะหลวง", position: "กรรมการ" },
+      { name: "นางสาวพิกุล ชมภู", role: "ครู คศ.1 โรงเรียนบ้านผาจุก", position: "กรรมการ" },
+      { name: "นางศุกร์ศิริ ก่องตา", role: "ครู คศ.3 โรงเรียนบ้านเกาะหลวง", position: "กรรมการ" },
+      { name: "นางสาววารุณี ยศคำ", role: "ครู คศ.2 โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นางสาวมยุรา มณีเกี่ยง", role: "ครู คศ.3 โรงเรียนบ้านโป่งทุ่ง", position: "กรรมการ" },
+      { name: "นางสาวชนันท์ธิดา สานา", role: "ครู คศ.2 โรงเรียนบ้านแม่ตุบ", position: "กรรมการ" },
+      { name: "นางสาวนรารัตน์ มังคละ", role: "ครู คศ.1 โรงเรียนบ้านฉิมพลี", position: "กรรมการ" },
+      { name: "นางสาวจิดาภา ดอกตือ", role: "ครู คศ.1 โรงเรียนบ้านสันติสุข", position: "กรรมการ" },
+      { name: "นางสาวดารารัตน์ แก้วเรือน", role: "ครู คศ.1 โรงเรียนบ้านแม่บวน", position: "กรรมการ" },
+      { name: "นายศิริศักดิ์ จันทร์อ้าย", role: "ครู คศ.1 โรงเรียนบ้านถิ่นสำราญ", position: "กรรมการ" },
+      { name: "นางสาวกิตติยา แก้วคำตา", role: "ครู คศ.1 โรงเรียนบ้านงิ้วสูง", position: "กรรมการ" },
+      { name: "นางสาวทาริกา ดุมครบุรี", role: "ครู คศ.1 โรงเรียนชุมชนบ้านดอยเต่า", position: "กรรมการ" },
+      { name: "นายทนงศักดิ์ แก้ววงษ์", role: "ครู คศ.2 โรงเรียนบ้านแม่ตุบ", position: "กรรมการ/เลขานุการ" }
+    ]},
+    { title: "7. คณะกรรมการฝ่ายตัดสินกีฬาเซปักตะกร้อ", icon: "🥅", members: [
+      { name: "ว่าที่ ร.ต.ธิติพงศ์ ต่อติด", role: "ผู้อำนวยการโรงเรียนบ้านแม่บวน", position: "ประธานกรรมการ" },
+      { name: "นายมงคล วงค์กันยา", role: "ครู คศ.2 โรงเรียนบ้านเกาะหลวง", position: "กรรมการ" },
+      { name: "นายธวัฒน์ อินต๊ะก่อง", role: "ครู คศ.2 โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นายฉลอง ใจเร่ง", role: "พนักงานราชการโรงเรียนบ้านแม่ตุบ", position: "กรรมการ" },
+      { name: "นางสาวจณินธรณ์ ปินทา", role: "ครู คศ.3 โรงเรียนบ้านแม่บวน", position: "กรรมการ" },
+      { name: "นายนพรัตน์ เจริญผล", role: "พนักงานราชการโรงเรียนบ้านผาจุก", position: "กรรมการ" },
+      { name: "นายสรรค์วัฒน์ สมป้อม", role: "ครู คศ.2 โรงเรียนบ้านฉิมพลี", position: "กรรมการ/เลขานุการ" }
+    ]},
+    { title: "8. คณะกรรมการฝ่ายตัดสินกีฬาเทเบิลเทนนิส", icon: "🏓", members: [
+      { name: "นายอิธิพงษ์ ดาวเวียงกัน", role: "ผู้อำนวยการโรงเรียนชุมชนบ้านดอยเต่า", position: "ประธานกรรมการ" },
+      { name: "นายนพรัตน์ เจริญผล", role: "พนักงานราชการโรงเรียนบ้านผาจุก", position: "กรรมการ" },
+      { name: "นางสาวดวงดาว คำใส", role: "ครู คศ.1 โรงเรียนบ้านงิ้วสูง", position: "กรรมการ" },
+      { name: "นางสาวมัทนา พรหมมี", role: "ครู คศ.1 โรงเรียนบ้านฉิมพลี", position: "กรรมการ" },
+      { name: "นายวรรณเศรษฐ์ ศรีสวัสดิ์", role: "ครู คศ.1 โรงเรียนบ้านแม่ตุบ", position: "กรรมการ" },
+      { name: "นายสิทธิกร ใจปา", role: "ครู คศ.2 โรงเรียนบ้านไร่", position: "กรรมการ" },
+      { name: "นางสาววิไลพร วันเผด็จ", role: "ครู คศ.2 โรงเรียนชุมชนบ้านดอยเต่า", position: "กรรมการ" },
+      { name: "นางสาววีณา ปาโน", role: "ครู คศ.3 โรงเรียนบ้านเกาะหลวง", position: "กรรมการ" },
+      { name: "นางสาวมนัสนันท์ สิทธิกัน", role: "ครู คศ.1 โรงเรียนบ้านแม่บวน", position: "กรรมการ" },
+      { name: "นางรุ่งทิวา ปัญญาแปง", role: "ครู คศ.3 โรงเรียนบ้านสันติสุข", position: "กรรมการ" },
+      { name: "นางสาวชรินทิพย์ แจ้คำ", role: "ครู คศ.1 โรงเรียนบ้านผาจุก", position: "กรรมการ" },
+      { name: "นางสาวภาวิณี ปัญญาจักร์", role: "ครู คศ.3 โรงเรียนบ้านโป่ง", position: "กรรมการ/เลขานุการ" }
+    ]},
+    { title: "9. คณะกรรมการฝ่ายตัดสินกีฬาแชร์บอล", icon: "🏐", members: [
+      { name: "นายมนต์ชัย รัตนวรรณี", role: "ผู้อำนวยการโรงเรียนบ้านเกาะหลวง", position: "ประธานกรรมการ" },
+      { name: "นายไมตรี บรรพตตระหง่าน", role: "ครู คศ.1 โรงเรียนบ้านแม่ตุบ", position: "กรรมการ" },
+      { name: "นายทนงศักดิ์ แก้ววงษ์", role: "ครู คศ.2 โรงเรียนบ้านแม่ตุบ", position: "กรรมการ" },
+      { name: "นางสาววรากรณ์ สุขหยอม", role: "ครู โรงเรียนบ้านไร่", position: "กรรมการ" },
+      { name: "นางอรพินท์ วงค์เทเวช", role: "ครู โรงเรียนบ้านโป่งทุ่ง", position: "กรรมการ" },
+      { name: "นางสาวสิตา บัวระวงค์", role: "ครู โรงเรียนบ้านแม่บวน", position: "กรรมการ" },
+      { name: "นายมานพ บุปผาศรีธารา", role: "ครู โรงเรียนบ้านงิ้วสูง", position: "กรรมการ" },
+      { name: "นางสาวศศิลออ ชัยบาล", role: "ครู โรงเรียนบ้านฉิมพลี", position: "กรรมการ" },
+      { name: "นางสาวอนุธิดา ฟองสมุทร", role: "ครูธุรการโรงเรียนชุมชนบ้านดอยเต่า", position: "กรรมการ" },
+      { name: "นายเจษฎา ถาเป็ง", role: "ครู โรงเรียนบ้านแม่บวน", position: "กรรมการ" },
+      { name: "นายสาโรจน์ อินทะจักษุ์", role: "ครู โรงเรียนบ้านเกาะหลวง", position: "กรรมการ" },
+      { name: "นายรัตติศาสตร์ อินต๊ะ", role: "ครู คศ.3 โรงเรียนบ้านโป่ง", position: "กรรมการ/เลขานุการ" }
+    ]},
+    { title: "10. คณะกรรมการฝ่ายกรีฑา", icon: "🏃", members: [
+      { name: "ว่าที่ ร.ต.ธิติพงศ์ ต่อติด", role: "ผู้อำนวยการโรงเรียนบ้านแม่บวน", position: "ประธานกรรมการ" },
+      { name: "นายรัตติศาสตร์ อินต๊ะ", role: "ครู คศ.3 โรงเรียนบ้านโป่ง", position: "ผู้ปล่อยตัวนักกรีฑา" },
+      { name: "นายทนงศักดิ์ แก้ววงษ์", role: "ครู คศ.2 โรงเรียนบ้านแม่ตุบ", position: "ผู้กำกับช่องวิ่ง" },
+      { name: "นายตรีวุธ ปูนพันธ์ฉาย", role: "ครู คศ.2 โรงเรียนบ้านโป่ง", position: "ผู้กำกับช่องวิ่ง" },
+      { name: "นายวรรณเศรษฐ์ ศรีสวัสดิ์", role: "ครู คศ.1 โรงเรียนบ้านแม่ตุบ", position: "ผู้นำนักกรีฑาเข้าช่องวิ่ง" },
+      { name: "นายศิริศักดิ์ จันทร์อ้าย", role: "ครู คศ.1 โรงเรียนบ้านถิ่นสำราญ", position: "ผู้นำนักกรีฑาเข้าช่องวิ่ง" },
+      { name: "นางสาวพิมพชนิดา ไชยพรหม", role: "ครู คศ.1 โรงเรียนบ้านผาจุก", position: "ผู้นำนักกรีฑาเข้าช่องวิ่ง" },
+      { name: "นางสาวทาริกา ดุมครบุรี", role: "ครู โรงเรียนชุมชนบ้านดอยเต่า", position: "ผู้นำนักกรีฑาเข้าช่องวิ่ง" },
+      { name: "นางสาวนรารัตน์ มังคละ", role: "ครู โรงเรียนบ้านฉิมพลี", position: "ผู้นำนักกรีฑาเข้าช่องวิ่ง" },
+      { name: "นายเฉลิมพล จันทร์แดง", role: "ครู โรงเรียนบ้านไร่", position: "ผู้นำนักกรีฑาเข้าช่องวิ่ง" },
+      { name: "นางสาวจณินธรณ์ ปินทา", role: "ครู คศ.2 โรงเรียนบ้านแม่บวน", position: "ผู้นำนักกรีฑาเข้าช่องวิ่ง" },
+      { name: "นายทวีศักดิ์ สิงห์ทะ", role: "ครู โรงเรียนบ้านเกาะหลวง", position: "ผู้นำนักกรีฑาเข้าช่องวิ่ง" },
+      { name: "นางนัฏฐ์ฉัตร ปู่ดี", role: "ครู คศ.1 โรงเรียนบ้านสันติสุข", position: "ผู้นำนักกรีฑาเข้าช่องวิ่ง" },
+      { name: "นายมานพ บุปผาศรีธารา", role: "ครู โรงเรียนบ้านงิ้วสูง", position: "ผู้นำนักกรีฑาเข้าช่องวิ่ง" },
+      { name: "นางสาวสุนิษา ชอบธรรม", role: "ครู โรงเรียนบ้านโป่งทุ่ง", position: "ผู้นำนักกรีฑาเข้าช่องวิ่ง" },
+      { name: "นายพจชกร สุตา", role: "ครู คศ.1 โรงเรียนบ้านโป่ง", position: "ผู้นำนักกรีฑาเข้าช่องวิ่ง" }
+    ]},
+    { title: "11. คณะกรรมการฝ่ายปฐมพยาบาล", icon: "🏥", members: [
+      { name: "นางสาวณัฐธิดา สุภาพกุล", role: "รก.ผู้อำนวยการโรงเรียนบ้านสันติสุข", position: "ประธานกรรมการ" },
+      { name: "นางสาวศิรินภา หล้าลัว", role: "ครูธุรการโรงเรียนบ้านไร่", position: "กรรมการ" },
+      { name: "นางสาวอัจฉรา สุภาพกุล", role: "ครู คศ.3 โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นางสาวอนุธิดา ฟองสมุทร", role: "ครูธุรการโรงเรียนชุมชนบ้านดอยเต่า", position: "กรรมการ" },
+      { name: "นางสาวกรรณิการ์ ต๊ะเหมย", role: "ครู โรงเรียนบ้านสันติสุข", position: "กรรมการ" },
+      { name: "เจ้าหน้าที่โรงพยาบาลส่งเสริมสุขภาพตำบลโป่งทุ่ง", role: "-", position: "กรรมการ" },
+      { name: "นางสาวชลธิชา ไชยแก้ว", role: "ครู คศ.3 โรงเรียนบ้านโป่ง", position: "กรรมการ/เลขานุการ" }
+    ]},
+    { title: "12. คณะกรรมการฝ่ายพิธีการ", icon: "🎭", members: [
+      { name: "นางสาวศิริลักษณ์ ผ่องพันธ์", role: "ผู้อำนวยการโรงเรียนบ้านงิ้วสูง", position: "ประธานกรรมการ" },
+      { name: "นางสาวเรไร จาเดือน", role: "ครู คศ.2 โรงเรียนบ้านไร่", position: "กรรมการ" },
+      { name: "นางสาววันวิสา ฤกษ์ดาววี", role: "ครู คศ.1 โรงเรียนชุมชนบ้านดอยเต่า", position: "กรรมการ" },
+      { name: "นายวัฒธีระ หนูขาว", role: "ครูอัตราจ้าง โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นางสาวภาวิณี ปัญญาจักร์", role: "ครู คศ.3 โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นายวรรณเศรษฐ์ ศรีสวัสดิ์", role: "ครู คศ.1 โรงเรียนบ้านแม่ตุบ", position: "กรรมการ" },
+      { name: "นางชลธิชา ไชยแก้ว", role: "ครู คศ.3 โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นางสาวศุภกา เรือนวงศ์", role: "ครู คศ.1 โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นายพลพัฒน์ จอมมูล", role: "ครู คศ.1 โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นางสาวมณีจันทร์ ขันสังข์", role: "ครู คศ.3 โรงเรียนบ้านแม่ตุบ", position: "กรรมการ/เลขานุการ" }
+    ]},
+    { title: "13. คณะกรรมการฝ่ายรักษาความปลอดภัยและจัดรูปขบวนพาเหรด", icon: "🛡️", members: [
+      { name: "นายชโยทิต น้ำดอกไม้", role: "ผู้อำนวยการโรงเรียนบ้านไร่", position: "ประธานกรรมการ" },
+      { name: "นายศรัณย์ หนูเปี้ย", role: "นักการภารโรง โรงเรียนบ้านผาจุก", position: "กรรมการ" },
+      { name: "นางชลธิชา ปู่ลา", role: "นักการภารโรง โรงเรียนบ้านฉิมพลี", position: "กรรมการ" },
+      { name: "นางยุพิน อินตะ", role: "นักการภารโรง โรงเรียนชุมชนบ้านดอยเต่า", position: "กรรมการ" },
+      { name: "นายมานพ แก้วปลูก", role: "นักการภารโรง โรงเรียนบ้านโป่งทุ่ง", position: "กรรมการ" },
+      { name: "นายอินจันทร์ ปู่ผา", role: "นักการภารโรง โรงเรียนบ้านเกาะหลวง", position: "กรรมการ" },
+      { name: "นายประวิทย์ สุรินทร์", role: "นักการภารโรง โรงเรียนบ้านแม่บวน", position: "กรรมการ" },
+      { name: "นายณรงค์ ปู้อ้าย", role: "นักการภารโรง โรงเรียนบ้านโป่ง", position: "กรรมการ" },
+      { name: "นายดาวสุข มาด้วง", role: "นักการภารโรง โรงเรียนบ้านงิ้วสูง", position: "กรรมการ" },
+      { name: "นายศุภกร จันพญา", role: "นักการภารโรง โรงเรียนบ้านถิ่นสำราญ", position: "กรรมการ" },
+      { name: "นายณรงค์ ปานศิรี", role: "นักการภารโรง โรงเรียนบ้านสันติสุข", position: "กรรมการ" },
+      { name: "นายธนกร สมฝน", role: "นักการภารโรง โรงเรียนบ้านไร่", position: "กรรมการ" },
+      { name: "นายสีสวัสดิ์ โป๊ะแปะ", role: "นักการภารโรง โรงเรียนบ้านแม่ตุบ", position: "กรรมการ" },
+      { name: "นายรัตติศาสตร์ อินต๊ะ", role: "ครู คศ.3 โรงเรียนบ้านโป่ง", position: "กรรมการ/เลขานุการ" }
+    ]}
+  ]
+};
+
+// ================================================================
+// PAGE NAVIGATION
+// ================================================================
+function showPage(page) {
+  document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (page === 'scoreboard') {
+    if (!scoreboardInitialized) {
+      initScoreboard();
+      scoreboardInitialized = true;
+    }
+    fetchScores();
+  }
+}
+
+function scrollToId(id) {
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) {
+      const offset = 80;
+      const top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  }, 100);
+}
+
+function closeMobileMenu() {
+  document.getElementById('mobileMenu').classList.add('hidden');
+}
+
+// ================================================================
+// NAVBAR
+// ================================================================
+window.addEventListener('scroll', () => {
+  const navbar = document.getElementById('navbar');
+  if (window.scrollY > 20) {
+    navbar.classList.add('glass-dark', 'shadow-lg');
+    navbar.classList.remove('bg-transparent');
+  } else {
+    navbar.classList.remove('glass-dark', 'shadow-lg');
+    navbar.classList.add('bg-transparent');
+  }
+});
+
+document.getElementById('menuToggle').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+
+// ================================================================
+// COUNTDOWN
+// ================================================================
+function startCountdown() {
+  const target = new Date("2026-10-05T08:00:00+07:00").getTime();
+  const el = document.getElementById("countdown");
+
+  function update() {
+    const dist = target - Date.now();
+    if (dist < 0) {
+      el.innerHTML = '<p class="text-2xl font-heading font-bold text-secondary">🎉 การแข่งขันได้เริ่มขึ้นแล้ว!</p>';
+      return;
+    }
+    const d = Math.floor(dist / (1000 * 60 * 60 * 24));
+    const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((dist % (1000 * 60)) / 1000);
+
+    el.innerHTML = [
+      { label: "วัน", value: d },
+      { label: "ชั่วโมง", value: h },
+      { label: "นาที", value: m },
+      { label: "วินาที", value: s },
+    ].map(item => `
+      <div class="countdown-box animate-float">
+        <div class="font-heading font-black text-3xl md:text-5xl text-white">${String(item.value).padStart(2, "0")}</div>
+        <div class="text-xs md:text-sm text-secondary font-medium mt-1">${item.label}</div>
+      </div>
+    `).join("");
+  }
+  update();
+  setInterval(update, 1000);
+}
+
+// ================================================================
+// RENDER: STATS
+// ================================================================
+function renderStats() {
+  const grid = document.getElementById("statsGrid");
+  grid.innerHTML = DATA.stats.map(s => `
+    <div class="stat-card text-center p-6 bg-gradient-to-br from-primary-50 to-white rounded-2xl shadow-md hover:shadow-xl transition border border-primary-100">
+      <div class="text-4xl mb-2">${s.icon}</div>
+      <div class="font-heading font-black text-4xl md:text-5xl text-primary-700 mb-1">
+        <span class="counter" data-target="${s.value}">0</span>
+      </div>
+      <div class="text-sm text-gray-500 mb-1">${s.suffix}</div>
+      <div class="font-medium text-dark">${s.label}</div>
+    </div>
+  `).join("");
+  animateCounters();
+}
+
+function animateCounters() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.querySelectorAll(".counter").forEach(counter => {
+        const target = +counter.getAttribute("data-target");
+        const step = target / (1800 / 16);
+        let current = 0;
+        const tick = () => {
+          current += step;
+          if (current < target) {
+            counter.textContent = Math.floor(current);
+            requestAnimationFrame(tick);
+          } else counter.textContent = target;
+        };
+        tick();
+      });
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll(".stat-card").forEach(el => observer.observe(el));
+}
+
+// ================================================================
+// RENDER: SPORTS GRID
+// ================================================================
+function renderSports() {
+  const grid = document.getElementById("sportsGrid");
+  grid.innerHTML = DATA.sports.map(s => `
+    <div class="group bg-white rounded-2xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-primary-100 cursor-pointer" onclick="showPage('scoreboard')">
+      <div class="flex items-start justify-between mb-4">
+        <div class="text-5xl group-hover:scale-125 transition-transform">${s.icon}</div>
+        <span class="text-xs px-3 py-1 rounded-full bg-primary-100 text-primary-800 font-medium">${s.category}</span>
+      </div>
+      <h3 class="font-heading font-bold text-lg text-dark mb-2">${s.name}</h3>
+      <div class="flex items-center gap-2 text-sm text-gray-500">
+        <span>${s.gender !== "-" ? s.gender : "รวม"}</span>
+        <span>•</span>
+        <span>${s.level}</span>
+      </div>
+      <div class="mt-4 pt-4 border-t border-primary-50 flex items-center justify-between">
+        <span class="text-xs text-gray-500">${s.teams} ทีม</span>
+        <span class="text-primary-600 font-bold text-sm group-hover:translate-x-1 transition">ดูคะแนน →</span>
+      </div>
+    </div>
+  `).join("");
+}
+
+// ================================================================
+// RENDER: ATHLETICS
+// ================================================================
+function renderAthletics() {
+  const ages = ["อ", "8", "10", "12", "15"];
+  const tbody = document.getElementById("athleticsTable");
+  tbody.innerHTML = DATA.athletics.map(e => {
+    const mCells = ages.map(a => {
+      const has = e.male.includes(a);
+      return `<td class="px-2 py-2 text-center border-l border-white/20 ${has ? "text-secondary font-bold text-lg" : "text-white/20"}">${has ? "✓" : "-"}</td>`;
+    }).join("");
+    const fCells = ages.map(a => {
+      const has = e.female.includes(a);
+      return `<td class="px-2 py-2 text-center border-l border-white/20 ${has ? "text-secondary font-bold text-lg" : "text-white/20"}">${has ? "✓" : "-"}</td>`;
+    }).join("");
+    return `<tr><td class="px-3 py-2 font-mono">${e.no}</td><td class="px-3 py-2 font-medium">${e.name}</td>${mCells}${fCells}</tr>`;
+  }).join("");
+
+  document.getElementById("ageTable").innerHTML = DATA.ageReference.map(a => `
+    <tr><td class="px-4 py-2">${a.age}</td><td class="px-4 py-2 font-mono">${a.year}</td></tr>
+  `).join("");
+}
+
+// ================================================================
+// RENDER: COMMITTEES
+// ================================================================
+function renderCommittees() {
+  const list = document.getElementById("committeesList");
+  list.innerHTML = DATA.committees.map((c, idx) => `
+    <div class="bg-white rounded-2xl shadow-md border border-primary-100 overflow-hidden">
+      <button class="accordion-btn w-full flex items-center justify-between p-5 text-left hover:bg-primary-50 transition">
+        <div class="flex items-center gap-3">
+          <span class="text-3xl">${c.icon}</span>
+          <span class="font-heading font-bold text-lg text-primary-800">${c.title}</span>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-secondary/20 text-secondary-600 font-medium">${c.members.length} ท่าน</span>
+        </div>
+        <svg class="accordion-icon w-6 h-6 text-primary-600 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </button>
+      <div class="accordion-content">
+        <div class="p-5 pt-0">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            ${c.members.map(m => `
+              <div class="p-3 bg-primary-50/50 rounded-xl border-l-4 border-primary-500">
+                <p class="font-semibold text-dark">${m.name}</p>
+                <p class="text-xs text-gray-600 mt-1">${m.role}</p>
+                <p class="text-xs text-secondary-600 font-medium mt-1">${m.position}</p>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join("");
+
+  document.querySelectorAll(".accordion-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const content = btn.nextElementSibling;
+      const icon = btn.querySelector(".accordion-icon");
+      content.classList.toggle("open");
+      icon.style.transform = content.classList.contains("open") ? "rotate(180deg)" : "rotate(0deg)";
+    });
+  });
+}
+
+// ================================================================
+// RENDER: BUDGET & TROPHIES
+// ================================================================
+function renderBudgetAndTrophies() {
+  document.getElementById("budgetCards").innerHTML = DATA.budget.map(b => `
+    <div class="bg-gradient-to-br ${b.gradient} rounded-2xl p-8 text-white shadow-xl hover:scale-105 transition">
+      <div class="text-5xl mb-4">${b.icon}</div>
+      <h3 class="font-heading font-bold text-lg mb-2">${b.schoolSize}</h3>
+      <p class="font-mono text-4xl font-black text-secondary mb-2">${b.amount.toLocaleString()}</p>
+      <p class="text-white/70 text-sm">บาท</p>
+    </div>
+  `).join("");
+
+  const colorMap = {
+    primary: { bg: "bg-primary-50", border: "border-primary-500" },
+    secondary: { bg: "bg-secondary/10", border: "border-secondary" },
+    accent: { bg: "bg-accent/10", border: "border-accent" },
+    gold: { bg: "bg-gradient-to-r from-secondary to-yellow-400 text-dark", border: "border-yellow-600" }
+  };
+  document.getElementById("trophyList").innerHTML = DATA.trophies.map(t => {
+    const c = colorMap[t.color] || colorMap.primary;
+    return `<div class="p-4 ${c.bg} rounded-xl border-l-4 ${c.border}"><p class="font-semibold">${t.name}</p><p class="text-sm opacity-70 mt-1">${t.awards}</p></div>`;
+  }).join("");
+}
+
+// ================================================================
+// RENDER: MEETING
+// ================================================================
+function renderMeeting() {
+  const m = DATA.meeting;
+  document.getElementById("meetingAgenda").innerHTML = `
+    <div class="mb-6 p-4 bg-primary-50 rounded-xl">
+      <p class="text-sm"><strong>📅 วันที่:</strong> ${m.date}</p>
+      <p class="text-sm mt-1"><strong>⏰ เริ่มประชุม:</strong> ${m.startTime}</p>
+      <p class="text-sm mt-1"><strong>👥 ผู้เข้าร่วม:</strong> ${m.attendees.length} ท่าน</p>
+    </div>
+    ${m.agenda.map(a => `
+      <div class="border-l-4 border-primary-500 pl-4 py-2">
+        <h4 class="font-heading font-bold text-primary-800 mb-2">ระเบียบวาระที่ ${a.no}: ${a.title}</h4>
+        ${a.items ? `<ul class="space-y-2 text-sm">${a.items.map(item => {
+          if (typeof item === "string") return `<li>• ${item}</li>`;
+          return `<li class="p-3 bg-gray-50 rounded-lg"><p class="font-medium">${item.no} ${item.title}</p>${item.resolution && item.resolution !== "-" ? `<p class="text-xs text-green-700 mt-1"><strong>มติ:</strong> ${item.resolution}</p>` : ""}</li>`;
+        }).join("")}</ul>` : ""}
+        ${a.resolution ? `<p class="text-sm text-green-700 mt-2"><strong>มติ:</strong> ${a.resolution}</p>` : ""}
+      </div>
+    `).join("")}
+  `;
+}
+
+// ================================================================
+// RENDER: SCHOOLS
+// ================================================================
+function renderSchools() {
+  const grid = document.getElementById("schoolsGrid");
+  grid.innerHTML = DATA.schools.map(s => {
+    const labels = { large: "ขนาดใหญ่", medium: "ขนาดกลาง", small: "ขนาดเล็ก" };
+    const colors = { large: "bg-primary-100 text-primary-800", medium: "bg-secondary/20 text-secondary-600", small: "bg-accent/10 text-accent" };
+    return `
+      <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition border border-primary-100">
+        <div class="flex items-start justify-between mb-3">
+          <div class="text-4xl">🏫</div>
+          <span class="text-xs px-2 py-1 rounded-full ${colors[s.size]} font-medium">${labels[s.size]}</span>
+        </div>
+        <h3 class="font-heading font-bold text-base text-dark mb-2">${s.name}</h3>
+        <p class="text-xs text-gray-600">👤 ${s.director}</p>
+      </div>
+    `;
+  }).join("");
+}
+
+// ================================================================
+// SCOREBOARD
+// ================================================================
+let allScores = [];
+let previousScores = {};
+let scoreboardInitialized = false;
+let isFirstLoad = true;
+
+function initScoreboard() {
+  document.getElementById("filterSport").addEventListener("change", renderAllMatches);
+  document.getElementById("filterStatus").addEventListener("change", renderAllMatches);
+  document.getElementById("filterDate").addEventListener("change", renderAllMatches);
+
+  setInterval(fetchScores, CONFIG.REFRESH_INTERVAL);
+
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && document.getElementById("page-scoreboard").classList.contains("active")) {
+      fetchScores();
+    }
+  });
+}
+
+async function fetchScores() {
+  const url = CONFIG.SCORE_SHEET_URL;
+  if (!url || url.includes("YOUR_SHEET_ID")) {
+    setConnectionStatus("error", "ยังไม่ตั้งค่า");
+    showLoading(false);
+    return;
+  }
+  try {
+    setConnectionStatus("loading", "กำลังโหลด...");
+    const res = await fetch(url + "&t=" + Date.now(), { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const csv = await res.text();
+    const scores = parseCSV(csv);
+    const changes = detectChanges(scores);
+    allScores = scores;
+    previousScores = Object.fromEntries(scores.map(s => [s.no, { scoreA: s.scoreA, scoreB: s.scoreB, status: s.status }]));
+    renderLiveMatches();
+    renderAllMatches();
+    updateStats();
+    populateSportFilter();
+    setConnectionStatus("ok", "เชื่อมต่อแล้ว");
+    updateLastUpdate();
+    showLoading(false);
+    if (!isFirstLoad && changes.length > 0) {
+      changes.forEach(c => showToast("🔔 คะแนนอัปเดต!", `${c.teamA} ${c.scoreA} - ${c.scoreB} ${c.teamB}`));
+    }
+    isFirstLoad = false;
+  } catch (err) {
+    console.error("❌ Fetch error:", err);
+    setConnectionStatus("error", "เชื่อมต่อไม่ได้");
+    showLoading(false);
+  }
+}
+
+function parseCSV(csv) {
+  const lines = csv.trim().split("\n");
+  if (lines.length < 2) return [];
+  const headers = parseCSVLine(lines[0]);
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    const values = parseCSVLine(lines[i]);
+    if (values.length === 0 || !values[0]) continue;
+    const obj = {};
+    headers.forEach((h, idx) => obj[h.trim()] = (values[idx] || "").trim());
+    if (!obj.no || !obj.teamA) continue;
+    rows.push({
+      no: obj.no, date: obj.date || "", time: obj.time || "",
+      sport: obj.sport || "", teamA: obj.teamA || "", teamB: obj.teamB || "",
+      group: obj.group || "", scoreA: obj.scoreA || "0", scoreB: obj.scoreB || "0",
+      status: (obj.status || "upcoming").toLowerCase().trim(),
+      referee: obj.referee || ""
+    });
+  }
+  return rows;
+}
+
+function parseCSVLine(line) {
+  const result = [];
+  let current = "";
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    if (char === '"') inQuotes = !inQuotes;
+    else if (char === "," && !inQuotes) { result.push(current); current = ""; }
+    else current += char;
+  }
+  result.push(current);
+  return result.map(v => v.trim().replace(/^"|"$/g, ""));
+}
+
+function detectChanges(newScores) {
+  const changes = [];
+  newScores.forEach(s => {
+    const prev = previousScores[s.no];
+    if (!prev) return;
+    if (prev.scoreA !== s.scoreA || prev.scoreB !== s.scoreB) changes.push(s);
+  });
+  return changes;
+}
+
+function renderLiveMatches() {
+  const live = allScores.filter(m => m.status === "live");
+  const section = document.getElementById("liveSection");
+  const container = document.getElementById("liveMatches");
+  if (live.length === 0) { section.classList.add("hidden"); return; }
+  section.classList.remove("hidden");
+  container.innerHTML = live.map(m => `
+    <div class="glass-dark rounded-3xl p-6 md:p-8 border-2 border-accent relative overflow-hidden">
+      <div class="absolute top-4 right-4">
+        <span class="live-badge bg-accent text-white live-pulse">LIVE</span>
+      </div>
+      <div class="text-center mb-4">
+        <p class="text-xs text-white/60 font-mono">${m.date} · ${m.time}</p>
+        ${m.sport ? `<p class="text-sm text-secondary font-medium mt-1">${m.sport}</p>` : ""}
+        ${m.group && m.group !== "-" ? `<p class="text-xs text-white/40 mt-1">${m.group}</p>` : ""}
+      </div>
+      <div class="flex items-center justify-between gap-2 md:gap-4">
+        <div class="flex-1 text-center">
+          <div class="text-4xl md:text-6xl mb-2">🏫</div>
+          <div class="font-heading font-bold text-white text-sm md:text-xl">${m.teamA}</div>
+        </div>
+        <div class="flex-shrink-0 text-center">
+          <div class="flex items-center gap-3 md:gap-4">
+            <span class="score-digit text-5xl md:text-7xl text-accent">${m.scoreA}</span>
+            <span class="text-white/30 text-3xl md:text-4xl">:</span>
+            <span class="score-digit text-5xl md:text-7xl text-accent">${m.scoreB}</span>
+          </div>
+        </div>
+        <div class="flex-1 text-center">
+          <div class="text-4xl md:text-6xl mb-2">🏫</div>
+          <div class="font-heading font-bold text-white text-sm md:text-xl">${m.teamB}</div>
+        </div>
+      </div>
+      ${m.referee && m.referee !== "-" ? `<div class="text-center mt-4 pt-4 border-t border-white/10"><p class="text-xs text-white/50">👨‍⚖️ กรรมการ: ${m.referee}</p></div>` : ""}
+    </div>
+  `).join("");
+}
+
+function renderAllMatches() {
+  const filtered = applyFilters(allScores);
+  const container = document.getElementById("allMatches");
+  const empty = document.getElementById("emptyState");
+  const countEl = document.getElementById("matchCount");
+  countEl.textContent = `แสดง ${filtered.length} / ${allScores.length} คู่`;
+  if (filtered.length === 0) {
+    container.innerHTML = "";
+    empty.classList.remove("hidden");
+    return;
+  }
+  empty.classList.add("hidden");
+  container.innerHTML = filtered.map(m => renderMatchRow(m)).join("");
+}
+
+function renderMatchRow(m) {
+  const statusInfo = getStatusInfo(m.status);
+  const prev = previousScores[m.no];
+  const hasChanged = prev && (prev.scoreA !== m.scoreA || prev.scoreB !== m.scoreB);
+  return `
+    <div class="glass-dark rounded-2xl p-5 border-l-4 ${statusInfo.border} ${hasChanged ? "score-flash" : ""} hover:bg-white/5 transition" data-match-no="${m.no}">
+      <div class="flex flex-col lg:flex-row items-center gap-4">
+        <div class="flex flex-col items-start gap-1 lg:w-44 flex-shrink-0 w-full lg:w-auto">
+          <span class="live-badge ${statusInfo.badgeBg}">${statusInfo.badgeText}</span>
+          <div class="text-xs text-white/50 font-mono">${m.date} · ${m.time}</div>
+          ${m.sport ? `<div class="text-xs text-secondary font-medium">${m.sport}</div>` : ""}
+          ${m.group && m.group !== "-" ? `<div class="text-xs text-white/40">${m.group}</div>` : ""}
+        </div>
+        <div class="flex items-center gap-3 md:gap-4 flex-1 w-full">
+          <div class="flex-1 text-right"><div class="font-heading font-bold text-white text-base md:text-lg">${m.teamA}</div></div>
+          <div class="flex-shrink-0 px-3 md:px-4 py-2 rounded-xl bg-white/5 border border-white/10">
+            <div class="flex items-center gap-2 md:gap-3">
+              <span class="score-digit text-2xl md:text-4xl ${m.status === "live" ? "text-accent" : m.status === "finished" ? "text-green-400" : "text-white/40"}">${m.status === "upcoming" ? "-" : m.scoreA}</span>
+              <span class="text-white/30 text-xl md:text-2xl">:</span>
+              <span class="score-digit text-2xl md:text-4xl ${m.status === "live" ? "text-accent" : m.status === "finished" ? "text-green-400" : "text-white/40"}">${m.status === "upcoming" ? "-" : m.scoreB}</span>
+            </div>
+          </div>
+          <div class="flex-1 text-left"><div class="font-heading font-bold text-white text-base md:text-lg">${m.teamB}</div></div>
+        </div>
+        <div class="text-xs text-white/50 lg:w-44 text-left lg:text-right flex-shrink-0 w-full lg:w-auto">
+          ${m.referee && m.referee !== "-" ? `👨‍⚖️ ${m.referee}` : ""}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function getStatusInfo(status) {
+  switch (status) {
+    case "live": return { border: "border-accent", badgeBg: "bg-accent text-white live-pulse", badgeText: "🔴 LIVE" };
+    case "finished": return { border: "border-green-500", badgeBg: "bg-green-500 text-white", badgeText: "✅ จบ" };
+    default: return { border: "border-white/20", badgeBg: "bg-white/10 text-white/60", badgeText: "⏳ รอแข่ง" };
+  }
+}
+
+function updateStats() {
+  const live = allScores.filter(m => m.status === "live").length;
+  const finished = allScores.filter(m => m.status === "finished").length;
+  const upcoming = allScores.filter(m => m.status === "upcoming").length;
+  animateNumber("statLive", live);
+  animateNumber("statFinished", finished);
+  animateNumber("statUpcoming", upcoming);
+  animateNumber("statTotal", allScores.length);
+}
+
+function animateNumber(id, target) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const current = parseInt(el.textContent) || 0;
+  if (current === target) return;
+  const steps = 20;
+  const increment = (target - current) / steps;
+  let step = 0;
+  const timer = setInterval(() => {
+    step++;
+    el.textContent = Math.round(current + increment * step);
+    if (step >= steps) { el.textContent = target; clearInterval(timer); }
+  }, 25);
+}
+
+function populateSportFilter() {
+  const select = document.getElementById("filterSport");
+  const sports = [...new Set(allScores.map(s => s.sport).filter(Boolean))].sort();
+  const current = select.value;
+  select.innerHTML = '<option value="">ทุกประเภทกีฬา</option>' + sports.map(s => `<option value="${s}">${s}</option>`).join("");
+  select.value = current;
+}
+
+function applyFilters(scores) {
+  const sport = document.getElementById("filterSport").value;
+  const status = document.getElementById("filterStatus").value;
+  const date = document.getElementById("filterDate").value;
+  return scores.filter(s => {
+    if (sport && s.sport !== sport) return false;
+    if (status && s.status !== status) return false;
+    if (date && s.date !== date) return false;
+    return true;
+  });
+}
+
+function resetFilters() {
+  document.getElementById("filterSport").value = "";
+  document.getElementById("filterStatus").value = "";
+  document.getElementById("filterDate").value = "";
+  renderAllMatches();
+}
+
+function setConnectionStatus(type, text) {
+  const dot = document.getElementById("statusDot");
+  const label = document.getElementById("statusText");
+  const colors = { ok: "bg-green-400", loading: "bg-yellow-400 animate-pulse", error: "bg-red-500" };
+  dot.className = `w-2 h-2 rounded-full ${colors[type] || "bg-gray-400"}`;
+  label.textContent = text;
+}
+
+function updateLastUpdate() {
+  document.getElementById("lastUpdate").textContent = new Date().toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+}
+
+function showLoading(show) {
+  const el = document.getElementById("loadingState");
+  if (el) el.classList.toggle("hidden", !show);
+}
+
+function showToast(title, message) {
+  const toast = document.getElementById("toast");
+  document.getElementById("toastTitle").textContent = title;
+  document.getElementById("toastMessage").textContent = message;
+  toast.classList.remove("hidden");
+  if (CONFIG.ENABLE_SOUND) playSound();
+  setTimeout(() => toast.classList.add("hidden"), 5000);
+}
+
+function playSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = 880; osc.type = "sine";
+    gain.gain.setValueAtTime(0.08, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.3);
+  } catch (e) {}
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+}
+
+// ================================================================
+// INIT
+// ================================================================
+document.addEventListener("DOMContentLoaded", () => {
+  startCountdown();
+  renderStats();
+  renderSports();
+  renderAthletics();
+  renderCommittees();
+  renderBudgetAndTrophies();
+  renderMeeting();
+  renderSchools();
+  console.log("✅ Doytao Sports 2026 พร้อมใช้งาน");
+});
+</script>
+
+</body>
+</html>
