@@ -73,7 +73,6 @@
   .page-view { display: none; }
   .page-view.active { display: block; animation: fadeIn 0.4s ease-in-out; }
 
-  /* ============ LOGO RING ============ */
   .logo-ring { position: relative; width: 44px; height: 44px; min-width: 44px; min-height: 44px; border-radius: 50%; overflow: hidden; border: 2px solid rgba(255,255,255,0.3); background: linear-gradient(135deg, #4C1D95, #6B21A8); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease; }
   .logo-ring.lg { width: 64px; height: 64px; min-width: 64px; min-height: 64px; border-width: 3px; }
   .logo-ring.xl { width: 96px; height: 96px; min-width: 96px; min-height: 96px; border-width: 3px; }
@@ -84,7 +83,6 @@
   .logo-ring.winner { border-color: #FCD34D; box-shadow: 0 0 20px rgba(252,211,77,0.6); }
   .logo-ring.loser { opacity: 0.5; filter: grayscale(60%); }
 
-  /* ============ BRACKET STYLES (EXACT MOCKUP) ============ */
   .bracket-wrapper { position: relative; overflow-x: auto; padding: 40px 20px; }
   .bracket-container { display: flex; justify-content: center; align-items: center; gap: 40px; min-width: max-content; margin: 0 auto; }
   .bracket-side { display: flex; gap: 40px; }
@@ -113,26 +111,22 @@
 
   .bracket-match .bracket-time { font-size: 11px; color: #888; text-align: center; margin-top: 8px; padding-top: 6px; border-top: 1px solid #333; font-family: 'JetBrains Mono', monospace; }
 
-  /* Lines - Left Side */
   .bracket-side.left .bracket-round.qf .bracket-match-wrapper::after { content: ''; position: absolute; right: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1; }
   .bracket-side.left .bracket-round.qf .bracket-match-wrapper .bracket-match::after { content: ''; position: absolute; right: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1; }
   .bracket-side.left .bracket-round.sf { position: relative; }
   .bracket-side.left .bracket-round.sf .bracket-match::after { content: ''; position: absolute; right: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1; }
   .bracket-side.left .bracket-round.sf::after { content: ''; position: absolute; right: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1; }
 
-  /* Lines - Right Side (Mirrored) */
   .bracket-side.right .bracket-round.qf .bracket-match-wrapper::after { content: ''; position: absolute; left: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1; }
   .bracket-side.right .bracket-round.qf .bracket-match-wrapper .bracket-match::after { content: ''; position: absolute; left: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1; }
   .bracket-side.right .bracket-round.sf { position: relative; }
   .bracket-side.right .bracket-round.sf .bracket-match::after { content: ''; position: absolute; left: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1; }
   .bracket-side.right .bracket-round.sf::after { content: ''; position: absolute; left: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1; }
 
-  /* Center Trophy */
   .bracket-center { display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 40px; position: relative; }
   .trophy-icon { font-size: 100px; filter: drop-shadow(0 0 30px rgba(241, 196, 15, 0.8)); animation: float 3s ease-in-out infinite; }
   .final-label { margin-top: 20px; color: #f1c40f; font-size: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px rgba(241, 196, 15, 0.5); white-space: nowrap; }
 
-  /* Responsive Bracket */
   @media (max-width: 1024px) {
     .bracket-container { flex-direction: column; gap: 60px; }
     .bracket-side { flex-direction: column !important; gap: 30px; align-items: center; }
@@ -143,7 +137,6 @@
     .bracket-match { width: 100%; max-width: 300px; }
   }
 
-  /* ============ GROUP TABLE ============ */
   .group-table { background: rgba(30,27,75,0.6); border: 1px solid rgba(252,211,77,0.3); border-radius: 1rem; overflow: hidden; }
   .group-table th { background: linear-gradient(180deg, rgba(107,33,168,0.6), rgba(107,33,168,0.3)); color: #FCD34D; font-family: 'Kanit', sans-serif; padding: 8px 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
   .group-table td { padding: 8px 6px; color: white; font-size: 13px; border-top: 1px solid rgba(255,255,255,0.05); }
@@ -309,7 +302,6 @@
   </div>
 
   <section class="max-w-7xl mx-auto px-4 py-8">
-    <!-- Warning Banner for Fallback Data -->
     <div id="fallbackWarning" class="hidden mb-6 p-4 rounded-xl bg-orange-500/20 border border-orange-500/50 text-orange-200 text-sm flex items-center gap-3">
       <span class="text-xl">⚠️</span>
       <div>
@@ -366,22 +358,18 @@
 
 <script>
 // ================================================================
-// CONFIG
+// CONFIG ✅ ใส่ลิงก์ CSV ของคุณแล้ว
 // ================================================================
 const CONFIG = {
-  // 👇👇👇 แก้ไขลิงก์ตรงนี้ 👇👇👇
-  // นำลิงก์ CSV ที่ได้จาก Publish to web มาใส่แทนที่ข้อความด้านล่างนี้
   SCORE_SHEET_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWb9ZjnqXGwVDlJ3zc5QfeNIcOLlWFoHgmBLrxDOLeYtzeNV1T63bWw79-WLdqGiriB8mjSNI8erSP/pub?gid=0&single=true&output=csv",
-  
   REFRESH_INTERVAL: 30000,
   ENABLE_SOUND: true,
 };
 
 // ================================================================
-// FALLBACK DATA (แกะจากไฟล์ PDF โปรแกรมการแข่งขัน)
+// FALLBACK DATA
 // ================================================================
 const FALLBACK_DATA = [
-  // ฟุตบอลชาย
   { no: 1, date: "6 ต.ค. 69", time: "08:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านฉิมพลี", teamB: "โรงเรียนบ้านโปง", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายทนงศักดิ์ แก้ววงษ์" },
   { no: 2, date: "6 ต.ค. 69", time: "09:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านเกาะหลวง", teamB: "โรงเรียนบ้านแม่บวน", group: "B", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายวัฒธีระ หนูขาว" },
   { no: 3, date: "6 ต.ค. 69", time: "10:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านฉิมพลี", teamB: "โรงเรียนบ้านแม่ตูบ", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายเจษฎา ถาเป็ง" },
@@ -393,8 +381,6 @@ const FALLBACK_DATA = [
   { no: 9, date: "7 ต.ค. 69", time: "13:00", sport: "ฟุตบอลชาย", teamA: "ผู้แพ้คู่ 7", teamB: "ผู้แพ้คู่ 8", group: "ชิงที่ 3", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
   { no: 10, date: "7 ต.ค. 69", time: "14:30", sport: "ฟุตบอลชาย", teamA: "มัธยม", teamB: "VIP", group: "พิเศษ", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
   { no: 11, date: "7 ต.ค. 69", time: "15:30", sport: "ฟุตบอลชาย", teamA: "ผู้ชนะคู่ 7", teamB: "ผู้ชนะคู่ 8", group: "ชิงที่ 1", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
-  
-  // ฟุตบอลหญิง
   { no: 12, date: "6 ต.ค. 69", time: "14:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านแม่ตูบ", teamB: "โรงเรียนบ้านเกาะหลวง", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายเจษฎา ถาเป็ง" },
   { no: 13, date: "6 ต.ค. 69", time: "15:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านแม่บวน", teamB: "โรงเรียนบ้านฉิมพลี", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายทนงศักดิ์ แก้ววงษ์" },
   { no: 14, date: "7 ต.ค. 69", time: "11:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านเกาะหลวง", teamB: "โรงเรียนบ้านฉิมพลี", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายมติชน รู้เที่ยง" },
@@ -599,14 +585,24 @@ let usingFallback = false;
 
 function initBracket() { setInterval(fetchBracketData, CONFIG.REFRESH_INTERVAL); document.addEventListener("visibilitychange", () => { if (!document.hidden && document.getElementById("page-bracket").classList.contains("active")) fetchBracketData(); }); }
 
+// ✅ ดึงข้อมูลจาก CSV โดยตรง
 async function fetchBracketData() {
   const url = CONFIG.SCORE_SHEET_URL;
-  if (!url || url.includes("2PACX-1vTWb9")) { setConnectionStatus("error", "ยังไม่ตั้งค่าลิงก์"); loadFallbackData(); return; }
+  
+  if (!url) { 
+    setConnectionStatus("error", "ยังไม่ตั้งค่า URL"); 
+    loadFallbackData(); 
+    return; 
+  }
+  
   try {
     setConnectionStatus("loading", "กำลังโหลด...");
     document.getElementById('fallbackWarning').classList.add('hidden');
+    
+    // ใช้ fetch ดึง CSV ตรงๆ + เพิ่ม cache buster
     const res = await fetch(url + "&t=" + Date.now(), { cache: "no-store" });
-    if (!res.ok) throw new Error("HTTP " + res.status);
+    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    
     const csv = await res.text();
     const matches = parseCSV(csv);
     
@@ -621,8 +617,12 @@ async function fetchBracketData() {
     renderBracketContent();
     setConnectionStatus("ok", "เชื่อมต่อแล้ว");
     updateLastUpdate();
-    if (!isFirstBracketLoad && changes.length > 0) changes.forEach(c => showToast("🔔 คะแนนอัปเดต!", `${c.teamA} ${c.scoreA} - ${c.scoreB} ${c.teamB}`));
+    
+    if (!isFirstBracketLoad && changes.length > 0) {
+      changes.forEach(c => showToast("🔔 คะแนนอัปเดต!", `${c.teamA} ${c.scoreA} - ${c.scoreB} ${c.teamB}`));
+    }
     isFirstBracketLoad = false;
+    
   } catch (err) {
     console.error("Fetch error:", err);
     setConnectionStatus("error", "ใช้ข้อมูลสำรอง");
@@ -639,27 +639,36 @@ function loadFallbackData() {
   updateLastUpdate();
 }
 
+// ✅ Parse CSV
 function parseCSV(csv) {
   const lines = csv.trim().split("\n");
   if (lines.length < 2) return [];
-  const headers = parseCSVLine(lines[0]);
+  const headers = parseCSVLine(lines[0]).map(h => h.trim().toLowerCase());
   const rows = [];
   for (let i = 1; i < lines.length; i++) {
     const values = parseCSVLine(lines[i]);
     if (values.length === 0 || !values[0]) continue;
     const obj = {};
-    headers.forEach((h, idx) => obj[h.trim()] = (values[idx] || "").trim());
-    if (!obj.no || !obj.teamA) continue;
+    headers.forEach((h, idx) => obj[h] = (values[idx] || "").trim());
+    if (!obj.no || !obj.teama) continue;
     rows.push({
-      no: obj.no, date: obj.date || "", time: obj.time || "",
-      sport: obj.sport || "", teamA: obj.teamA || "", teamB: obj.teamB || "",
-      group: obj.group || "", scoreA: obj.scoreA || "0", scoreB: obj.scoreB || "0",
-      status: (obj.status || "upcoming").toLowerCase().trim(), referee: obj.referee || ""
+      no: obj.no, 
+      date: obj.date || "", 
+      time: obj.time || "",
+      sport: obj.sport || "", 
+      teamA: obj.teama || "", 
+      teamB: obj.teamb || "",
+      group: obj.group || "", 
+      scoreA: obj.scorea || "0", 
+      scoreB: obj.scoreb || "0",
+      status: (obj.status || "upcoming").toLowerCase().trim(), 
+      referee: obj.referee || ""
     });
   }
   return rows;
 }
 function parseCSVLine(line) { const result = []; let current = ""; let inQuotes = false; for (let i = 0; i < line.length; i++) { const char = line[i]; if (char === '"') inQuotes = !inQuotes; else if (char === "," && !inQuotes) { result.push(current); current = ""; } else current += char; } result.push(current); return result.map(v => v.trim().replace(/^"|"$/g, "")); }
+
 function detectChanges(newMatches) { const changes = []; newMatches.forEach(m => { const prev = previousMatchState[m.no]; if (!prev) return; if (prev.scoreA !== m.scoreA || prev.scoreB !== m.scoreB) changes.push(m); }); return changes; }
 
 function renderSportTabs() {
@@ -704,7 +713,6 @@ function renderBracketContent() {
       </div>
   `;
 
-  // Tabs
   html += `
     <div class="flex gap-2 mb-6 border-b border-white/10 pb-4">
       <button onclick="switchTab('group')" class="px-5 py-2.5 rounded-xl font-heading font-semibold transition text-sm ${currentTab === 'group' ? 'bg-gradient-to-r from-primary-600 to-primary-800 text-white shadow-lg' : 'glass-dark text-white/60 hover:text-white'}" id="tab-group">📊 รอบแบ่งกลุ่ม</button>
@@ -712,7 +720,6 @@ function renderBracketContent() {
     </div>
   `;
 
-  // Tab Content: Group Stage
   html += `<div id="content-group" class="tab-content ${currentTab === 'group' ? '' : 'hidden'}">`;
   if (Object.keys(groupMatches).length > 0) {
     const groups = {};
@@ -764,9 +771,8 @@ function renderBracketContent() {
   } else {
     html += `<div class="text-center py-20 text-white/50"><div class="text-6xl mb-4">⏳</div><p>ยังไม่มีข้อมูลการแข่งขันรอบแบ่งกลุ่ม</p></div>`;
   }
-  html += `</div>`; // End content-group
+  html += `</div>`;
 
-  // Tab Content: Knockout Stage
   html += `<div id="content-knockout" class="tab-content ${currentTab === 'knockout' ? '' : 'hidden'}">`;
   
   const qfMatches = knockoutMatches.filter(m => { const g = (m.group || ""); return g.includes("ก่อนรอง") || g.includes("8 ทีม") || g.includes("รอบ 8"); });
@@ -778,7 +784,6 @@ function renderBracketContent() {
   if (qfMatches.length > 0 || sfMatches.length > 0 || finalMatches.length > 0 || thirdMatches.length > 0) {
     html += `<div class="bracket-wrapper"><div class="bracket-container">`;
 
-    // ฝั่งซ้าย
     html += `<div class="bracket-side left">`;
     if (qfMatches.length > 0) {
       html += `<div class="bracket-round qf">`;
@@ -794,7 +799,6 @@ function renderBracketContent() {
     if (finalMatches.length > 0) { html += `<div class="bracket-round final">${renderBracketMatch(finalMatches[0])}</div>`; }
     html += `</div>`;
 
-    // กลาง: ถ้วยรางวัล
     html += `<div class="bracket-center">
       <div class="trophy-icon">🏆</div>
       <div class="final-label">รอบชิงชนะเลิศ</div>`;
@@ -814,7 +818,6 @@ function renderBracketContent() {
     }
     html += `</div>`;
 
-    // ฝั่งขวา
     html += `<div class="bracket-side right">`;
     if (finalMatches.length > 0) { html += `<div class="bracket-round final">${renderBracketMatch(finalMatches[0])}</div>`; }
     if (sfMatches.length > 0) { html += `<div class="bracket-round sf">${sfMatches.map(m => renderBracketMatch(m)).join("")}</div>`; }
@@ -832,7 +835,6 @@ function renderBracketContent() {
 
     html += `</div>`;
     
-    // แสดงรอบชิงที่ 3 แยกออกมา
     if (thirdMatches.length > 0) {
       html += `<div class="mt-8 pt-8 border-t border-white/10">
         <h3 class="font-heading font-bold text-lg text-secondary mb-4 text-center">🥉 รอบชิงที่ 3</h3>
@@ -842,7 +844,6 @@ function renderBracketContent() {
       </div>`;
     }
     
-    // แสดงรายการพิเศษ (ถ้ามี)
     if (specialMatches.length > 0) {
       html += `<div class="mt-8 pt-8 border-t border-white/10">
         <h3 class="font-heading font-bold text-lg text-secondary mb-4 text-center">⭐ รายการพิเศษ</h3>
@@ -856,9 +857,9 @@ function renderBracketContent() {
   } else {
     html += `<div class="text-center py-20 text-white/50"><div class="text-6xl mb-4">⏳</div><p>ยังไม่มีข้อมูลการแข่งขันรอบ Knockout</p><p class="text-sm mt-2">กรุณากรอกข้อมูลใน Google Sheet คอลัมน์ group เป็น "รอง", "ชิงที่ 1", "ชิงที่ 3"</p></div>`;
   }
-  html += `</div>`; // End content-knockout
+  html += `</div>`;
 
-  html += `</div>`; // End glass-dark container
+  html += `</div>`;
   container.innerHTML = html;
 }
 
@@ -914,7 +915,7 @@ function playSound() { try { const ctx = new (window.AudioContext || window.webk
 // ================================================================
 document.addEventListener("DOMContentLoaded", () => {
   startCountdown(); renderStats(); renderSports(); renderAthletics(); renderCommittees(); renderSchools();
-  console.log("✅ Doytao Sports 2026 + Fallback Data System");
+  console.log("✅ Doytao Sports 2026 - CSV Direct Mode");
 });
 </script>
 
