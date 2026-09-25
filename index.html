@@ -596,7 +596,7 @@ function processTournamentData(matches) {
   const groupMatches = matches.filter(m => ["A","B","C","D"].includes((m.group || "").trim()));
   groupMatches.forEach(m => {
     const g = m.group;
-    const sport = m.sport;
+    const sport = m.sport.trim(); // ✅ Trim ชื่อกีฬา
     
     if (!groupStandings[sport]) groupStandings[sport] = {};
     if (!groupStandings[sport][g]) groupStandings[sport][g] = {};
@@ -641,7 +641,7 @@ function processTournamentData(matches) {
   matches.forEach(m => {
     if (m.status === "finished" && !isNaN(+m.scoreA) && !isNaN(+m.scoreB)) {
       const a = +m.scoreA, b = +m.scoreB;
-      const sport = m.sport;
+      const sport = m.sport.trim(); // ✅ Trim ชื่อกีฬา
       if (!matchResults[sport]) matchResults[sport] = {};
       
       if (a > b) { matchResults[sport][m.no] = { winner: m.teamA, loser: m.teamB }; }
@@ -651,36 +651,46 @@ function processTournamentData(matches) {
   });
 }
 
-// ✅ ฟังก์ชันใหม่: ถอดรหัสชื่อทีมจากข้อความ Placeholder
+// ✅ ฟังก์ชันใหม่: ถอดรหัสชื่อทีมจากข้อความ Placeholder (ปรับให้ยืดหยุ่นขึ้นมาก)
 function resolveTeamName(placeholder, sport) {
   if (!placeholder) return placeholder;
   const clean = placeholder.trim();
+  const sportKey = sport.trim();
 
-  // รูปแบบ: ที่ 1 สาย A
-  const group1Match = clean.match(/ที่\s*1\s*สาย\s*([A-Z])/i);
+  // รูปแบบ: "ที่ 1 สาย A" หรือ "ที่ 1 สายA" หรือ "ที่1 สาย A" (รองรับเลขไทย ๑ ด้วย)
+  const group1Match = clean.match(/ที่\s*([1๑])\s*สาย\s*([A-Za-z])/i);
   if (group1Match) {
-    const g = group1Match[1].toUpperCase();
-    if (groupStandings[sport] && groupStandings[sport][g] && groupStandings[sport][g][0]) return groupStandings[sport][g][0].name;
+    const g = group1Match[2].toUpperCase();
+    if (groupStandings[sportKey] && groupStandings[sportKey][g] && groupStandings[sportKey][g][0]) {
+      return groupStandings[sportKey][g][0].name;
+    }
   }
-  // รูปแบบ: ที่ 2 สาย B
-  const group2Match = clean.match(/ที่\s*2\s*สาย\s*([A-Z])/i);
+  
+  // รูปแบบ: "ที่ 2 สาย B"
+  const group2Match = clean.match(/ที่\s*([2๒])\s*สาย\s*([A-Za-z])/i);
   if (group2Match) {
-    const g = group2Match[1].toUpperCase();
-    if (groupStandings[sport] && groupStandings[sport][g] && groupStandings[sport][g][1]) return groupStandings[sport][g][1].name;
+    const g = group2Match[2].toUpperCase();
+    if (groupStandings[sportKey] && groupStandings[sportKey][g] && groupStandings[sportKey][g][1]) {
+      return groupStandings[sportKey][g][1].name;
+    }
   }
 
-  // รูปแบบ: ผู้ชนะคู่ 63
-  const winnerMatch = clean.match(/ผู้ชนะคู่\s*(\d+)/i);
+  // รูปแบบ: "ผู้ชนะคู่ 63" หรือ "ผู้ชนะคู่ที่ 63" หรือ "ผู้ชนะ คู่ 63"
+  const winnerMatch = clean.match(/ผู้ชนะ\s*คู่\s*(?:ที่)?\s*(\d+)/i);
   if (winnerMatch) {
     const matchNo = winnerMatch[1];
-    if (matchResults[sport] && matchResults[sport][matchNo] && matchResults[sport][matchNo].winner) return matchResults[sport][matchNo].winner;
+    if (matchResults[sportKey] && matchResults[sportKey][matchNo] && matchResults[sportKey][matchNo].winner) {
+      return matchResults[sportKey][matchNo].winner;
+    }
   }
 
-  // รูปแบบ: ผู้แพ้คู่ 63
-  const loserMatch = clean.match(/ผู้แพ้คู่\s*(\d+)/i);
+  // รูปแบบ: "ผู้แพ้คู่ 63"
+  const loserMatch = clean.match(/ผู้แพ้\s*คู่\s*(?:ที่)?\s*(\d+)/i);
   if (loserMatch) {
     const matchNo = loserMatch[1];
-    if (matchResults[sport] && matchResults[sport][matchNo] && matchResults[sport][matchNo].loser) return matchResults[sport][matchNo].loser;
+    if (matchResults[sportKey] && matchResults[sportKey][matchNo] && matchResults[sportKey][matchNo].loser) {
+      return matchResults[sportKey][matchNo].loser;
+    }
   }
 
   return placeholder; // ถ้าไม่ตรงกับรูปแบบใดเลย ให้คืนค่าเดิม
@@ -998,7 +1008,7 @@ function playSound() { try { const ctx = new (window.AudioContext || window.webk
 // ================================================================
 document.addEventListener("DOMContentLoaded", () => {
   startCountdown(); renderStats(); renderSports(); renderAthletics(); renderCommittees(); renderSchools();
-  console.log("✅ Doytao Sports 2026 - Auto Resolve Knockout Teams");
+  console.log("✅ Doytao Sports 2026 - Auto Resolve Knockout Teams (Robust Regex)");
 });
 </script>
 
