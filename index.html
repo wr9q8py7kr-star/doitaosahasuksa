@@ -27,6 +27,56 @@
   body { font-family: 'Sarabun', sans-serif; background-color: #FAFAF9; color: #1E1B4B; }
   h1, h2, h3, h4, h5 { font-family: 'Kanit', sans-serif; }
 
+  /* === Background Slideshow === */
+  .bg-slideshow {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .bg-slide {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+    transform: scale(1.05);
+  }
+  .bg-slide.active {
+    opacity: 0.45;
+  }
+  /* Purple gradient base */
+  .bg-slide.slide-purple {
+    background:
+      radial-gradient(at 20% 20%, rgba(107, 33, 168, 0.9) 0px, transparent 50%),
+      radial-gradient(at 80% 30%, rgba(245, 158, 11, 0.4) 0px, transparent 50%),
+      radial-gradient(at 50% 80%, rgba(220, 38, 38, 0.3) 0px, transparent 50%),
+      linear-gradient(135deg, #1E1B4B 0%, #4C1D95 50%, #6B21A8 100%);
+    opacity: 1;
+  }
+  /* Gradient overlay for readability */
+  .bg-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 1;
+    background:
+      radial-gradient(ellipse at center, rgba(30,27,75,0.4) 0%, rgba(30,27,75,0.85) 70%, rgba(10,10,20,0.95) 100%),
+      linear-gradient(180deg, rgba(30,27,75,0.6) 0%, rgba(76,29,149,0.5) 50%, rgba(30,27,75,0.7) 100%);
+    pointer-events: none;
+  }
+  /* Blur effect on edges */
+  .bg-blur-edges {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 2;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse at center, transparent 30%, black 90%);
+    -webkit-mask-image: radial-gradient(ellipse at center, transparent 30%, black 90%);
+  }
+
   .gradient-mesh {
     background:
       radial-gradient(at 20% 20%, rgba(107, 33, 168, 0.4) 0px, transparent 50%),
@@ -49,7 +99,7 @@
   ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #6B21A8, #F59E0B); border-radius: 10px; }
   .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
   .accordion-content.open { max-height: 8000px; }
-  .countdown-box { background: rgba(255,255,255,0.1); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.2); border-radius: 1rem; padding: 1rem 1.25rem; min-width: 72px; text-align: center; }
+  .countdown-box { background: rgba(255,255,255,0.15); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.3); border-radius: 1rem; padding: 1rem 1.25rem; min-width: 72px; text-align: center; }
 
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
@@ -164,7 +214,6 @@
   .logo-ring.runner-up { border-color: #D0D0D0; box-shadow: 0 0 20px rgba(192,192,192,0.6); }
   .logo-ring.third-place { border-color: #E8A33D; box-shadow: 0 0 20px rgba(205,127,50,0.7); }
 
-  /* School card for homepage */
   .school-card {
     background: rgba(255,255,255,0.95);
     border-radius: 16px;
@@ -308,7 +357,6 @@
   }
   .medal-emoji { font-size: 14px; margin-right: 2px; }
 
-  /* Responsive medal table */
   @media (max-width: 640px) {
     .medal-row {
       grid-template-columns: 40px 1fr 42px 42px 42px 50px;
@@ -372,6 +420,37 @@
   }
   .tabs-scroll::-webkit-scrollbar { height: 4px; }
   .tabs-scroll > button { flex-shrink: 0; scroll-snap-align: start; min-height: 44px; }
+
+  /* Back button */
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    background: rgba(30, 27, 75, 0.85);
+    backdrop-filter: blur(12px);
+    border: 2px solid rgba(252,211,77,0.4);
+    color: #FCD34D;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 44px;
+  }
+  .back-btn:hover {
+    background: rgba(107, 33, 168, 0.9);
+    border-color: #FCD34D;
+    transform: translateX(-3px);
+    box-shadow: 0 4px 20px rgba(252,211,77,0.3);
+  }
+  .back-btn svg {
+    transition: transform 0.2s ease;
+  }
+  .back-btn:hover svg {
+    transform: translateX(-3px);
+  }
 
   @media (max-width: 640px) {
     .bracket-column { min-width: 200px; max-width: 200px; }
@@ -440,23 +519,36 @@
 </nav>
 
 <div id="page-home" class="page-view active">
-  <section id="home" class="relative min-h-[90vh] flex items-center justify-center gradient-mesh overflow-hidden">
-    <div class="absolute inset-0 opacity-20">
-      <div class="absolute top-20 left-10 w-48 h-48 sm:w-64 sm:h-64 rounded-full bg-secondary blur-3xl animate-float"></div>
-      <div class="absolute bottom-20 right-10 w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-primary-500 blur-3xl animate-float" style="animation-delay: 1s;"></div>
+  <section id="home" class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+    <!-- Background Slideshow -->
+    <div class="bg-slideshow" id="bgSlideshow">
+      <!-- Purple gradient base (always first, stays active) -->
+      <div class="bg-slide slide-purple active" data-slide="0"></div>
+      <!-- Cover images -->
+      <div class="bg-slide" data-slide="1" style="background-image: url('cover1.jpg');"></div>
+      <div class="bg-slide" data-slide="2" style="background-image: url('cover2.jpg');"></div>
+      <div class="bg-slide" data-slide="3" style="background-image: url('cover3.jpg');"></div>
+      <div class="bg-slide" data-slide="4" style="background-image: url('cover4.jpg');"></div>
+      <div class="bg-slide" data-slide="5" style="background-image: url('cover5.jpg');"></div>
+      <div class="bg-slide" data-slide="6" style="background-image: url('cover6.jpg');"></div>
+      <div class="bg-slide" data-slide="7" style="background-image: url('cover7.jpg');"></div>
     </div>
+    <!-- Overlay gradient for readability -->
+    <div class="bg-overlay"></div>
+    <div class="bg-blur-edges"></div>
+
     <div class="relative z-10 max-w-7xl mx-auto px-4 py-24 sm:py-32 text-center">
       <span class="inline-block px-3 py-1.5 rounded-full glass text-secondary text-xs sm:text-sm font-medium mb-4 sm:mb-6">🏆 ปีการศึกษา 2569</span>
-      <h1 class="font-heading font-black text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-white mb-4 sm:mb-6 leading-tight animate-slide-up">
+      <h1 class="font-heading font-black text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-white mb-4 sm:mb-6 leading-tight animate-slide-up" style="text-shadow: 0 4px 24px rgba(0,0,0,0.6);">
         การแข่งขันกีฬา-กรีฑา<br>
         <span class="bg-gradient-to-r from-secondary via-yellow-300 to-secondary bg-clip-text text-transparent">ดอยเต่าสหศึกษา</span>
       </h1>
-      <p class="text-white/80 text-sm sm:text-base md:text-xl max-w-3xl mx-auto mb-8 sm:mb-12 px-2">
+      <p class="text-white/90 text-sm sm:text-base md:text-xl max-w-3xl mx-auto mb-8 sm:mb-12 px-2" style="text-shadow: 0 2px 12px rgba(0,0,0,0.7);">
         เครือข่ายพัฒนาการศึกษาดอยเต่าสหศึกษา ปีการศึกษา 2569<br>
         สนามกีฬาองค์การบริหารส่วนตำบลโป่งทุ่ง อำเภอดอยเต่า จังหวัดเชียงใหม่
       </p>
       <div class="mb-8 sm:mb-12">
-        <p class="text-secondary font-medium mb-3 sm:mb-4 text-xs sm:text-sm tracking-widest uppercase">นับถอยหลังสู่วันแข่งขัน</p>
+        <p class="text-secondary font-medium mb-3 sm:mb-4 text-xs sm:text-sm tracking-widest uppercase" style="text-shadow: 0 2px 8px rgba(0,0,0,0.7);">นับถอยหลังสู่วันแข่งขัน</p>
         <div id="countdown" class="flex gap-2 sm:gap-3 md:gap-4 justify-center flex-wrap px-2"></div>
       </div>
       <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
@@ -465,11 +557,10 @@
         </button>
         <button onclick="scrollToId('schedule')" class="px-6 sm:px-8 py-4 sm:py-5 glass text-white font-heading font-bold rounded-xl hover:bg-white/20 transition text-base sm:text-lg min-h-[56px]">📅 ดูโปรแกรมการแข่งขัน</button>
       </div>
-      <div class="mt-12 sm:mt-16 text-white/60 text-xs sm:text-sm font-mono">วันที่ 5 - 8 ตุลาคม พ.ศ. 2569</div>
+      <div class="mt-12 sm:mt-16 text-white/70 text-xs sm:text-sm font-mono" style="text-shadow: 0 2px 8px rgba(0,0,0,0.7);">วันที่ 5 - 8 ตุลาคม พ.ศ. 2569</div>
     </div>
   </section>
 
-  <!-- Stats -->
   <section class="py-10 sm:py-16 px-3 sm:px-4 bg-white shadow-sm">
     <div class="max-w-7xl mx-auto">
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6" id="statsGrid"></div>
@@ -605,12 +696,15 @@
       </div>
     </div>
 
+    <!-- Back button + Header (without duplicate logo) -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
       <div class="flex items-center gap-3">
-        <div class="logo-ring winner trophy-bounce">
-          <div class="logo-fallback">🏆</div>
-          <img src="saha.jpg" alt="saha" onerror="this.style.display='none';">
-        </div>
+        <button class="back-btn" onclick="showPage('home')" title="ย้อนกลับหน้าหลัก">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+          </svg>
+          <span>ย้อนกลับ</span>
+        </button>
         <div>
           <h1 class="font-heading font-black text-xl sm:text-2xl md:text-4xl text-transparent bg-gradient-to-r from-secondary via-yellow-300 to-secondary bg-clip-text">ผลการแข่งขัน สด</h1>
           <p class="text-white/60 text-xs sm:text-sm">Real-time Tournament Bracket</p>
@@ -651,7 +745,50 @@
 const CONFIG = {
   SCORE_SHEET_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWb9ZjnqXGwVDlJ3zc5QfeNIcOLlWFoHgmBLrxDOLeYtzeNV1T63bWw79-WLdqGiriB8mjSNI8erSP/pub?gid=0&single=true&output=csv",
   REFRESH_INTERVAL: 30000,
+  SLIDE_INTERVAL: 10000, // 10 วินาที
 };
+
+// ================================================================
+// BACKGROUND SLIDESHOW — purple base + cover1-7
+// ================================================================
+let currentSlide = 0;
+let slideTimer = null;
+
+function initSlideshow() {
+  const slides = document.querySelectorAll('.bg-slide');
+  if (slides.length === 0) return;
+  
+  currentSlide = 0;
+  // Slide 0 (purple) เปิดอยู่แล้ว
+  
+  function nextSlide() {
+    const slides = document.querySelectorAll('.bg-slide');
+    // ปิด slide ปัจจุบัน
+    slides[currentSlide].classList.remove('active');
+    
+    // ไป slide ถัดไป (วน)
+    currentSlide = (currentSlide + 1) % slides.length;
+    
+    // เปิด slide ใหม่
+    slides[currentSlide].classList.add('active');
+    
+    // ถ้าเป็น slide แรก (purple) ให้คง opacity 1 ตลอด
+    if (currentSlide === 0) {
+      slides[0].style.opacity = '1';
+    } else {
+      // slides อื่น opacity ตามที่กำหนดใน CSS (0.45)
+      slides.forEach((s, i) => {
+        if (i === 0) s.style.opacity = '1';
+      });
+    }
+  }
+  
+  // เริ่ม timer — เปลี่ยนทุก 10 วินาที
+  if (slideTimer) clearInterval(slideTimer);
+  slideTimer = setInterval(nextSlide, CONFIG.SLIDE_INTERVAL);
+  
+  console.log(`🎬 Slideshow started with ${slides.length} slides, interval=${CONFIG.SLIDE_INTERVAL}ms`);
+}
 
 // ================================================================
 // SPORT ICONS
@@ -1103,7 +1240,7 @@ function parseCSV(csv) {
 function parseCSVLine(line) { const result = []; let current = ""; let inQuotes = false; for (let i = 0; i < line.length; i++) { const char = line[i]; if (char === '"') inQuotes = !inQuotes; else if (char === "," && !inQuotes) { result.push(current); current = ""; } else current += char; } result.push(current); return result.map(v => v.trim().replace(/^"|"$/g, "")); }
 
 // ================================================================
-// 🏅 MEDAL TALLY
+// 🏅 MEDAL TALLY — แสดงครบ 12 โรงเรียน
 // ================================================================
 function findSchoolName(teamName) {
   if (!teamName || isPlaceholder(teamName)) return null;
@@ -1115,7 +1252,6 @@ function findSchoolName(teamName) {
     if (s.name.includes(clean) || clean.includes(sShort)) return s.name;
     if (sShort.includes(clean) || clean.includes(sShort)) return s.name;
   }
-  // Additional fuzzy check
   for (const s of DATA.schools) {
     const sShort = shortTeamName(s.name).replace(/[^\u0E00-\u0E7Fa-zA-Z0-9]/g, '');
     const cClean = clean.replace(/[^\u0E00-\u0E7Fa-zA-Z0-9]/g, '');
@@ -1180,34 +1316,27 @@ function renderMedalTally() {
   const timeEl = document.getElementById("medalUpdateTime");
   if (!tbody) return;
   
+  // ✅ แสดงครบ 12 โรงเรียนเสมอ
   const medals = calculateMedals();
   const totalMedals = medals.reduce((sum, m) => sum + m.gold + m.silver + m.bronze, 0);
   
-  if (totalMedals === 0) {
-    tbody.innerHTML = `
-      <div class="text-center py-12 text-white/60">
-        <div class="text-5xl mb-3">🏅</div>
-        <p class="text-sm">ยังไม่มีการแข่งขันที่จบแล้ว</p>
-        <p class="text-xs mt-1 opacity-60">เหรียญรางวัลจะปรากฏเมื่อผลรอบชิงชนะเลิศและรอบชิงที่ 3 เสร็จสิ้น</p>
-      </div>`;
-    if (timeEl) timeEl.textContent = "รอผลการแข่งขัน...";
-    return;
-  }
-  
-  // Rank counter - handle ties
-  let rank = 0;
-  let prevMedal = null;
   let displayRank = 1;
+  let prevMedal = null;
   
   tbody.innerHTML = medals.map((m, idx) => {
     const medalKey = `${m.gold}-${m.silver}-${m.bronze}`;
+    // เปลี่ยน rank เฉพาะเมื่อ medal ไม่เท่ากัน
     if (prevMedal !== null && medalKey !== prevMedal) {
       displayRank = idx + 1;
     }
     prevMedal = medalKey;
     
-    const rankClass = displayRank === 1 ? 'rank-1' : displayRank === 2 ? 'rank-2' : displayRank === 3 ? 'rank-3' : '';
-    const rowClass = displayRank === 1 ? 'top-1' : displayRank === 2 ? 'top-2' : displayRank === 3 ? 'top-3' : '';
+    // ✅ ถ้ายังไม่มีเหรียญเลย ไม่ต้องแสดงอันดับ
+    const hasMedal = (m.gold + m.silver + m.bronze) > 0;
+    const actualRank = hasMedal ? displayRank : 0;
+    
+    const rankClass = actualRank === 1 ? 'rank-1' : actualRank === 2 ? 'rank-2' : actualRank === 3 ? 'rank-3' : '';
+    const rowClass = actualRank === 1 ? 'top-1' : actualRank === 2 ? 'top-2' : actualRank === 3 ? 'top-3' : '';
     const total = m.gold + m.silver + m.bronze;
     
     const logoPath = getLogoPath(m.name);
@@ -1215,21 +1344,22 @@ function renderMedalTally() {
       ? `<div class="medal-school-logo"><img src="${logoPath}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="fallback" style="display:none;">🏫</span></div>`
       : `<div class="medal-school-logo"><span class="fallback">🏫</span></div>`;
     
-    const medalEmoji = displayRank === 1 ? '🥇' : displayRank === 2 ? '🥈' : displayRank === 3 ? '🥉' : '';
+    const medalEmoji = actualRank === 1 ? '🥇' : actualRank === 2 ? '🥈' : actualRank === 3 ? '🥉' : '';
+    const rankDisplay = hasMedal ? (medalEmoji || actualRank) : '—';
     
     return `<div class="medal-row ${rowClass}">
-      <div class="medal-rank ${rankClass}">${medalEmoji || displayRank}</div>
+      <div class="medal-rank ${rankClass}">${rankDisplay}</div>
       <div class="medal-school">${logoHTML}<span class="medal-school-name">${shortTeamName(m.name)}</span></div>
-      <div class="medal-count gold">${m.gold || '-'}</div>
-      <div class="medal-count silver">${m.silver || '-'}</div>
-      <div class="medal-count bronze">${m.bronze || '-'}</div>
+      <div class="medal-count gold">${m.gold || '0'}</div>
+      <div class="medal-count silver">${m.silver || '0'}</div>
+      <div class="medal-count bronze">${m.bronze || '0'}</div>
       <div class="text-center"><span class="medal-count total">${total}</span></div>
     </div>`;
   }).join("");
   
   if (timeEl) {
     const now = new Date();
-    timeEl.textContent = `อัปเดตล่าสุด: ${now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
+    timeEl.textContent = `อัปเดตล่าสุด: ${now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}${totalMedals === 0 ? ' · รอผลการแข่งขัน' : ''}`;
   }
 }
 
@@ -1598,11 +1728,16 @@ function updateLastUpdate() { const el = document.getElementById("lastUpdate"); 
 // INIT
 // ================================================================
 document.addEventListener("DOMContentLoaded", () => {
-  startCountdown(); renderStats(); renderSports(); renderSchoolsShowcase(); renderAthletics(); renderCommittees();
+  initSlideshow();
+  startCountdown();
+  renderStats();
+  renderSports();
+  renderSchoolsShowcase();
+  renderAthletics();
+  renderCommittees();
   updateTickerVisibility();
-  // โหลดข้อมูลตั้งแต่หน้าแรกเพื่อให้ Medal Tally มีข้อมูล
   fetchBracketData();
-  console.log("✅ Doytao Sports 2026 - v8 (Medal Tally + Mobile-first)");
+  console.log("✅ Doytao Sports 2026 - v9 (Slideshow + Back button + Full medal table)");
 });
 </script>
 
