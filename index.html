@@ -286,6 +286,11 @@
   .mm-team.mm-loser {
     opacity: 0.55;
   }
+  .mm-team + .mm-team {
+    border-top: 1px dashed rgba(255, 255, 255, 0.12);
+    margin-top: 2px;
+    padding-top: 10px;
+  }
   .mm-name {
     font-family: 'Kanit', sans-serif;
     font-weight: 600;
@@ -400,7 +405,7 @@
     <div class="flex items-center justify-between h-16 md:h-20">
       <a href="#" onclick="showPage('home'); return false;" class="flex items-center gap-3 group">
         <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-primary-700 to-secondary flex items-center justify-center group-hover:scale-110 transition shadow-lg overflow-hidden">
-          <img src="images/logos/saha.jpg" alt="saha" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <img src="images/logos/saha.jpg" alt="saha" class="w-full h-full object-cover" data-logo-idx="0" onerror="handleSahaLogoError(this, true)">
           <span class="hidden text-2xl absolute">🏆</span>
         </div>
         <div class="hidden sm:block">
@@ -566,7 +571,7 @@
       <div class="flex items-center gap-4">
         <div class="logo-ring lg winner trophy-bounce">
           <div class="logo-fallback">🏆</div>
-          <img src="images/logos/saha.jpg" alt="saha" onerror="this.style.display='none';">
+          <img src="images/logos/saha.jpg" alt="saha" data-logo-idx="0" onerror="handleSahaLogoError(this, false)">
         </div>
         <div>
           <h1 class="font-heading font-black text-3xl md:text-4xl text-transparent bg-gradient-to-r from-secondary via-yellow-300 to-secondary bg-clip-text">
@@ -626,40 +631,71 @@ const CONFIG = {
 // LOGO MAPPING
 // ================================================================
 const LOGO_MAP = {
-  "บ้านงิ้วสูง": "kiwsoong.jpg", "งิ้วสูง": "kiwsoong.jpg",
-  "บ้านเกาะหลวง": "kohluang.jpg", "เกาะหลวง": "kohluang.jpg",
-  "บ้านแม่บวน": "maebuan.jpg", "แม่บวน": "maebuan.jpg",
-  "บ้านแม่ตุบ": "maetoop.jpg", "แม่ตุบ": "maetoop.jpg",
-  "บ้านโป่งทุ่ง": "pongtoong.jpg", "โป่งทุ่ง": "pongtoong.jpg",
-  "บ้านโป่ง": "banpong.jpg", "โป่ง": "banpong.jpg",
-  "บ้านสันติสุข": "santisuk.jpg", "สันติสุข": "santisuk.jpg",
-  "บ้านถิ่นสำราญ": "tinsamran.jpg", "ถิ่นสำราญ": "tinsamran.jpg",
-  "บ้านผาจุก": "phajook.jpg", "ผาจุก": "phajook.jpg",
-  "บ้านไร่": "banrai.jpg",
-  "ชุมชนดอยเต่า": "choomchon.jpg", "ชุมชนบ้านดอยเต่า": "choomchon.jpg",
-  "บ้านฉิมพลี": "shimplee.jpg", "ฉิมพลี": "shimplee.jpg",
-  "saha": "saha.jpg",
+  "บ้านงิ้วสูง": "kiwsoong", "งิ้วสูง": "kiwsoong",
+  "บ้านเกาะหลวง": "kohluang", "เกาะหลวง": "kohluang",
+  "บ้านแม่บวน": "maebuan", "แม่บวน": "maebuan",
+  "บ้านแม่ตุบ": "maetoop", "แม่ตุบ": "maetoop",
+  "บ้านโป่งทุ่ง": "pongtoong", "โป่งทุ่ง": "pongtoong",
+  "บ้านโป่ง": "banpong", "โป่ง": "banpong",
+  "บ้านสันติสุข": "santisuk", "สันติสุข": "santisuk",
+  "บ้านถิ่นสำราญ": "tinsamran", "ถิ่นสำราญ": "tinsamran",
+  "บ้านผาจุก": "phajook", "ผาจุก": "phajook",
+  "บ้านไร่": "banrai",
+  "ชุมชนดอยเต่า": "choomchon", "ชุมชนบ้านดอยเต่า": "choomchon",
+  "บ้านฉิมพลี": "shimplee", "ฉิมพลี": "shimplee",
+  "saha": "saha",
 };
+// ลองไล่ทุกนามสกุลไฟล์ที่พบได้บ่อย เผื่อไฟล์จริงบนเว็บไม่ใช่ .jpg
+const LOGO_EXTS = ["jpg", "jpeg", "png", "webp", "JPG", "PNG"];
+
+function getLogoBase(teamName) {
+  if (!teamName) return null;
+  const clean = String(teamName).trim();
+  if (LOGO_MAP[clean]) return LOGO_MAP[clean];
+  let bestKey = null;
+  for (const key in LOGO_MAP) {
+    if (clean.includes(key) && (!bestKey || key.length > bestKey.length)) bestKey = key;
+  }
+  return bestKey ? LOGO_MAP[bestKey] : null;
+}
 
 function getLogoPath(teamName) {
-  if (!teamName) return null;
-  const clean = teamName.trim();
-  if (LOGO_MAP[clean]) return "images/logos/" + LOGO_MAP[clean];
-  for (const key in LOGO_MAP) {
-    if (clean.includes(key)) return "images/logos/" + LOGO_MAP[key];
+  const base = getLogoBase(teamName);
+  return base ? `images/logos/${base}.${LOGO_EXTS[0]}` : null;
+}
+
+function handleLogoError(img) {
+  const base = img.dataset.logoBase;
+  const idx = parseInt(img.dataset.logoIdx || "0", 10) + 1;
+  if (base && idx < LOGO_EXTS.length) {
+    img.dataset.logoIdx = String(idx);
+    img.src = `images/logos/${base}.${LOGO_EXTS[idx]}`;
+  } else {
+    img.style.display = "none";
   }
-  return null;
+}
+
+// สำหรับโลโก้หลักของงาน (saha) ที่ฝังไว้ตรงๆ ใน HTML (navbar / หัวข้อหน้า ผลการแข่งขัน สด)
+function handleSahaLogoError(img, revealFallback) {
+  const idx = parseInt(img.dataset.logoIdx || "0", 10) + 1;
+  if (idx < LOGO_EXTS.length) {
+    img.dataset.logoIdx = String(idx);
+    img.src = `images/logos/saha.${LOGO_EXTS[idx]}`;
+  } else {
+    img.style.display = "none";
+    if (revealFallback && img.nextElementSibling) img.nextElementSibling.style.display = "flex";
+  }
 }
 
 function getLogoHTML(teamName, size = "md", extraClass = "") {
-  const path = getLogoPath(teamName);
+  const base = getLogoBase(teamName);
   const sizeClass = size === "xl" ? "xl" : size === "lg" ? "lg" : "";
   const emoji = size === "xl" ? "44px" : size === "lg" ? "30px" : "22px";
   const fallback = `<div class="logo-fallback" style="font-size:${emoji}">🏫</div>`;
-  if (path) {
+  if (base) {
     return `<div class="logo-ring ${sizeClass} ${extraClass}">
       ${fallback}
-      <img src="${path}" alt="${teamName}" loading="lazy" onerror="this.style.display='none';">
+      <img src="images/logos/${base}.${LOGO_EXTS[0]}" data-logo-base="${base}" data-logo-idx="0" alt="${teamName}" loading="lazy" onerror="handleLogoError(this)">
     </div>`;
   }
   return `<div class="logo-ring ${sizeClass} ${extraClass}">${fallback}</div>`;
@@ -1006,6 +1042,8 @@ let allMatches = [];
 let selectedSport = "";
 let previousMatchState = {};
 let isFirstBracketLoad = true;
+let currentParentOf = {};
+let currentFinalRoundNos = [];
 
 function initBracket() {
   setInterval(fetchBracketData, CONFIG.REFRESH_INTERVAL);
@@ -1159,16 +1197,44 @@ function renderBracketContent() {
     });
   });
 
-  const sfMatches = knockoutMatches.filter(m => (m.group || "").includes("รอง") && !(m.group || "").includes("ชิง"));
-  const thirdMatches = knockoutMatches.filter(m => (m.group || "").includes("ชิงที่ 3"));
-  const finalMatches = knockoutMatches.filter(m => (m.group || "").includes("ชิงที่ 1"));
+  const { byNo, depth, parentOf } = analyzeKnockout(sportMatches);
+
+  const thirdPlaceMatches = knockoutMatches.filter(m => (m.group || "").includes("ชิงที่ 3"));
+  const thirdPlaceNos = new Set(thirdPlaceMatches.map(m => m.no));
+
+  // แมตช์พิเศษ: ติดป้าย "ชิงที่..." แต่ไม่ได้อ้างอิงผลจากคู่ไหนเลย (เช่น แมตช์กระชับมิตรพิเศษ) ไม่เอาเข้าผังหลัก
+  const specialMatches = knockoutMatches.filter(m => {
+    const g = (m.group || "").trim();
+    if (!g.includes("ชิงที่")) return false;
+    const aLinked = parseBracketRef(m.teamA) || isGroupPositionRef(m.teamA);
+    const bLinked = parseBracketRef(m.teamB) || isGroupPositionRef(m.teamB);
+    return !aLinked && !bLinked;
+  });
+  const specialNos = new Set(specialMatches.map(m => m.no));
+
+  const treeMatches = knockoutMatches.filter(m => !thirdPlaceNos.has(m.no) && !specialNos.has(m.no));
+  const maxDepth = treeMatches.reduce((mx, m) => Math.max(mx, depth[m.no] || 0), 0);
+  const bracketRounds = [];
+  for (let d = 0; d <= maxDepth; d++) {
+    bracketRounds.push(treeMatches.filter(m => (depth[m.no] || 0) === d));
+  }
+  const roundTitle = (dist) => {
+    if (dist === 0) return "รอบชิงชนะเลิศ";
+    if (dist === 1) return "รอบรองชนะเลิศ";
+    if (dist === 2) return "รอบก่อนรองชนะเลิศ";
+    if (dist === 3) return "รอบ 16 ทีมสุดท้าย";
+    return `รอบคัดเลือก ${dist + 1}`;
+  };
+
+  currentParentOf = parentOf;
+  currentFinalRoundNos = (bracketRounds[maxDepth] || []).map(m => m.no);
 
   let html = `
     <div class="glass-dark rounded-3xl p-6 md:p-8 mb-6">
       <div class="flex items-center gap-4 mb-6 pb-6 border-b border-white/10">
         <div class="logo-ring lg winner trophy-bounce">
           <div class="logo-fallback">🏆</div>
-          <img src="images/logos/saha.jpg" alt="saha" onerror="this.style.display='none';">
+          <img src="images/logos/saha.jpg" alt="saha" data-logo-idx="0" onerror="handleSahaLogoError(this, false)">
         </div>
         <div>
           <h2 class="font-heading font-black text-2xl md:text-3xl text-transparent bg-gradient-to-r from-secondary via-yellow-300 to-secondary bg-clip-text">${selectedSport}</h2>
@@ -1229,36 +1295,27 @@ function renderBracketContent() {
     html += `</div>`;
   }
 
-  // Mind-Map Knockout Bracket
-  if (sfMatches.length > 0 || finalMatches.length > 0) {
+  // ผังการแข่งขัน Knockout — สร้างคอลัมน์ตามจำนวนรอบจริง (ไม่จำกัดแค่รองฯ+ชิง)
+  if (bracketRounds.some(r => r.length > 0)) {
     html += `<h3 class="font-heading font-bold text-xl text-secondary mb-6 flex items-center gap-2 mt-8">🏆 ผังการแข่งขันรอบ Knockout</h3>`;
     html += `<div class="mind-map-wrapper"><div class="mind-map-bracket" id="mindMapBracket">`;
 
-    // รอบรอง
-    if (sfMatches.length > 0) {
-      html += `<div class="bracket-column" data-round="sf">
-        <div class="round-title">รอบรองชนะเลิศ</div>
+    bracketRounds.forEach((roundMatches, d) => {
+      if (roundMatches.length === 0) return;
+      html += `<div class="bracket-column" data-round="${d}">
+        <div class="round-title">${roundTitle(maxDepth - d)}</div>
         <div class="round-matches">`;
-      sfMatches.forEach((m, i) => {
-        html += renderMindMatch(m, `sf-${i}`);
-      });
+      roundMatches.forEach(m => { html += renderMindMatch(m, byNo); });
       html += `</div></div>`;
-    }
+    });
 
-    // รอบชิง
-    if (finalMatches.length > 0) {
-      html += `<div class="bracket-column" data-round="final">
-        <div class="round-title">รอบชิงชนะเลิศ</div>
-        <div class="round-matches">`;
-      finalMatches.forEach((m, i) => {
-        html += renderMindMatch(m, `final-${i}`);
-      });
-      html += `</div></div>`;
-    }
-
-    // Champion
-    const finalMatch = finalMatches[0];
-    const champion = finalMatch ? getWinner(finalMatch) : null;
+    // Champion — ดึงผู้ชนะจากคู่รอบสุดท้ายอัตโนมัติ
+    const finalRoundMatches = bracketRounds[maxDepth] || [];
+    let champion = null;
+    finalRoundMatches.forEach(m => {
+      const w = getWinner(m);
+      if (w && !champion) champion = resolveTeamName(w, byNo);
+    });
     html += `<div class="bracket-column" data-round="champion">
       <div class="round-title" style="color: #FCD34D;">👑 แชมป์</div>
       <div class="round-matches">
@@ -1266,10 +1323,7 @@ function renderBracketContent() {
           <div class="champion-card winner-glow">
             <div class="text-5xl mb-3 trophy-bounce text-center">🏆</div>
             <div class="flex justify-center mb-3">
-              <div class="logo-ring xl winner">
-                <div class="logo-fallback" style="font-size:44px">🏫</div>
-                ${getLogoPath(champion) ? `<img src="${getLogoPath(champion)}" onerror="this.style.display='none';">` : ''}
-              </div>
+              ${getLogoHTML(champion, "xl", "winner")}
             </div>
             <p class="font-heading font-black text-xl text-yellow-200 text-center">${shortTeamName(champion)}</p>
             <p class="text-yellow-300/60 text-xs text-center mt-2 tracking-widest">CHAMPION 2569</p>
@@ -1285,6 +1339,24 @@ function renderBracketContent() {
 
     html += `</div></div>`;
     html += `<svg class="bracket-svg-overlay" id="bracketSvg"></svg>`;
+
+    // ชิงอันดับ 3 และแมตช์พิเศษ — แสดงแยกต่างหาก ไม่เชื่อมเส้นเข้าผังหลัก
+    if (thirdPlaceMatches.length > 0 || specialMatches.length > 0) {
+      html += `<div class="flex flex-wrap gap-6 justify-center mt-8 pt-8 border-t border-white/10">`;
+      thirdPlaceMatches.forEach(m => {
+        html += `<div>
+          <div class="round-title" style="color:#FCA5A5; background:rgba(220,38,38,0.25); border-color:rgba(252,165,165,0.4);">🥉 ชิงอันดับที่ 3</div>
+          ${renderMindMatch(m, byNo)}
+        </div>`;
+      });
+      specialMatches.forEach(m => {
+        html += `<div>
+          <div class="round-title">✨ ${m.group || "แมตช์พิเศษ"}</div>
+          ${renderMindMatch(m, byNo)}
+        </div>`;
+      });
+      html += `</div>`;
+    }
   }
 
   if (groupMatches.length === 0 && knockoutMatches.length === 0) {
@@ -1302,7 +1374,7 @@ function renderBracketContent() {
   }, 200);
 }
 
-function renderMindMatch(m, key) {
+function renderMindMatch(m, byNo) {
   const isLive = m.status === "live";
   const isFinished = m.status === "finished";
   const isUpcoming = m.status === "upcoming";
@@ -1312,22 +1384,26 @@ function renderMindMatch(m, key) {
   const aWon = winner && winner === m.teamA;
   const bWon = winner && winner === m.teamB;
 
+  // ถ้าช่องทีมยังเป็นข้อความอ้างอิง เช่น "ผู้ชนะคู่ 20" ให้ไล่หาชื่อจริง/ตราจริงอัตโนมัติ
+  const dispA = resolveTeamName(m.teamA, byNo || {});
+  const dispB = resolveTeamName(m.teamB, byNo || {});
+
   let cardClass = "";
   if (isLive) cardClass = "match-live";
   else if (isFinished && winner) cardClass = "match-winner";
   else if (isFinished) cardClass = "match-finished";
 
   return `
-    <div class="mind-match-card ${cardClass}" data-key="${key}">
+    <div class="mind-match-card ${cardClass}" data-match-no="${m.no}">
       <div class="mm-team ${aWon ? 'mm-winner' : (isFinished && bWon ? 'mm-loser' : '')}">
-        ${getLogoHTML(m.teamA, "md")}
-        <span class="mm-name">${shortTeamName(m.teamA)}</span>
+        ${getLogoHTML(dispA, "md")}
+        <span class="mm-name">${shortTeamName(dispA)}</span>
         <span class="mm-score">${scoreA}</span>
         ${aWon ? '<span class="mm-trophy">🏆</span>' : ''}
       </div>
       <div class="mm-team ${bWon ? 'mm-winner' : (isFinished && aWon ? 'mm-loser' : '')}">
-        ${getLogoHTML(m.teamB, "md")}
-        <span class="mm-name">${shortTeamName(m.teamB)}</span>
+        ${getLogoHTML(dispB, "md")}
+        <span class="mm-name">${shortTeamName(dispB)}</span>
         <span class="mm-score">${scoreB}</span>
         ${bWon ? '<span class="mm-trophy">🏆</span>' : ''}
       </div>
@@ -1352,6 +1428,67 @@ function getWinner(m) {
   return null;
 }
 
+// จับรูปแบบ "ผู้ชนะคู่ N" / "ผู้แพ้คู่ N" เพื่อรู้ว่าแมตช์นี้ต้องรอผลจากคู่ไหน
+function parseBracketRef(name) {
+  if (!name) return null;
+  const m = String(name).match(/(ผู้ชนะ|ผู้แพ้)คู่\s*(\d+)/);
+  if (!m) return null;
+  return { no: m[2], win: m[1] === "ผู้ชนะ" };
+}
+
+function isGroupPositionRef(name) {
+  return /^ที่\s*\d+\s*สาย/.test(String(name || "").trim());
+}
+
+// แทนที่ "ผู้ชนะคู่ 20" ด้วยชื่อโรงเรียนจริงทันทีที่คู่ 20 มีผลแล้ว (ไม่ต้องพิมพ์ชื่อเองใน sheet)
+function resolveTeamName(name, byNo, seen) {
+  seen = seen || new Set();
+  const ref = parseBracketRef(name);
+  if (!ref || seen.has(ref.no)) return name;
+  seen.add(ref.no);
+  const refMatch = byNo[ref.no];
+  if (!refMatch) return name;
+  const winner = getWinner(refMatch);
+  if (!winner) return name;
+  const loser = winner === refMatch.teamA ? refMatch.teamB : refMatch.teamA;
+  return resolveTeamName(ref.win ? winner : loser, byNo, seen);
+}
+
+// วิเคราะห์โครงสร้างผัง: หาว่าแต่ละคู่อยู่ "รอบที่เท่าไร" (depth) และผู้ชนะของคู่ไหนไปเล่นคู่ต่อไปคู่ใด (parentOf)
+// ทำงานอัตโนมัติไม่ว่าจะมีกี่รอบ (รองฯ+ชิง, หรือ ก่อนรองฯ+รองฯ+ชิง ก็ได้)
+function analyzeKnockout(matches) {
+  const byNo = {};
+  matches.forEach(m => { byNo[m.no] = m; });
+
+  const depthCache = {};
+  function getDepth(no, seen) {
+    seen = seen || new Set();
+    if (depthCache[no] !== undefined) return depthCache[no];
+    if (seen.has(no)) return 0;
+    seen.add(no);
+    const m = byNo[no];
+    if (!m) return 0;
+    let d = 0;
+    [m.teamA, m.teamB].forEach(t => {
+      const ref = parseBracketRef(t);
+      if (ref && byNo[ref.no]) d = Math.max(d, getDepth(ref.no, seen) + 1);
+    });
+    depthCache[no] = d;
+    return d;
+  }
+  matches.forEach(m => getDepth(m.no));
+
+  const parentOf = {};
+  matches.forEach(m => {
+    [m.teamA, m.teamB].forEach(t => {
+      const ref = parseBracketRef(t);
+      if (ref && ref.win) parentOf[ref.no] = m.no;
+    });
+  });
+
+  return { byNo, depth: depthCache, parentOf };
+}
+
 function drawBracketLines() {
   const svg = document.getElementById("bracketSvg");
   const wrapper = document.querySelector(".mind-map-wrapper");
@@ -1371,52 +1508,41 @@ function drawBracketLines() {
   svg.style.left = "0";
   svg.style.pointerEvents = "none";
 
-  const sfCards = wrapper.querySelectorAll('[data-key^="sf-"]');
-  const finalCards = wrapper.querySelectorAll('[data-key^="final-"]');
-  const championCard = wrapper.querySelector(".champion-card");
-
-  // SF → Final
-  const finalCard = finalCards[0];
-  if (finalCard && sfCards.length > 0) {
-    const finalRect = finalCard.getBoundingClientRect();
-    sfCards.forEach(sfCard => {
-      const sfRect = sfCard.getBoundingClientRect();
-      const startX = sfRect.right - wrapperRect.left;
-      const startY = sfRect.top + sfRect.height / 2 - wrapperRect.top;
-      const endX = finalRect.left - wrapperRect.left;
-      const endY = finalRect.top + finalRect.height / 2 - wrapperRect.top;
-      const midX = (startX + endX) / 2;
-
-      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      path.setAttribute("d", `M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}`);
-      path.setAttribute("stroke", "#FCD34D");
-      path.setAttribute("stroke-width", "3");
-      path.setAttribute("fill", "none");
-      path.setAttribute("stroke-linecap", "round");
-      path.setAttribute("opacity", "0.85");
-      path.style.filter = "drop-shadow(0 0 6px rgba(252,211,77,0.6))";
-      svg.appendChild(path);
-    });
-  }
-
-  // Final → Champion
-  if (championCard && finalCard) {
-    const finalRect = finalCard.getBoundingClientRect();
-    const champRect = championCard.getBoundingClientRect();
-    const startX = finalRect.right - wrapperRect.left;
-    const startY = finalRect.top + finalRect.height / 2 - wrapperRect.top;
-    const endX = champRect.left - wrapperRect.left;
-    const endY = champRect.top + champRect.height / 2 - wrapperRect.top;
+  function drawCurve(fromEl, toEl, width) {
+    if (!fromEl || !toEl) return;
+    const fromRect = fromEl.getBoundingClientRect();
+    const toRect = toEl.getBoundingClientRect();
+    const startX = fromRect.right - wrapperRect.left;
+    const startY = fromRect.top + fromRect.height / 2 - wrapperRect.top;
+    const endX = toRect.left - wrapperRect.left;
+    const endY = toRect.top + toRect.height / 2 - wrapperRect.top;
     const midX = (startX + endX) / 2;
-
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", `M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}`);
     path.setAttribute("stroke", "#FCD34D");
-    path.setAttribute("stroke-width", "4");
+    path.setAttribute("stroke-width", String(width));
     path.setAttribute("fill", "none");
     path.setAttribute("stroke-linecap", "round");
-    path.style.filter = "drop-shadow(0 0 10px rgba(252,211,77,0.9))";
+    path.setAttribute("opacity", "0.85");
+    path.style.filter = "drop-shadow(0 0 6px rgba(252,211,77,0.6))";
     svg.appendChild(path);
+  }
+
+  // เชื่อมทุกคู่เข้ากับคู่ถัดไปที่ผู้ชนะจะไปเล่นต่อ (รองรับกี่รอบก็ได้ ไม่ใช่แค่รองฯ→ชิง)
+  Object.keys(currentParentOf).forEach(childNo => {
+    const parentNo = currentParentOf[childNo];
+    const fromEl = wrapper.querySelector(`[data-match-no="${childNo}"]`);
+    const toEl = wrapper.querySelector(`[data-match-no="${parentNo}"]`);
+    drawCurve(fromEl, toEl, 3);
+  });
+
+  // รอบสุดท้าย → แชมป์
+  const championCard = wrapper.querySelector(".champion-card");
+  if (championCard) {
+    currentFinalRoundNos.forEach(no => {
+      const fromEl = wrapper.querySelector(`[data-match-no="${no}"]`);
+      drawCurve(fromEl, championCard, 4);
+    });
   }
 }
 
