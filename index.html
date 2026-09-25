@@ -548,6 +548,8 @@ const DATA = {
 let bracketInitialized = false;
 let currentTab = 'group';
 let currentSportMatches = [];
+let groupStandings = {}; // เก็บผลการจัดอันดับของแต่ละกลุ่ม
+let matchResults = {};   // เก็บผลการแข่งขันของแต่ละคู่
 
 function showPage(page) {
   document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
@@ -585,7 +587,105 @@ let usingFallback = false;
 
 function initBracket() { setInterval(fetchBracketData, CONFIG.REFRESH_INTERVAL); document.addEventListener("visibilitychange", () => { if (!document.hidden && document.getElementById("page-bracket").classList.contains("active")) fetchBracketData(); }); }
 
-// ✅ ดึงข้อมูลจาก CSV โดยตรง
+// ✅ ฟังก์ชันใหม่: ประมวลผลข้อมูลการแข่งขันเพื่อหาผู้เข้ารอบ
+function processTournamentData(matches) {
+  groupStandings = {};
+  matchResults = {};
+
+  // 1. คำนวณตารางคะแนนรอบแบ่งกลุ่ม
+  const groupMatches = matches.filter(m => ["A","B","C","D"].includes((m.group || "").trim()));
+  groupMatches.forEach(m => {
+    const g = m.group;
+    const sport = m.sport;
+    
+    if (!groupStandings[sport]) groupStandings[sport] = {};
+    if (!groupStandings[sport][g]) groupStandings[sport][g] = {};
+    
+    [m.teamA, m.teamB].forEach(t => {
+      if (t && t !== "-" && !t.startsWith("ที่") && !t.startsWith("ผู้")) {
+        if (!groupStandings[sport][g][t]) {
+          groupStandings[sport][g][t] = { name: t, played: 0, win: 0, draw: 0, loss: 0, gf: 0, ga: 0, gd: 0, pts: 0 };
+        }
+      }
+    });
+
+    if (m.status === "finished" && !isNaN(+m.scoreA) && !isNaN(+m.scoreB)) {
+      const a = +m.scoreA, b = +m.scoreB;
+      const tA = groupStandings[sport][g][m.teamA];
+      const tB = groupStandings[sport][g][m.teamB];
+      
+      if (tA && tB) {
+        tA.played++; tB.played++;
+        tA.gf += a; tA.ga += b; tA.gd += (a - b);
+        tB.gf += b; tB.ga += a; tB.gd += (b - a);
+        
+        if (a > b) { tA.win++; tA.pts += 3; tB.loss++; }
+        else if (b > a) { tB.win++; tB.pts += 3; tA.loss++; }
+        else { tA.draw++; tB.draw++; tA.pts++; tB.pts++; }
+      }
+    }
+  });
+
+  // จัดอันดับกลุ่ม
+  Object.keys(groupStandings).forEach(sport => {
+    Object.keys(groupStandings[sport]).forEach(g => {
+      groupStandings[sport][g] = Object.values(groupStandings[sport][g]).sort((a, b) => {
+        if (b.pts !== a.pts) return b.pts - a.pts;
+        if (b.gd !== a.gd) return b.gd - a.gd;
+        return b.gf - a.gf;
+      });
+    });
+  });
+
+  // 2. คำนวณผลการแข่งขันรอบ Knockout (ผู้ชนะ/ผู้แพ้)
+  matches.forEach(m => {
+    if (m.status === "finished" && !isNaN(+m.scoreA) && !isNaN(+m.scoreB)) {
+      const a = +m.scoreA, b = +m.scoreB;
+      const sport = m.sport;
+      if (!matchResults[sport]) matchResults[sport] = {};
+      
+      if (a > b) { matchResults[sport][m.no] = { winner: m.teamA, loser: m.teamB }; }
+      else if (b > a) { matchResults[sport][m.no] = { winner: m.teamB, loser: m.teamA }; }
+      else { matchResults[sport][m.no] = { winner: null, loser: null }; }
+    }
+  });
+}
+
+// ✅ ฟังก์ชันใหม่: ถอดรหัสชื่อทีมจากข้อความ Placeholder
+function resolveTeamName(placeholder, sport) {
+  if (!placeholder) return placeholder;
+  const clean = placeholder.trim();
+
+  // รูปแบบ: ที่ 1 สาย A
+  const group1Match = clean.match(/ที่\s*1\s*สาย\s*([A-Z])/i);
+  if (group1Match) {
+    const g = group1Match[1].toUpperCase();
+    if (groupStandings[sport] && groupStandings[sport][g] && groupStandings[sport][g][0]) return groupStandings[sport][g][0].name;
+  }
+  // รูปแบบ: ที่ 2 สาย B
+  const group2Match = clean.match(/ที่\s*2\s*สาย\s*([A-Z])/i);
+  if (group2Match) {
+    const g = group2Match[1].toUpperCase();
+    if (groupStandings[sport] && groupStandings[sport][g] && groupStandings[sport][g][1]) return groupStandings[sport][g][1].name;
+  }
+
+  // รูปแบบ: ผู้ชนะคู่ 63
+  const winnerMatch = clean.match(/ผู้ชนะคู่\s*(\d+)/i);
+  if (winnerMatch) {
+    const matchNo = winnerMatch[1];
+    if (matchResults[sport] && matchResults[sport][matchNo] && matchResults[sport][matchNo].winner) return matchResults[sport][matchNo].winner;
+  }
+
+  // รูปแบบ: ผู้แพ้คู่ 63
+  const loserMatch = clean.match(/ผู้แพ้คู่\s*(\d+)/i);
+  if (loserMatch) {
+    const matchNo = loserMatch[1];
+    if (matchResults[sport] && matchResults[sport][matchNo] && matchResults[sport][matchNo].loser) return matchResults[sport][matchNo].loser;
+  }
+
+  return placeholder; // ถ้าไม่ตรงกับรูปแบบใดเลย ให้คืนค่าเดิม
+}
+
 async function fetchBracketData() {
   const url = CONFIG.SCORE_SHEET_URL;
   
@@ -599,7 +699,6 @@ async function fetchBracketData() {
     setConnectionStatus("loading", "กำลังโหลด...");
     document.getElementById('fallbackWarning').classList.add('hidden');
     
-    // ใช้ fetch ดึง CSV ตรงๆ + เพิ่ม cache buster
     const res = await fetch(url + "&t=" + Date.now(), { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
     
@@ -611,6 +710,9 @@ async function fetchBracketData() {
     const changes = detectChanges(matches);
     allMatches = matches;
     previousMatchState = Object.fromEntries(matches.map(m => [m.no, { scoreA: m.scoreA, scoreB: m.scoreB, status: m.status }]));
+    
+    // ✅ ประมวลผลข้อมูลการแข่งขันเพื่อหาผู้เข้ารอบ
+    processTournamentData(allMatches);
     
     usingFallback = false;
     renderSportTabs();
@@ -633,13 +735,13 @@ async function fetchBracketData() {
 function loadFallbackData() {
   usingFallback = true;
   allMatches = [...FALLBACK_DATA];
+  processTournamentData(allMatches); // ✅ ประมวลผลข้อมูลสำรองด้วย
   document.getElementById('fallbackWarning').classList.remove('hidden');
   renderSportTabs();
   renderBracketContent();
   updateLastUpdate();
 }
 
-// ✅ Parse CSV
 function parseCSV(csv) {
   const lines = csv.trim().split("\n");
   if (lines.length < 2) return [];
@@ -696,6 +798,7 @@ function renderBracketContent() {
     return;
   }
   
+  const sport = selectedSport;
   const groupMatches = currentSportMatches.filter(m => ["A","B","C","D"].includes((m.group || "").trim()));
   const knockoutMatches = currentSportMatches.filter(m => { const g = (m.group || "").trim(); return !["A","B","C","D","-",""].includes(g); });
 
@@ -720,38 +823,10 @@ function renderBracketContent() {
     </div>
   `;
 
+  // Tab Content: Group Stage (ใช้ groupStandings ที่คำนวณไว้แล้ว)
   html += `<div id="content-group" class="tab-content ${currentTab === 'group' ? '' : 'hidden'}">`;
-  if (Object.keys(groupMatches).length > 0) {
-    const groups = {};
-    groupMatches.forEach(m => {
-      const g = m.group;
-      if (!groups[g]) groups[g] = {};
-      [m.teamA, m.teamB].forEach(t => {
-        if (t && t !== "-" && !t.startsWith("ที่") && !t.startsWith("ผู้")) {
-          if (!groups[g][t]) groups[g][t] = { name: t, played: 0, win: 0, draw: 0, loss: 0, gf: 0, ga: 0, pts: 0 };
-        }
-      });
-      if (m.status === "finished" && !isNaN(+m.scoreA) && !isNaN(+m.scoreB)) {
-        const a = +m.scoreA, b = +m.scoreB;
-        if (groups[g][m.teamA] && groups[g][m.teamB]) {
-          groups[g][m.teamA].played++; groups[g][m.teamB].played++;
-          groups[g][m.teamA].gf += a; groups[g][m.teamA].ga += b;
-          groups[g][m.teamB].gf += b; groups[g][m.teamB].ga += a;
-          if (a > b) { groups[g][m.teamA].win++; groups[g][m.teamA].pts += 3; groups[g][m.teamB].loss++; }
-          else if (b > a) { groups[g][m.teamB].win++; groups[g][m.teamB].pts += 3; groups[g][m.teamA].loss++; }
-          else { groups[g][m.teamA].draw++; groups[g][m.teamB].draw++; groups[g][m.teamA].pts++; groups[g][m.teamB].pts++; }
-        }
-      }
-    });
-    Object.keys(groups).forEach(g => {
-      groups[g] = Object.values(groups[g]).sort((a, b) => {
-        if (b.pts !== a.pts) return b.pts - a.pts;
-        const diffA = a.gf - a.ga, diffB = b.gf - b.ga;
-        if (diffB !== diffA) return diffB - diffA;
-        return b.gf - a.gf;
-      });
-    });
-
+  if (groupMatches.length > 0 && groupStandings[sport]) {
+    const groups = groupStandings[sport];
     html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-4">`;
     Object.keys(groups).sort().forEach(g => {
       html += `<div class="group-table">
@@ -773,6 +848,7 @@ function renderBracketContent() {
   }
   html += `</div>`;
 
+  // Tab Content: Knockout Stage
   html += `<div id="content-knockout" class="tab-content ${currentTab === 'knockout' ? '' : 'hidden'}">`;
   
   const qfMatches = knockoutMatches.filter(m => { const g = (m.group || ""); return g.includes("ก่อนรอง") || g.includes("8 ทีม") || g.includes("รอบ 8"); });
@@ -804,15 +880,16 @@ function renderBracketContent() {
       <div class="final-label">รอบชิงชนะเลิศ</div>`;
     const champion = finalMatches[0] ? getWinner(finalMatches[0]) : null;
     if (champion) {
+      const realChampion = resolveTeamName(champion, sport);
       html += `<div class="champion-card-v2 winner-glow">
         <div class="text-3xl mb-2 text-center">👑</div>
         <div class="flex justify-center mb-2">
           <div class="logo-ring lg winner">
             <div class="logo-fallback" style="font-size:30px">🏫</div>
-            ${getLogoPath(champion) ? `<img src="${getLogoPath(champion)}" onerror="this.style.display='none';">` : ''}
+            ${getLogoPath(realChampion) ? `<img src="${getLogoPath(realChampion)}" onerror="this.style.display='none';">` : ''}
           </div>
         </div>
-        <p class="font-heading font-black text-lg text-yellow-200 text-center">${shortTeamName(champion)}</p>
+        <p class="font-heading font-black text-lg text-yellow-200 text-center">${shortTeamName(realChampion)}</p>
         <p class="text-yellow-300/60 text-xs text-center mt-1 tracking-widest">CHAMPION 2569</p>
       </div>`;
     }
@@ -871,12 +948,18 @@ function switchTab(tab) {
   document.getElementById('content-knockout').classList.toggle('hidden', tab !== 'knockout');
 }
 
+// ✅ แก้ไข renderBracketMatch: ให้ถอดรหัสชื่อทีมก่อนแสดงผล
 function renderBracketMatch(m) {
+  const realTeamA = resolveTeamName(m.teamA, m.sport);
+  const realTeamB = resolveTeamName(m.teamB, m.sport);
+  
   const isLive = m.status === "live";
   const isFinished = m.status === "finished";
   const isUpcoming = m.status === "upcoming";
   const scoreA = isUpcoming ? "-" : m.scoreA;
   const scoreB = isUpcoming ? "-" : m.scoreB;
+  
+  // เช็คผู้ชนะจากชื่อทีมเดิม (Placeholder) เพื่อให้ตรงกับ Logic การเก็บผล
   const winner = getWinner(m);
   const aWon = winner && winner === m.teamA;
   const bWon = winner && winner === m.teamB;
@@ -884,14 +967,14 @@ function renderBracketMatch(m) {
   return `
     <div class="bracket-match">
       <div class="bracket-team ${aWon ? 'team-winner' : (isFinished && bWon ? 'team-loser' : '')}">
-        ${getLogoHTML(m.teamA, "md")}
-        <span class="bracket-team-name">${shortTeamName(m.teamA)}</span>
+        ${getLogoHTML(realTeamA, "md")}
+        <span class="bracket-team-name">${shortTeamName(realTeamA)}</span>
         <span class="bracket-team-score">${scoreA}</span>
         ${aWon ? '<span>🏆</span>' : ''}
       </div>
       <div class="bracket-team ${bWon ? 'team-winner' : (isFinished && aWon ? 'team-loser' : '')}">
-        ${getLogoHTML(m.teamB, "md")}
-        <span class="bracket-team-name">${shortTeamName(m.teamB)}</span>
+        ${getLogoHTML(realTeamB, "md")}
+        <span class="bracket-team-name">${shortTeamName(realTeamB)}</span>
         <span class="bracket-team-score">${scoreB}</span>
         ${bWon ? '<span>🏆</span>' : ''}
       </div>
@@ -915,7 +998,7 @@ function playSound() { try { const ctx = new (window.AudioContext || window.webk
 // ================================================================
 document.addEventListener("DOMContentLoaded", () => {
   startCountdown(); renderStats(); renderSports(); renderAthletics(); renderCommittees(); renderSchools();
-  console.log("✅ Doytao Sports 2026 - CSV Direct Mode");
+  console.log("✅ Doytao Sports 2026 - Auto Resolve Knockout Teams");
 });
 </script>
 
