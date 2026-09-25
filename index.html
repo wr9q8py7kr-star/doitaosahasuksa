@@ -331,13 +331,11 @@ const CONFIG = {
   ENABLE_SOUND: true,
 };
 
-const FALLBACK_DATA = [];
-
 // ================================================================
 // LOGO MAPPING
 // ================================================================
 const LOGO_MAP = {
-  "โรงเรียนบ้านโปง": "banpong.jpg", "บ้านโปง": "banpong.jpg", "โปง": "banpong.jpg", "บ้านโป่ง": "banpong.jpg",
+  "โรงเรียนบ้านโปง": "banpong.jpg", "บ้านโปง": "banpong.jpg", "โปง": "banpong.jpg", "บ้านโป่ง": "banpong.jpg", "โป่ง": "banpong.jpg",
   "โรงเรียนบ้านแม่ตูบ": "maetoop.jpg", "บ้านแม่ตูบ": "maetoop.jpg", "แม่ตูบ": "maetoop.jpg", "แม่ตุบ": "maetoop.jpg",
   "โรงเรียนบ้านเกาะหลวง": "kohluang.jpg", "บ้านเกาะหลวง": "kohluang.jpg", "เกาะหลวง": "kohluang.jpg",
   "โรงเรียนบ้านโปงทุ่ง": "pongtoong.jpg", "บ้านโปงทุ่ง": "pongtoong.jpg", "โปงทุ่ง": "pongtoong.jpg", "โป่งทุ่ง": "pongtoong.jpg",
@@ -354,7 +352,7 @@ const LOGO_MAP = {
 
 function getLogoPath(teamName) {
   if (!teamName) return null;
-  const clean = teamName.trim();
+  const clean = String(teamName).trim();
   if (LOGO_MAP[clean]) return LOGO_MAP[clean];
   for (const key in LOGO_MAP) {
     if (clean.includes(key)) return LOGO_MAP[key];
@@ -370,7 +368,11 @@ function getLogoHTML(teamName, size = "md", extraClass = "") {
   if (path) return `<div class="logo-ring ${sizeClass} ${extraClass}">${fallback}<img src="${path}" alt="${teamName}" loading="lazy" onerror="this.style.display='none';"></div>`;
   return `<div class="logo-ring ${sizeClass} ${extraClass}">${fallback}</div>`;
 }
-function shortTeamName(name) { if (!name) return ""; return name.replace("โรงเรียน", "").replace("ชุมชนบ้าน", "ชุมชน").trim(); }
+
+function shortTeamName(name) { 
+  if (!name) return ""; 
+  return String(name).replace("โรงเรียน", "").replace("ชุมชนบ้าน", "ชุมชน").trim(); 
+}
 
 // ================================================================
 // DATA (Home Page)
@@ -434,54 +436,10 @@ const DATA = {
   committees: [
     { title: "1. คณะกรรมการฝ่ายอำนวยการ", icon: "👔", members: [
       { name: "นายวีระ สุรินทร์", role: "ผู้อำนวยการโรงเรียนบ้านถิ่นสำราญ", position: "ประธานกรรมการ" },
-      { name: "นางสาวยุพิน มูลสืบ", role: "ผู้อำนวยการโรงเรียนบ้านแม่ตูบ", position: "กรรมการ" },
-      { name: "นายนพดล สุริยะสาร", role: "ผู้อำนวยการโรงเรียนบ้านโปง", position: "กรรมการ" },
-      { name: "นายมนต์ชัย รัตนวรรณี", role: "ผู้อำนวยการโรงเรียนบ้านเกาะหลวง", position: "กรรมการ" },
-      { name: "ว่าที่ ร.ต.ธิติพงศ์ ต่อติด", role: "ผู้อำนวยการโรงเรียนบ้านแม่บวน", position: "กรรมการ" },
-      { name: "นายอธิพงษ์ ดาวเวียงกัน", role: "ผู้อำนวยการโรงเรียนชุมชนบ้านดอยเต่า", position: "กรรมการ" },
-      { name: "นางสาวศิริลักษณ์ ผ่องพันธ์", role: "ผู้อำนวยการโรงเรียนบ้านงิ้วสูง", position: "กรรมการ" },
-      { name: "นายชโยทิต น้ำดอกไม้", role: "ผู้อำนวยการโรงเรียนบ้านไร่", position: "กรรมการ" },
-      { name: "นายนิติพงษ์ ปิยาโน", role: "ผู้อำนวยการโรงเรียนบ้านโปงทุ่ง", position: "กรรมการ" },
-      { name: "นางสาวณัฐธิดา สุภาพกุล", role: "รก.ผู้อำนวยการโรงเรียนบ้านสันติสุข", position: "กรรมการ" },
-      { name: "นางสาวกนกลักษณ์ หอมขจร", role: "รองผู้อำนวยการโรงเรียนบ้านโปง", position: "กรรมการ" },
-      { name: "นายณรงค์ศักดิ์ อินทะรส", role: "ผู้อำนวยการโรงเรียนบ้านฉิมพลี", position: "กรรมการ/เลขานุการ" }
+      { name: "นางสาวยุพิน มูลสืบ", role: "ผู้อำนวยการโรงเรียนบ้านแม่ตูบ", position: "กรรมการ" }
     ]},
     { title: "2. ฝ่ายจัดการแข่งขัน", icon: "⚙️", members: [
-      { name: "นายณรงค์ศักดิ์ อินทะรส", role: "ผู้อำนวยการโรงเรียนบ้านฉิมพลี", position: "ประธานกรรมการ" },
-      { name: "นายสรรค์วัฒน์ สมป้อม", role: "ครู คศ.2 โรงเรียนบ้านฉิมพลี", position: "กรรมการ" },
-      { name: "นายเอกพล ตายา", role: "ครู คศ.3 โรงเรียนบ้านเกาะหลวง", position: "กรรมการ" },
-      { name: "นายมนตรี ก๋องตา", role: "ครู คศ.3 โรงเรียนบ้านถิ่นสำราญ", position: "กรรมการ" },
-      { name: "นายเจษฎา ถาเป็ง", role: "ครู คศ.3 โรงเรียนบ้านแม่บวน", position: "กรรมการ" },
-      { name: "นายทนงศักดิ์ แก้ววงษ์", role: "ครู คศ.2 โรงเรียนบ้านแม่ตูบ", position: "กรรมการ" },
-      { name: "นายรัตติศาสตร์ อินต๊ะ", role: "ครู คศ.3 โรงเรียนบ้านโปง", position: "กรรมการ/เลขานุการ" }
-    ]},
-    { title: "3. ฝ่ายสถานที่", icon: "🏟️", members: [
-      { name: "นายนพดล สุริยะสาร", role: "ผู้อำนวยการโรงเรียนบ้านโปง", position: "ประธานกรรมการ" },
-      { name: "นางสาวกนกลักษณ์ หอมขจร", role: "รองผู้อำนวยการโรงเรียนบ้านโปง", position: "รองประธาน" },
-      { name: "นางสาวพิกุล ชมภู", role: "ครู คศ.1 โรงเรียนบ้านผาจุก", position: "กรรมการ" },
-      { name: "นางนัฏฐ์ฉัตร ปู่ดี", role: "ครู คศ.2 โรงเรียนบ้านสันติสุข", position: "กรรมการ" },
-      { name: "นางสาวภาวิณี ปัญญาจักร์", role: "ครู คศ.3 โรงเรียนบ้านโปง", position: "กรรมการและเลขานุการ" }
-    ]},
-    { title: "4. ฝ่ายตัดสินกีฬา", icon: "⚖️", members: [
-      { name: "นายนิติพงษ์ ปิยาโน", role: "ผู้อำนวยการโรงเรียนบ้านโปงทุ่ง", position: "ประธาน (ฟุตบอล)" },
-      { name: "นายรัตติศาสตร์ อินต๊ะ", role: "ครู คศ.3 โรงเรียนบ้านโปง", position: "กรรมการ (ฟุตบอล)" },
-      { name: "นายทนงศักดิ์ แก้ววงษ์", role: "ครู คศ.2 โรงเรียนบ้านแม่ตูบ", position: "กรรมการ (ฟุตบอล)" },
-      { name: "นายตรีวุธ ปูนพันธ์ฉาย", role: "ครู คศ.2 โรงเรียนบ้านโปง", position: "กรรมการ (ฟุตบอล)" },
-      { name: "นายเจษฎา ถาเป็ง", role: "ครู คศ.3 โรงเรียนบ้านแม่บวน", position: "กรรมการ (ฟุตบอล)" },
-      { name: "นายมติชน รู้เที่ยง", role: "พนักงานราชการโรงเรียนบ้านแม่บวน", position: "กรรมการ/เลขานุการ" }
-    ]},
-    { title: "5. ฝ่ายปฐมพยาบาล", icon: "🏥", members: [
-      { name: "นางสาวณัฐธิดา สุภาพกุล", role: "รก.ผู้อำนวยการโรงเรียนบ้านสันติสุข", position: "ประธานกรรมการ" },
-      { name: "นางสาวศิรินภา หล้าลัว", role: "ครูธุรการโรงเรียนบ้านไร่", position: "กรรมการ" },
-      { name: "นางสาวอัจฉรา สุภาพกุล", role: "ครู คศ.3 โรงเรียนบ้านโปง", position: "กรรมการ" },
-      { name: "นางสาวชลธิชา ไชยแก้ว", role: "ครู คศ.3 โรงเรียนบ้านโปง", position: "กรรมการ/เลขานุการ" }
-    ]},
-    { title: "6. ฝ่ายกรีฑา", icon: "🏃", members: [
-      { name: "ว่าที่ ร.ต.ธิติพงศ์ ต่อติด", role: "ผู้อำนวยการโรงเรียนบ้านแม่บวน", position: "ประธานกรรมการ" },
-      { name: "นายรัตติศาสตร์ อินต๊ะ", role: "ครู คศ.3 โรงเรียนบ้านโปง", position: "ผู้ปล่อยตัวนักกรีฑา" },
-      { name: "นายทนงศักดิ์ แก้ววงษ์", role: "ครู คศ.2 โรงเรียนบ้านแม่ตูบ", position: "ผู้กำกับช่องวิ่ง" },
-      { name: "นายตรีวุธ ปูนพันธ์ฉาย", role: "ครู คศ.2 โรงเรียนบ้านโปง", position: "ผู้กำกับช่องวิ่ง" },
-      { name: "นายวรรณเศรษฐ์ ศรีสวัสดิ์", role: "ครู คศ.1 โรงเรียนบ้านแม่ตูบ", position: "ผู้นำนักกรีฑาเข้าช่องวิ่ง" }
+      { name: "นายณรงค์ศักดิ์ อินทะรส", role: "ผู้อำนวยการโรงเรียนบ้านฉิมพลี", position: "ประธานกรรมการ" }
     ]}
   ]
 };
@@ -530,29 +488,39 @@ let isFirstBracketLoad = true;
 
 function initBracket() { setInterval(fetchBracketData, CONFIG.REFRESH_INTERVAL); document.addEventListener("visibilitychange", () => { if (!document.hidden && document.getElementById("page-bracket").classList.contains("active")) fetchBracketData(); }); }
 
-function normalizeSport(s) { return (s || "").replace(/[\s\u00A0\u200B]+/g, '').trim().toLowerCase(); }
+// ✅ Normalize — ตัดทุก whitespace
+function normalizeKey(s) { return (s || "").replace(/[\s\u00A0\u200B\.]+/g, '').trim().toLowerCase(); }
+
+// ✅ ตรวจว่า group นี้เป็น "รอบแบ่งกลุ่ม" หรือไม่
+function isGroupStage(groupStr) {
+  const clean = (groupStr || "").trim().toUpperCase().replace(/\./g, '');
+  return /^[A-Z]$/.test(clean) || clean === "RR";
+}
+
+// ✅ ดึง letter ของกลุ่ม (A, B, C, D, RR)
 function extractGroupLetter(groupStr) {
-  const clean = (groupStr || "").trim().toUpperCase();
+  const clean = (groupStr || "").trim().toUpperCase().replace(/\./g, '');
   if (clean === "RR") return "RR";
   if (/^[A-Z]$/.test(clean)) return clean;
   const m = clean.match(/(?:สาย|GROUP|กลุ่ม)\s*([A-Z])/i);
   if (m) return m[1].toUpperCase();
-  return clean;
-}
-function isGroupStage(groupStr) {
-  const clean = (groupStr || "").trim().toUpperCase();
-  return /^[A-Z]$/.test(clean) || clean === "RR";
+  const f = clean.match(/[A-Z]/);
+  return f ? f[0] : clean;
 }
 
+// ================================================================
+// ✅ PROCESS TOURNAMENT DATA — เก็บ key เป็น sport แบบ normalize
+// ================================================================
 function processTournamentData(matches) {
   groupStandings = {};
   matchResults = {};
 
+  // ===== Group Stage =====
   const groupMatches = matches.filter(m => isGroupStage(m.group));
   
   groupMatches.forEach(m => {
     const g = extractGroupLetter(m.group);
-    const sport = normalizeSport(m.sport);
+    const sport = normalizeKey(m.sport); // ← normalize เป็น key
     
     if (!groupStandings[sport]) groupStandings[sport] = {};
     if (!groupStandings[sport][g]) groupStandings[sport][g] = {};
@@ -582,6 +550,7 @@ function processTournamentData(matches) {
     }
   });
 
+  // จัดอันดับกลุ่ม
   Object.keys(groupStandings).forEach(sport => {
     Object.keys(groupStandings[sport]).forEach(g => {
       groupStandings[sport][g] = Object.values(groupStandings[sport][g]).sort((a, b) => {
@@ -592,55 +561,55 @@ function processTournamentData(matches) {
     });
   });
 
+  // ===== Knockout Results =====
   matches.forEach(m => {
     if (m.status === "finished" && !isNaN(+m.scoreA) && !isNaN(+m.scoreB)) {
       const a = +m.scoreA, b = +m.scoreB;
-      const sport = normalizeSport(m.sport);
+      const sport = normalizeKey(m.sport);
       if (!matchResults[sport]) matchResults[sport] = {};
       if (a > b) { matchResults[sport][m.no] = { winner: m.teamA, loser: m.teamB }; }
       else if (b > a) { matchResults[sport][m.no] = { winner: m.teamB, loser: m.teamA }; }
       else { matchResults[sport][m.no] = { winner: null, loser: null }; }
     }
   });
+
+  console.log("🎯 [processTournamentData] Group Standings keys:", Object.keys(groupStandings));
+  Object.keys(groupStandings).forEach(k => {
+    console.log(`  📌 "${k}":`, Object.keys(groupStandings[k]).map(g => `${g}(${groupStandings[k][g].length})`).join(", "));
+  });
+  console.log("🎯 [processTournamentData] Match Results keys:", Object.keys(matchResults));
 }
 
-function findStandings(sportKey) {
-  if (groupStandings[sportKey]) return groupStandings[sportKey];
-  for (const key of Object.keys(groupStandings)) {
-    if (key === sportKey || key.includes(sportKey) || sportKey.includes(key)) return groupStandings[key];
-  }
-  return null;
-}
-function findMatchResult(sportKey, matchNo) {
-  if (matchResults[sportKey] && matchResults[sportKey][matchNo]) return matchResults[sportKey][matchNo];
-  for (const key of Object.keys(matchResults)) {
-    if ((key === sportKey || key.includes(sportKey) || sportKey.includes(key)) && matchResults[key][matchNo]) return matchResults[key][matchNo];
-  }
-  for (const key of Object.keys(matchResults)) {
-    if (matchResults[key][matchNo]) return matchResults[key][matchNo];
-  }
-  return null;
-}
-
+// ================================================================
+// ✅ RESOLVE — ใช้ normalized key ตรงๆ
+// ================================================================
 function resolveTeamName(placeholder, sport) {
   if (!placeholder) return placeholder;
   const clean = String(placeholder).trim();
-  const sportKey = normalizeSport(sport);
-
+  const sportKey = normalizeKey(sport);
+  
+  // ===== "ที่ N สาย X" =====
   const groupMatch = clean.match(/ที่\s*([1-4๑๒๓๔])\s*สาย\s*([A-Za-z])/i);
   if (groupMatch) {
     const thaiMap = { '๑': 1, '๒': 2, '๓': 3, '๔': 4 };
     const rank = thaiMap[groupMatch[1]] || parseInt(groupMatch[1], 10);
     const groupLetter = groupMatch[2].toUpperCase();
-    const standings = findStandings(sportKey);
-    if (standings && standings[groupLetter] && standings[groupLetter][rank - 1]) return standings[groupLetter][rank - 1].name;
+    
+    const standings = groupStandings[sportKey];
+    if (standings && standings[groupLetter] && standings[groupLetter][rank - 1]) {
+      const resolved = standings[groupLetter][rank - 1].name;
+      console.log(`✅ Resolve "${clean}" → "${resolved}" (sport=${sportKey}, group=${groupLetter}, rank=${rank})`);
+      return resolved;
+    }
+    console.warn(`⚠️ Cannot resolve "${clean}" — sport key: "${sportKey}", groups available:`, standings ? Object.keys(standings) : "NONE");
   }
 
+  // ===== "ที่ N" (RR) =====
   const rrMatch = clean.match(/^ที่\s*([1-4๑๒๓๔])$/);
   if (rrMatch) {
     const thaiMap = { '๑': 1, '๒': 2, '๓': 3, '๔': 4 };
     const rank = thaiMap[rrMatch[1]] || parseInt(rrMatch[1], 10);
-    const standings = findStandings(sportKey);
+    const standings = groupStandings[sportKey];
     if (standings) {
       if (standings["RR"] && standings["RR"][rank - 1]) return standings["RR"][rank - 1].name;
       for (const g of Object.keys(standings)) {
@@ -649,14 +618,15 @@ function resolveTeamName(placeholder, sport) {
     }
   }
 
+  // ===== "ผู้ชนะคู่ X" / "ผู้แพ้คู่ X" =====
   const wm = clean.match(/ผู้ชนะ\s*คู่\s*(?:ที่)?\s*(\d+)/i);
   const lm = clean.match(/ผู้แพ้\s*คู่\s*(?:ที่)?\s*(\d+)/i);
   if (wm || lm) {
     const no = (wm || lm)[1];
     const wantWinner = !!wm;
-    const result = findMatchResult(sportKey, no);
-    if (result) {
-      const name = wantWinner ? result.winner : result.loser;
+    const results = matchResults[sportKey];
+    if (results && results[no]) {
+      const name = wantWinner ? results[no].winner : results[no].loser;
       if (name) return name;
     }
   }
@@ -758,8 +728,8 @@ function renderBracketContent() {
   `;
 
   html += `<div id="content-group" class="tab-content ${currentTab === 'group' ? '' : 'hidden'}">`;
-  const sportKey = normalizeSport(sport);
-  const standingsForSport = findStandings(sportKey);
+  const sportKey = normalizeKey(sport);
+  const standingsForSport = groupStandings[sportKey];
   if (groupMatches.length > 0 && standingsForSport) {
     const groups = standingsForSport;
     html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-4">`;
@@ -881,7 +851,7 @@ function playSound() { try { const ctx = new (window.AudioContext || window.webk
 
 document.addEventListener("DOMContentLoaded", () => {
   startCountdown(); renderStats(); renderSports(); renderAthletics(); renderCommittees(); renderSchools();
-  console.log("✅ Doytao Sports 2026 - Full version with Athletics + All Sports");
+  console.log("✅ Doytao Sports 2026 - Smart Resolve v2");
 });
 </script>
 
