@@ -449,7 +449,7 @@ const CONFIG = {
 };
 
 // ================================================================
-// LOGO MAPPING
+// LOGO MAPPING (แก้ไขชื่อโรงเรียนให้ถูกต้องแล้ว)
 // ================================================================
 const LOGO_MAP = {
   "โรงเรียนบ้านโปง": "banpong.jpg", "บ้านโปง": "banpong.jpg", "โปง": "banpong.jpg",
@@ -605,7 +605,7 @@ const DATA = {
 // PAGE NAVIGATION & HOME RENDER
 // ================================================================
 let bracketInitialized = false;
-let currentTab = 'group'; // 'group' or 'knockout'
+let currentTab = 'group';
 let currentSportMatches = [];
 
 function showPage(page) {
@@ -687,7 +687,6 @@ function renderBracketContent() {
   // Tab Content: Group Stage
   html += `<div id="content-group" class="tab-content ${currentTab === 'group' ? '' : 'hidden'}">`;
   if (Object.keys(groupMatches).length > 0) {
-    // คำนวณตารางคะแนน
     const groups = {};
     groupMatches.forEach(m => {
       const g = m.group;
@@ -741,9 +740,12 @@ function renderBracketContent() {
 
   // Tab Content: Knockout Stage
   html += `<div id="content-knockout" class="tab-content ${currentTab === 'knockout' ? '' : 'hidden'}">`;
+  
+  // ค้นหาคำว่า "รอง", "ชิงที่ 1", "ชิงที่ 3" ให้ตรงกับ Sheet ของคุณ
   const qfMatches = knockoutMatches.filter(m => { const g = (m.group || ""); return g.includes("ก่อนรอง") || g.includes("8 ทีม") || g.includes("รอบ 8"); });
-  const sfMatches = knockoutMatches.filter(m => (m.group || "").includes("รองชนะเลิศ") && !(m.group || "").includes("ชิง"));
-  const finalMatches = knockoutMatches.filter(m => (m.group || "").includes("ชิงที่ 1") || (m.group || "").includes("ชิงชนะเลิศ"));
+  const sfMatches = knockoutMatches.filter(m => { const g = (m.group || ""); return g.includes("รอง") && !g.includes("ชิง"); });
+  const finalMatches = knockoutMatches.filter(m => { const g = (m.group || ""); return g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ"); });
+  const thirdMatches = knockoutMatches.filter(m => (m.group || "").includes("ชิงที่ 3"));
 
   if (qfMatches.length > 0 || sfMatches.length > 0 || finalMatches.length > 0) {
     html += `<div class="bracket-wrapper"><div class="bracket-container">`;
@@ -802,7 +804,7 @@ function renderBracketContent() {
 
     html += `</div></div>`;
   } else {
-    html += `<div class="text-center py-20 text-white/50"><div class="text-6xl mb-4">⏳</div><p>ยังไม่มีข้อมูลการแข่งขันรอบ Knockout</p><p class="text-sm mt-2">กรุณากรอกข้อมูลใน Google Sheet คอลัมน์ group เป็น "รอบก่อนรองชนะเลิศ", "รอบรองชนะเลิศ", "รอบชิงชนะเลิศ"</p></div>`;
+    html += `<div class="text-center py-20 text-white/50"><div class="text-6xl mb-4">⏳</div><p>ยังไม่มีข้อมูลการแข่งขันรอบ Knockout</p><p class="text-sm mt-2">กรุณากรอกข้อมูลใน Google Sheet คอลัมน์ group เป็น "รอง", "ชิงที่ 1", "ชิงที่ 3"</p></div>`;
   }
   html += `</div>`; // End content-knockout
 
