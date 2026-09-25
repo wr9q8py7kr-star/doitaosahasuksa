@@ -392,6 +392,15 @@
   </div>
 
   <section class="max-w-7xl mx-auto px-4 py-8">
+    <!-- Warning Banner for Fallback Data -->
+    <div id="fallbackWarning" class="hidden mb-6 p-4 rounded-xl bg-orange-500/20 border border-orange-500/50 text-orange-200 text-sm flex items-center gap-3">
+      <span class="text-xl">⚠️</span>
+      <div>
+        <p class="font-bold">กำลังใช้ข้อมูลสำรอง (Demo Data)</p>
+        <p class="text-xs opacity-80">ไม่สามารถเชื่อมต่อ Google Sheet ได้ กรุณาตรวจสอบการ Publish to web หรือลิงก์ในโค้ด</p>
+      </div>
+    </div>
+
     <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
       <div class="flex items-center gap-4">
         <div class="logo-ring lg winner trophy-bounce">
@@ -449,18 +458,52 @@ const CONFIG = {
 };
 
 // ================================================================
-// LOGO MAPPING (แก้ไขชื่อโรงเรียนให้ถูกต้องแล้ว)
+// FALLBACK DATA (แกะจากไฟล์ PDF โปรแกรมการแข่งขัน)
+// ================================================================
+const FALLBACK_DATA = [
+  // ฟุตบอลชาย
+  { no: 1, date: "6 ต.ค. 69", time: "08:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านฉิมพลี", teamB: "โรงเรียนบ้านโปง", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายทนงศักดิ์ แก้ววงษ์" },
+  { no: 2, date: "6 ต.ค. 69", time: "09:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านเกาะหลวง", teamB: "โรงเรียนบ้านแม่บวน", group: "B", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายวัฒธีระ หนูขาว" },
+  { no: 3, date: "6 ต.ค. 69", time: "10:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านฉิมพลี", teamB: "โรงเรียนบ้านแม่ตูบ", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายเจษฎา ถาเป็ง" },
+  { no: 4, date: "6 ต.ค. 69", time: "11:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านเกาะหลวง", teamB: "โรงเรียนชุมชนบ้านดอยเต่า", group: "B", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายมานพ บุปผาศรีธารา" },
+  { no: 5, date: "6 ต.ค. 69", time: "12:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านโปง", teamB: "โรงเรียนบ้านแม่ตูบ", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายมติชน รู้เที่ยง" },
+  { no: 6, date: "6 ต.ค. 69", time: "13:00", sport: "ฟุตบอลชาย", teamA: "โรงเรียนบ้านแม่บวน", teamB: "โรงเรียนชุมชนบ้านดอยเต่า", group: "B", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายทนงศักดิ์ แก้ววงษ์" },
+  { no: 7, date: "7 ต.ค. 69", time: "09:00", sport: "ฟุตบอลชาย", teamA: "ที่ 1 สาย A", teamB: "ที่ 2 สาย B", group: "รอง", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
+  { no: 8, date: "7 ต.ค. 69", time: "10:00", sport: "ฟุตบอลชาย", teamA: "ที่ 1 สาย B", teamB: "ที่ 2 สาย A", group: "รอง", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
+  { no: 9, date: "7 ต.ค. 69", time: "13:00", sport: "ฟุตบอลชาย", teamA: "ผู้แพ้คู่ 7", teamB: "ผู้แพ้คู่ 8", group: "ชิงที่ 3", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
+  { no: 10, date: "7 ต.ค. 69", time: "14:30", sport: "ฟุตบอลชาย", teamA: "มัธยม", teamB: "VIP", group: "พิเศษ", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
+  { no: 11, date: "7 ต.ค. 69", time: "15:30", sport: "ฟุตบอลชาย", teamA: "ผู้ชนะคู่ 7", teamB: "ผู้ชนะคู่ 8", group: "ชิงที่ 1", scoreA: "0", scoreB: "0", status: "upcoming", referee: "-" },
+  
+  // ฟุตบอลหญิง
+  { no: 12, date: "6 ต.ค. 69", time: "14:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านแม่ตูบ", teamB: "โรงเรียนบ้านเกาะหลวง", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายเจษฎา ถาเป็ง" },
+  { no: 13, date: "6 ต.ค. 69", time: "15:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านแม่บวน", teamB: "โรงเรียนบ้านฉิมพลี", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายทนงศักดิ์ แก้ววงษ์" },
+  { no: 14, date: "7 ต.ค. 69", time: "11:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านเกาะหลวง", teamB: "โรงเรียนบ้านฉิมพลี", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายมติชน รู้เที่ยง" },
+  { no: 15, date: "7 ต.ค. 69", time: "12:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านแม่ตูบ", teamB: "โรงเรียนบ้านแม่บวน", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายวัฒธีระ หนูขาว" },
+  { no: 16, date: "7 ต.ค. 69", time: "14:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านฉิมพลี", teamB: "โรงเรียนบ้านแม่ตูบ", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายมติชน รู้เที่ยง" },
+  { no: 17, date: "7 ต.ค. 69", time: "15:00", sport: "ฟุตบอลหญิง", teamA: "โรงเรียนบ้านแม่บวน", teamB: "โรงเรียนบ้านเกาะหลวง", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายมานพ บุปผาศรีธารา" },
+  
+  // วอลเลย์บอลชาย
+  { no: 18, date: "6 ต.ค. 69", time: "09:00", sport: "วอลเลย์บอลชาย", teamA: "โรงเรียนบ้านเกาะหลวง", teamB: "โรงเรียนบ้านแม่บวน", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายมนตรี ก๋องตา" },
+  { no: 19, date: "6 ต.ค. 69", time: "10:00", sport: "วอลเลย์บอลชาย", teamA: "โรงเรียนบ้านไร่", teamB: "โรงเรียนชุมชนบ้านดอยเต่า", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายเอกพล ตายา" },
+  { no: 20, date: "6 ต.ค. 69", time: "12:00", sport: "วอลเลย์บอลชาย", teamA: "โรงเรียนบ้านเกาะหลวง", teamB: "โรงเรียนบ้านไร่", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นางชลธิชา ไชยแก้ว" },
+  { no: 21, date: "6 ต.ค. 69", time: "13:00", sport: "วอลเลย์บอลชาย", teamA: "โรงเรียนบ้านแม่บวน", teamB: "โรงเรียนชุมชนบ้านดอยเต่า", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นายประการ เมืองมานิตย์" },
+  { no: 22, date: "6 ต.ค. 69", time: "15:00", sport: "วอลเลย์บอลชาย", teamA: "โรงเรียนบ้านเกาะหลวง", teamB: "โรงเรียนชุมชนบ้านดอยเต่า", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นางสาวอนุศรา นาใจ" },
+  { no: 23, date: "6 ต.ค. 69", time: "16:00", sport: "วอลเลย์บอลชาย", teamA: "โรงเรียนบ้านแม่บวน", teamB: "โรงเรียนบ้านไร่", group: "A", scoreA: "0", scoreB: "0", status: "upcoming", referee: "นางสาวดวงฤดี สิงขบรรจง" },
+];
+
+// ================================================================
+// LOGO MAPPING
 // ================================================================
 const LOGO_MAP = {
-  "โรงเรียนบ้านโปง": "banpong.jpg", "บ้านโปง": "banpong.jpg", "โปง": "banpong.jpg",
-  "โรงเรียนบ้านแม่ตูบ": "maetoop.jpg", "บ้านแม่ตูบ": "maetoop.jpg", "แม่ตูบ": "maetoop.jpg",
+  "โรงเรียนบ้านโปง": "banpong.jpg", "บ้านโปง": "banpong.jpg", "โปง": "banpong.jpg", "บ้านโป่ง": "banpong.jpg",
+  "โรงเรียนบ้านแม่ตูบ": "maetoop.jpg", "บ้านแม่ตูบ": "maetoop.jpg", "แม่ตูบ": "maetoop.jpg", "แม่ตุบ": "maetoop.jpg",
   "โรงเรียนบ้านเกาะหลวง": "kohluang.jpg", "บ้านเกาะหลวง": "kohluang.jpg", "เกาะหลวง": "kohluang.jpg",
-  "โรงเรียนบ้านโปงทุ่ง": "pongtoong.jpg", "บ้านโปงทุ่ง": "pongtoong.jpg", "โปงทุ่ง": "pongtoong.jpg",
+  "โรงเรียนบ้านโปงทุ่ง": "pongtoong.jpg", "บ้านโปงทุ่ง": "pongtoong.jpg", "โปงทุ่ง": "pongtoong.jpg", "โป่งทุ่ง": "pongtoong.jpg",
   "โรงเรียนบ้านงิ้วสูง": "kiwsoong.jpg", "บ้านงิ้วสูง": "kiwsoong.jpg", "งิ้วสูง": "kiwsoong.jpg",
-  "โรงเรียนบ้านแม่บวน": "maebuan.jpg", "บ้านแม่บวน": "maebuan.jpg", "แม่บวน": "maebuan.jpg",
+  "โรงเรียนบ้านแม่บวน": "maebuan.jpg", "บ้านแม่บวน": "maebuan.jpg", "แม่บวน": "maebuan.jpg", "แม่บวบ": "maebuan.jpg",
   "โรงเรียนบ้านไร่": "banrai.jpg", "บ้านไร่": "banrai.jpg", "ไร่": "banrai.jpg",
   "โรงเรียนบ้านฉิมพลี": "shimplee.jpg", "บ้านฉิมพลี": "shimplee.jpg", "ฉิมพลี": "shimplee.jpg",
-  "โรงเรียนชุมชนบ้านดอยเต่า": "choomchon.jpg", "ชุมชนบ้านดอยเต่า": "choomchon.jpg", "ชุมชนดอยเต่า": "choomchon.jpg",
+  "โรงเรียนชุมชนบ้านดอยเต่า": "choomchon.jpg", "ชุมชนบ้านดอยเต่า": "choomchon.jpg", "ชุมชนดอยเต่า": "choomchon.jpg", "ชุมชนบ้านดอยเต่า": "choomchon.jpg",
   "โรงเรียนบ้านถิ่นสำราญ": "tinsamran.jpg", "บ้านถิ่นสำราญ": "tinsamran.jpg", "ถิ่นสำราญ": "tinsamran.jpg",
   "โรงเรียนบ้านผาจุก": "phajook.jpg", "บ้านผาจุก": "phajook.jpg", "ผาจุก": "phajook.jpg",
   "โรงเรียนบ้านสันติสุข": "santisuk.jpg", "บ้านสันติสุข": "santisuk.jpg", "สันติสุข": "santisuk.jpg",
@@ -469,7 +512,7 @@ const LOGO_MAP = {
 
 function getLogoPath(teamName) {
   if (!teamName) return null;
-  const clean = teamName.trim();
+  const clean = teamName.trim().replace("ที่ 1 สาย ", "").replace("ที่ 2 สาย ", "").replace("ผู้ชนะคู่ ", "").replace("ผู้แพ้คู่ ", "");
   if (LOGO_MAP[clean]) return LOGO_MAP[clean];
   for (const key in LOGO_MAP) {
     if (clean.includes(key)) return LOGO_MAP[key];
@@ -640,25 +683,98 @@ let allMatches = [];
 let selectedSport = "";
 let previousMatchState = {};
 let isFirstBracketLoad = true;
+let usingFallback = false;
 
 function initBracket() { setInterval(fetchBracketData, CONFIG.REFRESH_INTERVAL); document.addEventListener("visibilitychange", () => { if (!document.hidden && document.getElementById("page-bracket").classList.contains("active")) fetchBracketData(); }); }
-async function fetchBracketData() { const url = CONFIG.SCORE_SHEET_URL; if (!url) { setConnectionStatus("error", "ยังไม่ตั้งค่า"); return; } try { setConnectionStatus("loading", "กำลังโหลด..."); const res = await fetch(url + "&t=" + Date.now(), { cache: "no-store" }); if (!res.ok) throw new Error("HTTP " + res.status); const csv = await res.text(); const matches = parseCSV(csv); const changes = detectChanges(matches); allMatches = matches; previousMatchState = Object.fromEntries(matches.map(m => [m.no, { scoreA: m.scoreA, scoreB: m.scoreB, status: m.status }])); renderSportTabs(); renderBracketContent(); setConnectionStatus("ok", "เชื่อมต่อแล้ว"); updateLastUpdate(); if (!isFirstBracketLoad && changes.length > 0) changes.forEach(c => showToast("🔔 คะแนนอัปเดต!", `${c.teamA} ${c.scoreA} - ${c.scoreB} ${c.teamB}`)); isFirstBracketLoad = false; } catch (err) { console.error("Fetch error:", err); setConnectionStatus("error", "เชื่อมต่อไม่ได้"); } }
-function parseCSV(csv) { const lines = csv.trim().split("\n"); if (lines.length < 2) return []; const headers = parseCSVLine(lines[0]); const rows = []; for (let i = 1; i < lines.length; i++) { const values = parseCSVLine(lines[i]); if (values.length === 0 || !values[0]) continue; const obj = {}; headers.forEach((h, idx) => obj[h.trim()] = (values[idx] || "").trim()); if (!obj.no || !obj.teamA) continue; rows.push({ no: obj.no, date: obj.date || "", time: obj.time || "", sport: obj.sport || "", teamA: obj.teamA || "", teamB: obj.teamB || "", group: obj.group || "", scoreA: obj.scoreA || "0", scoreB: obj.scoreB || "0", status: (obj.status || "upcoming").toLowerCase().trim(), referee: obj.referee || "" }); } return rows; }
+
+async function fetchBracketData() {
+  const url = CONFIG.SCORE_SHEET_URL;
+  if (!url) { setConnectionStatus("error", "ยังไม่ตั้งค่า"); loadFallbackData(); return; }
+  try {
+    setConnectionStatus("loading", "กำลังโหลด...");
+    document.getElementById('fallbackWarning').classList.add('hidden');
+    const res = await fetch(url + "&t=" + Date.now(), { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const csv = await res.text();
+    const matches = parseCSV(csv);
+    
+    if (matches.length === 0) throw new Error("ไม่พบข้อมูลใน Sheet");
+    
+    const changes = detectChanges(matches);
+    allMatches = matches;
+    previousMatchState = Object.fromEntries(matches.map(m => [m.no, { scoreA: m.scoreA, scoreB: m.scoreB, status: m.status }]));
+    
+    usingFallback = false;
+    renderSportTabs();
+    renderBracketContent();
+    setConnectionStatus("ok", "เชื่อมต่อแล้ว");
+    updateLastUpdate();
+    if (!isFirstBracketLoad && changes.length > 0) changes.forEach(c => showToast("🔔 คะแนนอัปเดต!", `${c.teamA} ${c.scoreA} - ${c.scoreB} ${c.teamB}`));
+    isFirstBracketLoad = false;
+  } catch (err) {
+    console.error("Fetch error:", err);
+    setConnectionStatus("error", "ใช้ข้อมูลสำรอง");
+    loadFallbackData();
+  }
+}
+
+function loadFallbackData() {
+  usingFallback = true;
+  allMatches = [...FALLBACK_DATA];
+  document.getElementById('fallbackWarning').classList.remove('hidden');
+  renderSportTabs();
+  renderBracketContent();
+  updateLastUpdate();
+}
+
+function parseCSV(csv) {
+  const lines = csv.trim().split("\n");
+  if (lines.length < 2) return [];
+  const headers = parseCSVLine(lines[0]);
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    const values = parseCSVLine(lines[i]);
+    if (values.length === 0 || !values[0]) continue;
+    const obj = {};
+    headers.forEach((h, idx) => obj[h.trim()] = (values[idx] || "").trim());
+    if (!obj.no || !obj.teamA) continue;
+    rows.push({
+      no: obj.no, date: obj.date || "", time: obj.time || "",
+      sport: obj.sport || "", teamA: obj.teamA || "", teamB: obj.teamB || "",
+      group: obj.group || "", scoreA: obj.scoreA || "0", scoreB: obj.scoreB || "0",
+      status: (obj.status || "upcoming").toLowerCase().trim(), referee: obj.referee || ""
+    });
+  }
+  return rows;
+}
 function parseCSVLine(line) { const result = []; let current = ""; let inQuotes = false; for (let i = 0; i < line.length; i++) { const char = line[i]; if (char === '"') inQuotes = !inQuotes; else if (char === "," && !inQuotes) { result.push(current); current = ""; } else current += char; } result.push(current); return result.map(v => v.trim().replace(/^"|"$/g, "")); }
 function detectChanges(newMatches) { const changes = []; newMatches.forEach(m => { const prev = previousMatchState[m.no]; if (!prev) return; if (prev.scoreA !== m.scoreA || prev.scoreB !== m.scoreB) changes.push(m); }); return changes; }
-function renderSportTabs() { const sports = [...new Set(allMatches.map(m => m.sport).filter(Boolean))].sort(); if (!selectedSport && sports.length > 0) selectedSport = sports[0]; document.getElementById("bracketSportTabs").innerHTML = sports.map(s => { const active = s === selectedSport; return `<button onclick="selectSport('${s}')" class="px-4 py-2 rounded-xl whitespace-nowrap text-sm font-medium transition ${active ? 'bg-gradient-to-r from-primary-700 to-primary-500 text-white shadow-lg' : 'glass-dark text-white/70 hover:text-white hover:bg-white/10'}">${s}</button>`; }).join(""); }
+
+function renderSportTabs() {
+  let sports = [...new Set(allMatches.map(m => m.sport).filter(Boolean))].sort();
+  if (sports.length === 0) sports = ["ฟุตบอลชาย", "ฟุตบอลหญิง", "วอลเลย์บอลชาย"]; // Default fallback
+  if (!selectedSport || !sports.includes(selectedSport)) selectedSport = sports[0];
+  
+  document.getElementById("bracketSportTabs").innerHTML = sports.map(s => {
+    const active = s === selectedSport;
+    return `<button onclick="selectSport('${s}')" class="px-4 py-2 rounded-xl whitespace-nowrap text-sm font-medium transition ${active ? 'bg-gradient-to-r from-primary-700 to-primary-500 text-white shadow-lg' : 'glass-dark text-white/70 hover:text-white hover:bg-white/10'}">${s}</button>`;
+  }).join("");
+}
 function selectSport(sport) { selectedSport = sport; renderSportTabs(); renderBracketContent(); }
 
 // ================================================================
-// RENDER BRACKET CONTENT (TABS & EXACT MOCKUP LAYOUT)
+// RENDER BRACKET CONTENT
 // ================================================================
 function renderBracketContent() {
   const container = document.getElementById("bracketContent");
   if (!selectedSport) { container.innerHTML = `<div class="text-center py-20 text-white/50">เลือกประเภทกีฬาเพื่อดูผลการแข่งขัน</div>`; return; }
 
   currentSportMatches = allMatches.filter(m => m.sport === selectedSport);
+  if (currentSportMatches.length === 0) {
+    container.innerHTML = `<div class="text-center py-20 text-white/50"><div class="text-6xl mb-4">⏳</div><p>ยังไม่มีข้อมูลการแข่งขันสำหรับ ${selectedSport}</p></div>`;
+    return;
+  }
   
-  // แยกข้อมูล Group และ Knockout
   const groupMatches = currentSportMatches.filter(m => ["A","B","C","D"].includes((m.group || "").trim()));
   const knockoutMatches = currentSportMatches.filter(m => { const g = (m.group || "").trim(); return !["A","B","C","D","-",""].includes(g); });
 
@@ -741,13 +857,13 @@ function renderBracketContent() {
   // Tab Content: Knockout Stage
   html += `<div id="content-knockout" class="tab-content ${currentTab === 'knockout' ? '' : 'hidden'}">`;
   
-  // ค้นหาคำว่า "รอง", "ชิงที่ 1", "ชิงที่ 3" ให้ตรงกับ Sheet ของคุณ
   const qfMatches = knockoutMatches.filter(m => { const g = (m.group || ""); return g.includes("ก่อนรอง") || g.includes("8 ทีม") || g.includes("รอบ 8"); });
   const sfMatches = knockoutMatches.filter(m => { const g = (m.group || ""); return g.includes("รอง") && !g.includes("ชิง"); });
   const finalMatches = knockoutMatches.filter(m => { const g = (m.group || ""); return g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ"); });
   const thirdMatches = knockoutMatches.filter(m => (m.group || "").includes("ชิงที่ 3"));
+  const specialMatches = knockoutMatches.filter(m => (m.group || "").includes("พิเศษ"));
 
-  if (qfMatches.length > 0 || sfMatches.length > 0 || finalMatches.length > 0) {
+  if (qfMatches.length > 0 || sfMatches.length > 0 || finalMatches.length > 0 || thirdMatches.length > 0) {
     html += `<div class="bracket-wrapper"><div class="bracket-container">`;
 
     // ฝั่งซ้าย
@@ -802,7 +918,29 @@ function renderBracketContent() {
     }
     html += `</div>`;
 
-    html += `</div></div>`;
+    html += `</div>`;
+    
+    // แสดงรอบชิงที่ 3 แยกออกมา
+    if (thirdMatches.length > 0) {
+      html += `<div class="mt-8 pt-8 border-t border-white/10">
+        <h3 class="font-heading font-bold text-lg text-secondary mb-4 text-center">🥉 รอบชิงที่ 3</h3>
+        <div class="flex justify-center gap-6">
+          ${thirdMatches.map(m => renderBracketMatch(m)).join("")}
+        </div>
+      </div>`;
+    }
+    
+    // แสดงรายการพิเศษ (ถ้ามี)
+    if (specialMatches.length > 0) {
+      html += `<div class="mt-8 pt-8 border-t border-white/10">
+        <h3 class="font-heading font-bold text-lg text-secondary mb-4 text-center">⭐ รายการพิเศษ</h3>
+        <div class="flex justify-center gap-6">
+          ${specialMatches.map(m => renderBracketMatch(m)).join("")}
+        </div>
+      </div>`;
+    }
+    
+    html += `</div>`;
   } else {
     html += `<div class="text-center py-20 text-white/50"><div class="text-6xl mb-4">⏳</div><p>ยังไม่มีข้อมูลการแข่งขันรอบ Knockout</p><p class="text-sm mt-2">กรุณากรอกข้อมูลใน Google Sheet คอลัมน์ group เป็น "รอง", "ชิงที่ 1", "ชิงที่ 3"</p></div>`;
   }
@@ -854,7 +992,7 @@ function renderBracketMatch(m) {
 }
 
 function getWinner(m) { if (!m || m.status !== "finished") return null; const a = parseFloat(m.scoreA), b = parseFloat(m.scoreB); if (isNaN(a) || isNaN(b)) return null; if (a > b) return m.teamA; if (b > a) return m.teamB; return null; }
-function setConnectionStatus(type, text) { const dot = document.getElementById("statusDot"); const label = document.getElementById("statusText"); const colors = { ok: "bg-green-400", loading: "bg-yellow-400 animate-pulse", error: "bg-red-500" }; dot.className = "w-2 h-2 rounded-full " + (colors[type] || "bg-gray-400"); label.textContent = text; }
+function setConnectionStatus(type, text) { const dot = document.getElementById("statusDot"); const label = document.getElementById("statusText"); const colors = { ok: "bg-green-400", loading: "bg-yellow-400 animate-pulse", error: "bg-orange-400" }; dot.className = "w-2 h-2 rounded-full " + (colors[type] || "bg-gray-400"); label.textContent = text; }
 function updateLastUpdate() { document.getElementById("lastUpdate").textContent = new Date().toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit", second: "2-digit" }); }
 function showToast(title, message) { const toast = document.getElementById("toast"); document.getElementById("toastTitle").textContent = title; document.getElementById("toastMessage").textContent = message; toast.classList.remove("hidden"); if (CONFIG.ENABLE_SOUND) playSound(); setTimeout(() => toast.classList.add("hidden"), 5000); }
 function playSound() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.frequency.value = 880; osc.type = "sine"; gain.gain.setValueAtTime(0.08, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.3); } catch (e) {} }
@@ -864,7 +1002,7 @@ function playSound() { try { const ctx = new (window.AudioContext || window.webk
 // ================================================================
 document.addEventListener("DOMContentLoaded", () => {
   startCountdown(); renderStats(); renderSports(); renderAthletics(); renderCommittees(); renderSchools();
-  console.log("✅ Doytao Sports 2026 + Tab System + Exact Mockup Bracket");
+  console.log("✅ Doytao Sports 2026 + Fallback Data System");
 });
 </script>
 
