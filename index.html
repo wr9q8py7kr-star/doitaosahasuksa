@@ -53,12 +53,14 @@
   @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
   @keyframes winnerGlow { 0%, 100% { box-shadow: 0 0 20px rgba(252,211,77,0.4), 0 0 40px rgba(252,211,77,0.2); } 50% { box-shadow: 0 0 30px rgba(252,211,77,0.8), 0 0 60px rgba(252,211,77,0.4); } }
+  @keyframes runnerUpGlow { 0%, 100% { box-shadow: 0 0 20px rgba(192,192,192,0.3), 0 0 40px rgba(192,192,192,0.15); } 50% { box-shadow: 0 0 30px rgba(192,192,192,0.6), 0 0 60px rgba(192,192,192,0.3); } }
   @keyframes trophyBounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-8px) scale(1.1); } }
   @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
   .animate-fade-in { animation: fadeIn 0.6s ease-in-out; }
   .animate-slide-up { animation: slideUp 0.8s ease-out; }
   .animate-float { animation: float 3s ease-in-out infinite; }
   .winner-glow { animation: winnerGlow 2s ease-in-out infinite; }
+  .runner-up-glow { animation: runnerUpGlow 2s ease-in-out infinite; }
   .trophy-bounce { animation: trophyBounce 1.5s ease-in-out infinite; }
 
   .marquee { display: inline-block; white-space: nowrap; padding-left: 100%; animation: marquee 40s linear infinite; }
@@ -77,6 +79,8 @@
   .logo-ring .logo-fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 22px; z-index: 1; }
   .logo-ring.lg .logo-fallback { font-size: 30px; }
   .logo-ring.winner { border-color: #FCD34D; box-shadow: 0 0 20px rgba(252,211,77,0.6); }
+  .logo-ring.runner-up { border-color: #C0C0C0; box-shadow: 0 0 20px rgba(192,192,192,0.6); }
+  .logo-ring.third-place { border-color: #CD7F32; box-shadow: 0 0 20px rgba(205,127,50,0.6); }
 
   .bracket-match {
     background: rgba(34, 34, 34, 0.95);
@@ -93,6 +97,7 @@
   .bracket-team { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 15px; font-weight: 600; border-bottom: 1px dashed #444; gap: 6px; }
   .bracket-team:last-of-type { border-bottom: none; }
   .bracket-team-name { color: #e0e0e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+  .bracket-team-name.placeholder { color: #888; font-style: italic; font-weight: 500; }
   .bracket-team-score { color: #f1c40f; font-weight: 700; font-family: 'JetBrains Mono', monospace; min-width: 24px; text-align: center; }
   .bracket-match .bracket-time { font-size: 11px; color: #888; text-align: center; margin-top: 8px; padding-top: 6px; border-top: 1px solid #333; font-family: 'JetBrains Mono', monospace; }
   .team-winner .bracket-team-name { color: #FCD34D; font-weight: 800; }
@@ -104,6 +109,8 @@
   .bracket-column-body { display: flex; flex-direction: column; gap: 16px; }
   .bracket-column .bracket-match { width: 100%; }
   .bracket-column-body .champion-card-v2 { background: linear-gradient(135deg, rgba(252,211,77,0.2), rgba(245,158,11,0.1)); border: 2px solid #FCD34D; border-radius: 16px; padding: 20px; text-align: center; }
+  .bracket-column-body .runner-up-card { background: linear-gradient(135deg, rgba(192,192,192,0.2), rgba(160,160,160,0.1)); border: 2px solid #C0C0C0; border-radius: 16px; padding: 20px; text-align: center; }
+  .bracket-column-body .third-place-card { background: linear-gradient(135deg, rgba(205,127,50,0.2), rgba(184,115,51,0.1)); border: 2px solid #CD7F32; border-radius: 16px; padding: 20px; text-align: center; }
   @media (max-width: 768px) { .bracket-flow { flex-direction: column; } .bracket-column { min-width: 100%; } }
 
   .group-table { background: rgba(30,27,75,0.6); border: 1px solid rgba(252,211,77,0.3); border-radius: 1rem; overflow: hidden; }
@@ -374,6 +381,12 @@ function shortTeamName(name) {
   return String(name).replace("โรงเรียน", "").replace("ชุมชนบ้าน", "ชุมชน").trim(); 
 }
 
+// ตรวจสอบว่าเป็น placeholder หรือไม่
+function isPlaceholder(text) {
+  if (!text) return true;
+  return /^(ที่\s*[1-4๑๒๓๔]|ผู้ชนะ\s*คู่|ผู้แพ้\s*คู่|มัธยม|VIP)/.test(String(text).trim());
+}
+
 // ================================================================
 // DATA (Home Page)
 // ================================================================
@@ -532,7 +545,6 @@ let isFirstBracketLoad = true;
 
 function initBracket() { setInterval(fetchBracketData, CONFIG.REFRESH_INTERVAL); document.addEventListener("visibilitychange", () => { if (!document.hidden && document.getElementById("page-bracket").classList.contains("active")) fetchBracketData(); }); }
 
-// ✅ Normalize
 function normalizeKey(s) { return (s || "").replace(/[\s\u00A0\u200B\.]+/g, '').trim().toLowerCase(); }
 
 function isGroupStage(groupStr) {
@@ -550,9 +562,6 @@ function extractGroupLetter(groupStr) {
   return f ? f[0] : clean;
 }
 
-// ================================================================
-// ✅ PROCESS TOURNAMENT
-// ================================================================
 function processTournamentData(matches) {
   groupStandings = {};
   matchResults = {};
@@ -611,42 +620,26 @@ function processTournamentData(matches) {
       else { matchResults[sport][m.no] = { winner: null, loser: null }; }
     }
   });
-
-  console.group("🎯 [processTournamentData]");
-  console.log("Standings keys:", Object.keys(groupStandings));
-  Object.keys(groupStandings).forEach(k => {
-    console.log(`  📌 "${k}"`, Object.keys(groupStandings[k]).map(g => `${g}(${groupStandings[k][g].length} teams)`).join(", "));
-  });
-  console.log("Match Results keys:", Object.keys(matchResults));
-  console.groupEnd();
 }
 
-// ================================================================
-// ✅ RECURSIVE RESOLVE — รองรับ "ผู้ชนะคู่ X" ที่เป็น placeholder
-// ================================================================
+// ✅ Recursive resolve
 function resolveTeamName(placeholder, sport, depth = 0) {
   if (!placeholder || depth > 5) return placeholder;
   
   const clean = String(placeholder).trim();
   const sportKey = normalizeKey(sport);
   
-  // ===== "ที่ N สาย X" =====
   const groupMatch = clean.match(/ที่\s*([1-4๑๒๓๔])\s*สาย\s*([A-Za-z])/i);
   if (groupMatch) {
     const thaiMap = { '๑': 1, '๒': 2, '๓': 3, '๔': 4 };
     const rank = thaiMap[groupMatch[1]] || parseInt(groupMatch[1], 10);
     const groupLetter = groupMatch[2].toUpperCase();
-    
     const standings = groupStandings[sportKey];
     if (standings && standings[groupLetter] && standings[groupLetter][rank - 1]) {
-      const resolved = standings[groupLetter][rank - 1].name;
-      console.log(`✅ [L${depth}] "${clean}" → "${resolved}"`);
-      return resolved;
+      return standings[groupLetter][rank - 1].name;
     }
-    console.warn(`⚠️ [L${depth}] Cannot resolve "${clean}" (sport="${sportKey}", group=${groupLetter}, rank=${rank})`);
   }
 
-  // ===== "ที่ N" (RR) =====
   const rrMatch = clean.match(/^ที่\s*([1-4๑๒๓๔])$/);
   if (rrMatch) {
     const thaiMap = { '๑': 1, '๒': 2, '๓': 3, '๔': 4 };
@@ -660,7 +653,6 @@ function resolveTeamName(placeholder, sport, depth = 0) {
     }
   }
 
-  // ===== "ผู้ชนะคู่ X" / "ผู้แพ้คู่ X" — Recursive! =====
   const wm = clean.match(/ผู้ชนะ\s*คู่\s*(?:ที่)?\s*(\d+)/i);
   const lm = clean.match(/ผู้แพ้\s*คู่\s*(?:ที่)?\s*(\d+)/i);
   if (wm || lm) {
@@ -670,11 +662,8 @@ function resolveTeamName(placeholder, sport, depth = 0) {
     if (results && results[no]) {
       const raw = wantWinner ? results[no].winner : results[no].loser;
       if (raw) {
-        // 🔑 ถ้าผลยังเป็น placeholder → resolve ซ้ำอีกชั้น
-        if (/^(ที่\s*[1-4๑๒๓๔]|ผู้ชนะ\s*คู่|ผู้แพ้\s*คู่)/.test(String(raw).trim())) {
-          const deeper = resolveTeamName(raw, sport, depth + 1);
-          console.log(`🔁 [L${depth}] "${clean}" → "${raw}" → "${deeper}"`);
-          return deeper;
+        if (isPlaceholder(raw)) {
+          return resolveTeamName(raw, sport, depth + 1);
         }
         return raw;
       }
@@ -746,6 +735,9 @@ function renderSportTabs() {
 }
 function selectSport(sport) { selectedSport = sport; renderSportTabs(); renderBracketContent(); }
 
+// ================================================================
+// ✅ RENDER BRACKET CONTENT — แสดงเฉพาะรอบรองขึ้นไป + ที่ 2
+// ================================================================
 function renderBracketContent() {
   const container = document.getElementById("bracketContent");
   if (!selectedSport) { container.innerHTML = `<div class="text-center py-20 text-white/50">เลือกประเภทกีฬา</div>`; return; }
@@ -777,6 +769,7 @@ function renderBracketContent() {
       </div>
   `;
 
+  // ============ GROUP STAGE ============
   html += `<div id="content-group" class="tab-content ${currentTab === 'group' ? '' : 'hidden'}">`;
   const sportKey = normalizeKey(sport);
   const standingsForSport = groupStandings[sportKey];
@@ -804,43 +797,119 @@ function renderBracketContent() {
   }
   html += `</div>`;
 
+  // ============ KNOCKOUT STAGE — เฉพาะรอบรองขึ้นไป ============
   html += `<div id="content-knockout" class="tab-content ${currentTab === 'knockout' ? '' : 'hidden'}">`;
   
-  const r16Matches = knockoutMatches.filter(m => { const g = (m.group || "").trim().toUpperCase(); return g.includes("16"); });
-  const qfMatches = knockoutMatches.filter(m => { const g = (m.group || "").trim().toUpperCase(); return (g.includes("8") || g.includes("ก่อนรอง")) && !g.includes("16"); });
-  const sfMatches = knockoutMatches.filter(m => { const g = (m.group || "").trim().toUpperCase(); return (g === "รอง" || g.includes("SF") || g.includes("รองชนะเลิศ")) && !g.includes("ชิง") && !g.includes("ก่อนรอง") && !g.includes("8"); });
-  const finalMatches = knockoutMatches.filter(m => { const g = (m.group || "").trim().toUpperCase(); return (g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ")); });
+  const finalMatches = knockoutMatches.filter(m => { 
+    const g = (m.group || "").trim().toUpperCase(); 
+    return (g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ")); 
+  });
   const thirdMatches = knockoutMatches.filter(m => (m.group || "").trim().toUpperCase().includes("ชิงที่ 3"));
   const specialMatches = knockoutMatches.filter(m => (m.group || "").includes("พิเศษ"));
+  
+  // ✅ หา "รอบรอง" จาก Final Match (ผู้ชนะคู่ X)
+  let semiMatchNumbers = [];
+  if (finalMatches[0]) {
+    const refsA = String(finalMatches[0].teamA).matchAll(/ผู้ชนะ\s*คู่\s*(?:ที่)?\s*(\d+)/g);
+    const refsB = String(finalMatches[0].teamB).matchAll(/ผู้ชนะ\s*คู่\s*(?:ที่)?\s*(\d+)/g);
+    for (const m of refsA) semiMatchNumbers.push(String(m[1]));
+    for (const m of refsB) semiMatchNumbers.push(String(m[1]));
+  }
+  
+  const semiMatches = knockoutMatches.filter(m => semiMatchNumbers.includes(String(m.no)));
+  
+  // ✅ หา Champion และ Runner-up จาก Final Match
+  const finalMatch = finalMatches[0];
+  const champion = finalMatch ? getWinner(finalMatch) : null;
+  const runnerUp = finalMatch ? getLoser(finalMatch) : null;
+  
+  // ✅ หา 3rd place winner จาก Third-place match
+  const thirdMatch = thirdMatches[0];
+  const thirdPlaceWinner = thirdMatch ? getWinner(thirdMatch) : null;
 
-  if (r16Matches.length > 0 || qfMatches.length > 0 || sfMatches.length > 0 || finalMatches.length > 0 || thirdMatches.length > 0 || specialMatches.length > 0) {
+  if (finalMatches.length > 0 || thirdMatches.length > 0 || semiMatches.length > 0 || specialMatches.length > 0) {
     html += `<div class="bracket-flow">`;
-    if (r16Matches.length > 0) html += `<div class="bracket-column"><h3 class="bracket-column-title">รอบ 16 ทีม</h3><div class="bracket-column-body">${r16Matches.map(m => renderBracketMatch(m)).join("")}</div></div>`;
-    if (qfMatches.length > 0) html += `<div class="bracket-column"><h3 class="bracket-column-title">รอบ 8 ทีม (ก่อนรอง)</h3><div class="bracket-column-body">${qfMatches.map(m => renderBracketMatch(m)).join("")}</div></div>`;
-    if (sfMatches.length > 0) html += `<div class="bracket-column"><h3 class="bracket-column-title">รอบรองชนะเลิศ</h3><div class="bracket-column-body">${sfMatches.map(m => renderBracketMatch(m)).join("")}</div></div>`;
-    if (finalMatches.length > 0) html += `<div class="bracket-column"><h3 class="bracket-column-title">รอบชิงชนะเลิศ</h3><div class="bracket-column-body">${finalMatches.map(m => renderBracketMatch(m)).join("")}</div></div>`;
     
-    if (finalMatches[0]) {
-      const champion = getWinner(finalMatches[0]);
-      if (champion) {
-        const realChampion = resolveTeamName(champion, sport);
-        html += `<div class="bracket-column"><h3 class="bracket-column-title">🏆 แชมป์</h3><div class="bracket-column-body">
+    // === รอบรองชนะเลิศ (Semis) ===
+    if (semiMatches.length > 0) {
+      html += `<div class="bracket-column">
+        <h3 class="bracket-column-title">รอบรองชนะเลิศ (4 ทีมสุดท้าย)</h3>
+        <div class="bracket-column-body">${semiMatches.map(m => renderBracketMatch(m)).join("")}</div>
+      </div>`;
+    }
+    
+    // === รอบชิงชนะเลิศ (Final Match) ===
+    if (finalMatches.length > 0) {
+      html += `<div class="bracket-column">
+        <h3 class="bracket-column-title">รอบชิงชนะเลิศ</h3>
+        <div class="bracket-column-body">${finalMatches.map(m => renderBracketMatch(m)).join("")}</div>
+      </div>`;
+    }
+    
+    // === 🏆 แชมป์ (Champion) ===
+    if (champion) {
+      const realChampion = resolveTeamName(champion, sport);
+      const champIsPlaceholder = isPlaceholder(realChampion);
+      html += `<div class="bracket-column">
+        <h3 class="bracket-column-title">🏆 แชมป์</h3>
+        <div class="bracket-column-body">
           <div class="champion-card-v2 winner-glow">
             <div class="text-3xl mb-2 text-center">👑</div>
-            <div class="flex justify-center mb-2">
-              <div class="logo-ring lg winner">
-                <div class="logo-fallback" style="font-size:30px">🏫</div>
-                ${getLogoPath(realChampion) ? `<img src="${getLogoPath(realChampion)}" onerror="this.style.display='none';">` : ''}
+            ${!champIsPlaceholder ? `
+              <div class="flex justify-center mb-2">
+                <div class="logo-ring lg winner">
+                  <div class="logo-fallback" style="font-size:30px">🏫</div>
+                  ${getLogoPath(realChampion) ? `<img src="${getLogoPath(realChampion)}" onerror="this.style.display='none';">` : ''}
+                </div>
               </div>
-            </div>
-            <p class="font-heading font-black text-lg text-yellow-200 text-center">${shortTeamName(realChampion)}</p>
-            <p class="text-yellow-300/60 text-xs text-center mt-1 tracking-widest">CHAMPION 2569</p>
+            ` : ''}
+            <p class="font-heading font-black text-lg text-yellow-200 text-center">${champIsPlaceholder ? realChampion : shortTeamName(realChampion)}</p>
+            ${!champIsPlaceholder ? `<p class="text-yellow-300/60 text-xs text-center mt-1 tracking-widest">CHAMPION 2569</p>` : ''}
           </div>
-        </div></div>`;
-      }
+        </div>
+      </div>`;
     }
-    if (thirdMatches.length > 0) html += `<div class="bracket-column"><h3 class="bracket-column-title">🥉 ชิงที่ 3</h3><div class="bracket-column-body">${thirdMatches.map(m => renderBracketMatch(m)).join("")}</div></div>`;
-    if (specialMatches.length > 0) html += `<div class="bracket-column"><h3 class="bracket-column-title">⭐ พิเศษ</h3><div class="bracket-column-body">${specialMatches.map(m => renderBracketMatch(m)).join("")}</div></div>`;
+    
+    // === 🥈 ที่ 2 (Runner-up) ===
+    if (runnerUp) {
+      const realRunnerUp = resolveTeamName(runnerUp, sport);
+      const runnerIsPlaceholder = isPlaceholder(realRunnerUp);
+      html += `<div class="bracket-column">
+        <h3 class="bracket-column-title">🥈 ที่ 2</h3>
+        <div class="bracket-column-body">
+          <div class="runner-up-card runner-up-glow">
+            <div class="text-3xl mb-2 text-center">🥈</div>
+            ${!runnerIsPlaceholder ? `
+              <div class="flex justify-center mb-2">
+                <div class="logo-ring lg runner-up">
+                  <div class="logo-fallback" style="font-size:30px">🏫</div>
+                  ${getLogoPath(realRunnerUp) ? `<img src="${getLogoPath(realRunnerUp)}" onerror="this.style.display='none';">` : ''}
+                </div>
+              </div>
+            ` : ''}
+            <p class="font-heading font-black text-lg text-gray-200 text-center">${runnerIsPlaceholder ? realRunnerUp : shortTeamName(realRunnerUp)}</p>
+            ${!runnerIsPlaceholder ? `<p class="text-gray-400 text-xs text-center mt-1 tracking-widest">RUNNER-UP 2569</p>` : ''}
+          </div>
+        </div>
+      </div>`;
+    }
+    
+    // === 🥉 ชิงที่ 3 (Third Place Match) ===
+    if (thirdMatches.length > 0) {
+      html += `<div class="bracket-column">
+        <h3 class="bracket-column-title">🥉 ชิงที่ 3</h3>
+        <div class="bracket-column-body">${thirdMatches.map(m => renderBracketMatch(m)).join("")}</div>
+      </div>`;
+    }
+    
+    // === ⭐ พิเศษ ===
+    if (specialMatches.length > 0) {
+      html += `<div class="bracket-column">
+        <h3 class="bracket-column-title">⭐ พิเศษ</h3>
+        <div class="bracket-column-body">${specialMatches.map(m => renderBracketMatch(m)).join("")}</div>
+      </div>`;
+    }
+    
     html += `</div>`;
   } else {
     html += `<div class="text-center py-20 text-white/50"><div class="text-6xl mb-4">⏳</div><p>ยังไม่มีข้อมูลการแข่งขันรอบ Knockout</p></div>`;
@@ -859,9 +928,33 @@ function switchTab(tab) {
   document.getElementById('content-knockout').classList.toggle('hidden', tab !== 'knockout');
 }
 
+// ================================================================
+// ✅ RENDER MATCH — ไม่แสดงโลโก้/ชื่อ ถ้ายังไม่มีคะแนน
+// ================================================================
 function renderBracketMatch(m) {
-  const realTeamA = resolveTeamName(m.teamA, m.sport);
-  const realTeamB = resolveTeamName(m.teamB, m.sport);
+  const hasResult = m.status === "finished" || m.status === "live";
+  
+  let displayA, displayB, logoA, logoB;
+  
+  if (hasResult) {
+    // มีผลแล้ว → แสดงชื่อโรงเรียน + โลโก้
+    const realA = resolveTeamName(m.teamA, m.sport);
+    const realB = resolveTeamName(m.teamB, m.sport);
+    const aIsPlaceholder = isPlaceholder(realA);
+    const bIsPlaceholder = isPlaceholder(realB);
+    
+    displayA = aIsPlaceholder ? realA : shortTeamName(realA);
+    displayB = bIsPlaceholder ? realB : shortTeamName(realB);
+    logoA = aIsPlaceholder ? '' : getLogoHTML(realA, "md");
+    logoB = bIsPlaceholder ? '' : getLogoHTML(realB, "md");
+  } else {
+    // ยังไม่มีผล → แสดงแค่ placeholder ห้ามโชว์โลโก้/ชื่อ รร.
+    displayA = m.teamA;
+    displayB = m.teamB;
+    logoA = '';
+    logoB = '';
+  }
+  
   const isLive = m.status === "live";
   const isFinished = m.status === "finished";
   const isUpcoming = m.status === "upcoming";
@@ -870,17 +963,21 @@ function renderBracketMatch(m) {
   const winner = getWinner(m);
   const aWon = winner && winner === m.teamA;
   const bWon = winner && winner === m.teamB;
+  
+  const aIsPlaceholder = !hasResult || isPlaceholder(displayA);
+  const bIsPlaceholder = !hasResult || isPlaceholder(displayB);
+  
   return `
     <div class="bracket-match">
       <div class="bracket-team ${aWon ? 'team-winner' : (isFinished && bWon ? 'team-loser' : '')}">
-        ${getLogoHTML(realTeamA, "md")}
-        <span class="bracket-team-name">${shortTeamName(realTeamA)}</span>
+        ${logoA}
+        <span class="bracket-team-name ${aIsPlaceholder ? 'placeholder' : ''}">${displayA}</span>
         <span class="bracket-team-score">${scoreA}</span>
         ${aWon ? '<span>🏆</span>' : ''}
       </div>
       <div class="bracket-team ${bWon ? 'team-winner' : (isFinished && aWon ? 'team-loser' : '')}">
-        ${getLogoHTML(realTeamB, "md")}
-        <span class="bracket-team-name">${shortTeamName(realTeamB)}</span>
+        ${logoB}
+        <span class="bracket-team-name ${bIsPlaceholder ? 'placeholder' : ''}">${displayB}</span>
         <span class="bracket-team-score">${scoreB}</span>
         ${bWon ? '<span>🏆</span>' : ''}
       </div>
@@ -894,6 +991,7 @@ function renderBracketMatch(m) {
 }
 
 function getWinner(m) { if (!m || m.status !== "finished") return null; const a = parseFloat(m.scoreA), b = parseFloat(m.scoreB); if (isNaN(a) || isNaN(b)) return null; if (a > b) return m.teamA; if (b > a) return m.teamB; return null; }
+function getLoser(m) { if (!m || m.status !== "finished") return null; const a = parseFloat(m.scoreA), b = parseFloat(m.scoreB); if (isNaN(a) || isNaN(b)) return null; if (a > b) return m.teamB; if (b > a) return m.teamA; return null; }
 function setConnectionStatus(type, text) { const dot = document.getElementById("statusDot"); const label = document.getElementById("statusText"); const colors = { ok: "bg-green-400", loading: "bg-yellow-400 animate-pulse", error: "bg-orange-400" }; dot.className = "w-2 h-2 rounded-full " + (colors[type] || "bg-gray-400"); label.textContent = text; }
 function updateLastUpdate() { document.getElementById("lastUpdate").textContent = new Date().toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit", second: "2-digit" }); }
 function showToast(title, message) { const toast = document.getElementById("toast"); document.getElementById("toastTitle").textContent = title; document.getElementById("toastMessage").textContent = message; toast.classList.remove("hidden"); if (CONFIG.ENABLE_SOUND) playSound(); setTimeout(() => toast.classList.add("hidden"), 5000); }
@@ -901,7 +999,7 @@ function playSound() { try { const ctx = new (window.AudioContext || window.webk
 
 document.addEventListener("DOMContentLoaded", () => {
   startCountdown(); renderStats(); renderSports(); renderAthletics(); renderCommittees(); renderSchools();
-  console.log("✅ Doytao Sports 2026 - Recursive Resolve v3");
+  console.log("✅ Doytao Sports 2026 - v4 (Semis only + 2nd place + Hide unfinished)");
 });
 </script>
 
