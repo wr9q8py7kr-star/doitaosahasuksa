@@ -84,78 +84,146 @@
   .logo-ring.winner { border-color: #FCD34D; box-shadow: 0 0 20px rgba(252,211,77,0.6); }
   .logo-ring.loser { opacity: 0.5; filter: grayscale(60%); }
 
-  /* ============ NEW BRACKET LAYOUT (LEFT-CENTER-RIGHT) ============ */
-  .bracket-scroll { overflow-x: auto; padding: 40px 20px; }
-  .bracket-layout {
+  /* ============ BRACKET STYLES (EXACT MOCKUP) ============ */
+  .bracket-wrapper {
+    position: relative;
+    overflow-x: auto;
+    padding: 40px 20px;
+  }
+  .bracket-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 30px;
+    gap: 40px;
     min-width: max-content;
     margin: 0 auto;
   }
-  .bracket-side { display: flex; gap: 30px; align-items: center; }
+  .bracket-side {
+    display: flex;
+    gap: 40px;
+  }
   .bracket-side.left { flex-direction: row; }
   .bracket-side.right { flex-direction: row-reverse; }
 
-  .bracket-round { display: flex; flex-direction: column; justify-content: space-around; gap: 20px; position: relative; }
-  .bracket-pair { position: relative; display: flex; flex-direction: column; gap: 20px; }
+  .bracket-round {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 20px;
+  }
+  .bracket-match-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 
-  /* ============ MATCH BOX ============ */
-  .bracket-match-v2 {
+  .bracket-match {
     background: rgba(34, 34, 34, 0.95);
     border: 2px solid #f1c40f;
     border-radius: 10px;
-    padding: 10px;
+    padding: 12px;
     width: 220px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
     position: relative;
     z-index: 2;
     transition: all 0.2s ease-in-out;
   }
-  .bracket-match-v2:hover { transform: scale(1.04); border-color: #ffffff; box-shadow: 0 0 20px rgba(241,196,15,0.5); }
-  .bracket-match-v2.match-live { border-color: #DC2626; background: rgba(127,29,29,0.6); animation: livePulse 1.5s ease-in-out infinite; }
-  .bracket-match-v2.match-finished { background: rgba(6,78,59,0.4); border-color: rgba(16,185,129,0.6); }
+  .bracket-match:hover {
+    transform: scale(1.05);
+    border-color: #ffffff;
+    box-shadow: 0 0 20px rgba(241, 196, 15, 0.4);
+  }
 
-  .bracket-team-v2 { display: flex; align-items: center; gap: 8px; padding: 5px 2px; border-bottom: 1px dashed #444; }
-  .bracket-team-v2:last-of-type { border-bottom: none; }
-  .bracket-team-v2.team-winner { background: rgba(252,211,77,0.12); border-radius: 6px; }
-  .bracket-team-v2.team-loser { opacity: 0.55; }
-  .bracket-name-v2 { font-family: 'Kanit', sans-serif; font-weight: 600; color: #e0e0e0; flex: 1; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .team-winner .bracket-name-v2 { color: #FCD34D; }
-  .bracket-score-v2 { font-family: 'JetBrains Mono', monospace; font-weight: 900; font-size: 18px; color: #f1c40f; min-width: 24px; text-align: center; }
-  .bracket-match-v2 .mm-time { font-size: 10px; color: #888; text-align: center; margin-top: 6px; padding-top: 5px; border-top: 1px solid #333; font-family: 'JetBrains Mono', monospace; }
+  .bracket-team {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 1px dashed #444;
+  }
+  .bracket-team:last-of-type { border-bottom: none; }
+  .bracket-team-name { color: #e0e0e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px;}
+  .bracket-team-score { color: #f1c40f; font-weight: 700; font-family: 'JetBrains Mono', monospace;}
 
-  /* ============ CONNECTION LINES ============ */
-  .bracket-side.left .bracket-round.qf .bracket-pair::after { content: ''; position: absolute; right: -16px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1; }
-  .bracket-side.left .bracket-round.qf .bracket-pair .bracket-match-v2::after { content: ''; position: absolute; right: -16px; top: 50%; width: 16px; height: 2px; background: #f1c40f; z-index: 1; }
+  .bracket-match .bracket-time {
+    font-size: 11px;
+    color: #888;
+    text-align: center;
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid #333;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Lines - Left Side */
+  .bracket-side.left .bracket-round.qf .bracket-match-wrapper::after {
+    content: ''; position: absolute; right: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1;
+  }
+  .bracket-side.left .bracket-round.qf .bracket-match-wrapper .bracket-match::after {
+    content: ''; position: absolute; right: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1;
+  }
   .bracket-side.left .bracket-round.sf { position: relative; }
-  .bracket-side.left .bracket-round.sf .bracket-match-v2::after { content: ''; position: absolute; right: -16px; top: 50%; width: 16px; height: 2px; background: #f1c40f; z-index: 1; }
-  .bracket-side.left .bracket-round.sf::after { content: ''; position: absolute; right: -16px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1; }
+  .bracket-side.left .bracket-round.sf .bracket-match::after {
+    content: ''; position: absolute; right: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1;
+  }
+  .bracket-side.left .bracket-round.sf::after {
+    content: ''; position: absolute; right: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1;
+  }
 
-  .bracket-side.right .bracket-round.qf .bracket-pair::after { content: ''; position: absolute; left: -16px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1; }
-  .bracket-side.right .bracket-round.qf .bracket-pair .bracket-match-v2::after { content: ''; position: absolute; left: -16px; top: 50%; width: 16px; height: 2px; background: #f1c40f; z-index: 1; }
+  /* Lines - Right Side (Mirrored) */
+  .bracket-side.right .bracket-round.qf .bracket-match-wrapper::after {
+    content: ''; position: absolute; left: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1;
+  }
+  .bracket-side.right .bracket-round.qf .bracket-match-wrapper .bracket-match::after {
+    content: ''; position: absolute; left: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1;
+  }
   .bracket-side.right .bracket-round.sf { position: relative; }
-  .bracket-side.right .bracket-round.sf .bracket-match-v2::after { content: ''; position: absolute; left: -16px; top: 50%; width: 16px; height: 2px; background: #f1c40f; z-index: 1; }
-  .bracket-side.right .bracket-round.sf::after { content: ''; position: absolute; left: -16px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1; }
+  .bracket-side.right .bracket-round.sf .bracket-match::after {
+    content: ''; position: absolute; left: -20px; top: 50%; width: 20px; height: 2px; background: #f1c40f; z-index: 1;
+  }
+  .bracket-side.right .bracket-round.sf::after {
+    content: ''; position: absolute; left: -20px; top: 25%; bottom: 25%; width: 2px; background: #f1c40f; z-index: 1;
+  }
 
-  /* ============ CENTER (TROPHY + FINAL) ============ */
-  .bracket-center { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; margin: 0 20px; position: relative; z-index: 3; }
-  .trophy-icon { font-size: 90px; filter: drop-shadow(0 0 25px rgba(241,196,15,0.85)); animation: float 3s ease-in-out infinite; }
-  .final-label { color: #f1c40f; font-family: 'Kanit', sans-serif; font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 12px rgba(241,196,15,0.6); margin-bottom: 4px; }
-  .champion-card-v2 { background: linear-gradient(135deg, rgba(245,158,11,0.3), rgba(217,119,6,0.2)); border: 3px solid #FCD34D; border-radius: 18px; padding: 14px 20px; min-width: 200px; text-align: center; margin-top: 8px; }
+  /* Center Trophy */
+  .bracket-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 40px;
+    position: relative;
+  }
+  .trophy-icon {
+    font-size: 100px;
+    filter: drop-shadow(0 0 30px rgba(241, 196, 15, 0.8));
+    animation: float 3s ease-in-out infinite;
+  }
+  .final-label {
+    margin-top: 20px;
+    color: #f1c40f;
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
+    white-space: nowrap;
+  }
 
-  /* ============ RESPONSIVE ============ */
+  /* Responsive Bracket */
   @media (max-width: 1024px) {
-    .bracket-layout { flex-direction: column; gap: 40px; min-width: auto; }
-    .bracket-side { flex-direction: column !important; gap: 24px; align-items: center; width: 100%; }
-    .bracket-side.left .bracket-round.qf .bracket-pair::after, .bracket-side.left .bracket-round.qf .bracket-pair .bracket-match-v2::after, .bracket-side.left .bracket-round.sf::after, .bracket-side.left .bracket-round.sf .bracket-match-v2::after, .bracket-side.right .bracket-round.qf .bracket-pair::after, .bracket-side.right .bracket-round.qf .bracket-pair .bracket-match-v2::after, .bracket-side.right .bracket-round.sf::after, .bracket-side.right .bracket-round.sf .bracket-match-v2::after { display: none; }
-    .bracket-pair { flex-direction: row; flex-wrap: wrap; justify-content: center; }
-    .bracket-center { margin: 20px 0; order: -1; }
-    .trophy-icon { font-size: 70px; }
-    .final-label { font-size: 16px; }
-    .bracket-match-v2 { width: 100%; max-width: 300px; }
-    .bracket-scroll { padding: 20px 10px; }
+    .bracket-container { flex-direction: column; gap: 60px; }
+    .bracket-side { flex-direction: column !important; gap: 30px; align-items: center; }
+    .bracket-side.left .bracket-round.qf .bracket-match-wrapper::after, .bracket-side.left .bracket-round.qf .bracket-match-wrapper .bracket-match::after, .bracket-side.left .bracket-round.sf::after, .bracket-side.left .bracket-round.sf .bracket-match::after,
+    .bracket-side.right .bracket-round.qf .bracket-match-wrapper::after, .bracket-side.right .bracket-round.qf .bracket-match-wrapper .bracket-match::after, .bracket-side.right .bracket-round.sf::after, .bracket-side.right .bracket-round.sf .bracket-match::after {
+      display: none;
+    }
+    .bracket-match-wrapper { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+    .bracket-center { margin: 40px 0; order: -1; }
+    .bracket-match { width: 100%; max-width: 300px; }
   }
 
   /* ============ GROUP TABLE ============ */
@@ -381,15 +449,12 @@ const CONFIG = {
 };
 
 // ================================================================
-// LOGO MAPPING (แก้ไขชื่อโรงเรียนให้ถูกต้องแล้ว)
+// LOGO MAPPING
 // ================================================================
 const LOGO_MAP = {
-  // แก้จาก โป่ง -> โปง
   "โรงเรียนบ้านโปง": "banpong.jpg", "บ้านโปง": "banpong.jpg", "โปง": "banpong.jpg",
-  // แก้จาก ตุบ -> ตูบ
   "โรงเรียนบ้านแม่ตูบ": "maetoop.jpg", "บ้านแม่ตูบ": "maetoop.jpg", "แม่ตูบ": "maetoop.jpg",
   "โรงเรียนบ้านเกาะหลวง": "kohluang.jpg", "บ้านเกาะหลวง": "kohluang.jpg", "เกาะหลวง": "kohluang.jpg",
-  // แก้จาก โป่งทุ่ง -> โปงทุ่ง
   "โรงเรียนบ้านโปงทุ่ง": "pongtoong.jpg", "บ้านโปงทุ่ง": "pongtoong.jpg", "โปงทุ่ง": "pongtoong.jpg",
   "โรงเรียนบ้านงิ้วสูง": "kiwsoong.jpg", "บ้านงิ้วสูง": "kiwsoong.jpg", "งิ้วสูง": "kiwsoong.jpg",
   "โรงเรียนบ้านแม่บวน": "maebuan.jpg", "บ้านแม่บวน": "maebuan.jpg", "แม่บวน": "maebuan.jpg",
@@ -423,7 +488,7 @@ function getLogoHTML(teamName, size = "md", extraClass = "") {
 function shortTeamName(name) { if (!name) return ""; return name.replace("โรงเรียน", "").replace("ชุมชนบ้าน", "ชุมชน").trim(); }
 
 // ================================================================
-// DATA (แก้ไขชื่อโรงเรียนให้ถูกต้องแล้ว)
+// DATA (Home Page)
 // ================================================================
 const DATA = {
   stats: [
@@ -537,9 +602,12 @@ const DATA = {
 };
 
 // ================================================================
-// PAGE NAVIGATION
+// PAGE NAVIGATION & HOME RENDER
 // ================================================================
 let bracketInitialized = false;
+let currentTab = 'group'; // 'group' or 'knockout'
+let currentSportMatches = [];
+
 function showPage(page) {
   document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + page).classList.add('active');
@@ -552,126 +620,18 @@ function showPage(page) {
     fetchBracketData();
   }
 }
-function scrollToId(id) {
-  setTimeout(() => {
-    const el = document.getElementById(id);
-    if (el) { const top = el.getBoundingClientRect().top + window.pageYOffset - 80; window.scrollTo({ top, behavior: 'smooth' }); }
-  }, 100);
-}
+function scrollToId(id) { setTimeout(() => { const el = document.getElementById(id); if (el) { const top = el.getBoundingClientRect().top + window.pageYOffset - 80; window.scrollTo({ top, behavior: 'smooth' }); } }, 100); }
 function closeMobileMenu() { document.getElementById('mobileMenu').classList.add('hidden'); }
-
-window.addEventListener('scroll', () => {
-  const navbar = document.getElementById('navbar');
-  if (document.getElementById('page-bracket').classList.contains('active')) return;
-  if (window.scrollY > 20) { navbar.classList.add('glass-dark', 'shadow-lg'); navbar.classList.remove('bg-transparent'); }
-  else { navbar.classList.remove('glass-dark', 'shadow-lg'); navbar.classList.add('bg-transparent'); }
-});
+window.addEventListener('scroll', () => { const navbar = document.getElementById('navbar'); if (document.getElementById('page-bracket').classList.contains('active')) return; if (window.scrollY > 20) { navbar.classList.add('glass-dark', 'shadow-lg'); navbar.classList.remove('bg-transparent'); } else { navbar.classList.remove('glass-dark', 'shadow-lg'); navbar.classList.add('bg-transparent'); } });
 document.getElementById('menuToggle').addEventListener('click', () => { document.getElementById('mobileMenu').classList.toggle('hidden'); });
 
-// ================================================================
-// COUNTDOWN
-// ================================================================
-function startCountdown() {
-  const target = new Date("2026-10-05T08:00:00+07:00").getTime();
-  const el = document.getElementById("countdown");
-  function update() {
-    const dist = target - Date.now();
-    if (dist < 0) { el.innerHTML = '<p class="text-2xl font-heading font-bold text-secondary">🎉 การแข่งขันได้เริ่มขึ้นแล้ว!</p>'; return; }
-    const d = Math.floor(dist / 86400000), h = Math.floor((dist % 86400000) / 3600000);
-    const m = Math.floor((dist % 3600000) / 60000), s = Math.floor((dist % 60000) / 1000);
-    el.innerHTML = [{ label: "วัน", value: d }, { label: "ชั่วโมง", value: h }, { label: "นาที", value: m }, { label: "วินาที", value: s }]
-      .map(item => `<div class="countdown-box animate-float"><div class="font-heading font-black text-3xl md:text-5xl text-white">${String(item.value).padStart(2, "0")}</div><div class="text-xs md:text-sm text-secondary font-medium mt-1">${item.label}</div></div>`).join("");
-  }
-  update(); setInterval(update, 1000);
-}
-
-// ================================================================
-// HOME RENDER
-// ================================================================
-function renderStats() {
-  document.getElementById("statsGrid").innerHTML = DATA.stats.map(s => `
-    <div class="stat-card text-center p-6 bg-gradient-to-br from-primary-50 to-white rounded-2xl shadow-md hover:shadow-xl transition border border-primary-100">
-      <div class="text-4xl mb-2">${s.icon}</div>
-      <div class="font-heading font-black text-4xl md:text-5xl text-primary-700 mb-1"><span class="counter" data-target="${s.value}">0</span></div>
-      <div class="text-sm text-gray-500 mb-1">${s.suffix}</div>
-      <div class="font-medium text-dark">${s.label}</div>
-    </div>`).join("");
-  animateCounters();
-}
-function animateCounters() {
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      entry.target.querySelectorAll(".counter").forEach(counter => {
-        const target = +counter.getAttribute("data-target"); const step = target / 90; let current = 0;
-        const tick = () => { current += step; if (current < target) { counter.textContent = Math.floor(current); requestAnimationFrame(tick); } else counter.textContent = target; };
-        tick();
-      });
-      observer.unobserve(entry.target);
-    });
-  }, { threshold: 0.4 });
-  document.querySelectorAll(".stat-card").forEach(el => observer.observe(el));
-}
-function renderSports() {
-  document.getElementById("sportsGrid").innerHTML = DATA.sports.map(s => `
-    <div class="group bg-white rounded-2xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-primary-100 cursor-pointer" onclick="showPage('bracket')">
-      <div class="flex items-start justify-between mb-4">
-        <div class="text-5xl group-hover:scale-125 transition-transform">${s.icon}</div>
-        <span class="text-xs px-3 py-1 rounded-full bg-primary-100 text-primary-800 font-medium">${s.category}</span>
-      </div>
-      <h3 class="font-heading font-bold text-lg text-dark mb-2">${s.name}</h3>
-      <div class="flex items-center gap-2 text-sm text-gray-500"><span>${s.gender !== "-" ? s.gender : "รวม"}</span><span>•</span><span>${s.level}</span></div>
-      <div class="mt-4 pt-4 border-t border-primary-50 flex items-center justify-between">
-        <span class="text-xs text-gray-500">ดูผลการแข่งขัน</span>
-        <span class="text-primary-600 font-bold text-sm group-hover:translate-x-1 transition">ดูคะแนน →</span>
-      </div>
-    </div>`).join("");
-}
-function renderAthletics() {
-  const ages = ["อ", "8", "10", "12", "15"];
-  document.getElementById("athleticsTable").innerHTML = DATA.athletics.map(e => {
-    const mCells = ages.map(a => { const has = e.male.includes(a); return `<td class="px-2 py-2 text-center border-l border-white/20 ${has ? "text-secondary font-bold text-lg" : "text-white/20"}">${has ? "✓" : "-"}</td>`; }).join("");
-    const fCells = ages.map(a => { const has = e.female.includes(a); return `<td class="px-2 py-2 text-center border-l border-white/20 ${has ? "text-secondary font-bold text-lg" : "text-white/20"}">${has ? "✓" : "-"}</td>`; }).join("");
-    return `<tr><td class="px-3 py-2 font-mono">${e.no}</td><td class="px-3 py-2 font-medium">${e.name}</td>${mCells}${fCells}</tr>`;
-  }).join("");
-  document.getElementById("ageTable").innerHTML = DATA.ageReference.map(a => `<tr><td class="px-4 py-2">${a.age}</td><td class="px-4 py-2 font-mono">${a.year}</td></tr>`).join("");
-}
-function renderCommittees() {
-  document.getElementById("committeesList").innerHTML = DATA.committees.map(c => `
-    <div class="bg-white rounded-2xl shadow-md border border-primary-100 overflow-hidden">
-      <button class="accordion-btn w-full flex items-center justify-between p-5 text-left hover:bg-primary-50 transition">
-        <div class="flex items-center gap-3">
-          <span class="text-3xl">${c.icon}</span>
-          <span class="font-heading font-bold text-lg text-primary-800">${c.title}</span>
-          <span class="text-xs px-2 py-0.5 rounded-full bg-secondary/20 text-secondary-600 font-medium">${c.members.length} ท่าน</span>
-        </div>
-        <svg class="accordion-icon w-6 h-6 text-primary-600 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-      </button>
-      <div class="accordion-content"><div class="p-5 pt-0"><div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-        ${c.members.map(m => `<div class="p-3 bg-primary-50/50 rounded-xl border-l-4 border-primary-500"><p class="font-semibold text-dark">${m.name}</p><p class="text-xs text-gray-600 mt-1">${m.role}</p><p class="text-xs text-secondary-600 font-medium mt-1">${m.position}</p></div>`).join("")}
-      </div></div></div>
-    </div>`).join("");
-  document.querySelectorAll(".accordion-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const content = btn.nextElementSibling; const icon = btn.querySelector(".accordion-icon");
-      content.classList.toggle("open");
-      icon.style.transform = content.classList.contains("open") ? "rotate(180deg)" : "rotate(0deg)";
-    });
-  });
-}
-function renderSchools() {
-  const labels = { large: "ขนาดใหญ่", medium: "ขนาดกลาง", small: "ขนาดเล็ก" };
-  const colors = { large: "bg-primary-100 text-primary-800", medium: "bg-secondary/20 text-secondary-600", small: "bg-accent/10 text-accent" };
-  document.getElementById("schoolsGrid").innerHTML = DATA.schools.map(s => `
-    <div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition border border-primary-100">
-      <div class="flex items-start justify-between mb-3">
-        ${getLogoHTML(s.name, "lg")}
-        <span class="text-xs px-2 py-1 rounded-full ${colors[s.size]} font-medium">${labels[s.size]}</span>
-      </div>
-      <h3 class="font-heading font-bold text-base text-dark mb-2">${s.name}</h3>
-      <p class="text-xs text-gray-600">👤 ${s.director}</p>
-    </div>`).join("");
-}
+function startCountdown() { const target = new Date("2026-10-05T08:00:00+07:00").getTime(); const el = document.getElementById("countdown"); function update() { const dist = target - Date.now(); if (dist < 0) { el.innerHTML = '<p class="text-2xl font-heading font-bold text-secondary">🎉 การแข่งขันได้เริ่มขึ้นแล้ว!</p>'; return; } const d = Math.floor(dist / 86400000), h = Math.floor((dist % 86400000) / 3600000); const m = Math.floor((dist % 3600000) / 60000), s = Math.floor((dist % 60000) / 1000); el.innerHTML = [{ label: "วัน", value: d }, { label: "ชั่วโมง", value: h }, { label: "นาที", value: m }, { label: "วินาที", value: s }].map(item => `<div class="countdown-box animate-float"><div class="font-heading font-black text-3xl md:text-5xl text-white">${String(item.value).padStart(2, "0")}</div><div class="text-xs md:text-sm text-secondary font-medium mt-1">${item.label}</div></div>`).join(""); } update(); setInterval(update, 1000); }
+function renderStats() { document.getElementById("statsGrid").innerHTML = DATA.stats.map(s => `<div class="stat-card text-center p-6 bg-gradient-to-br from-primary-50 to-white rounded-2xl shadow-md hover:shadow-xl transition border border-primary-100"><div class="text-4xl mb-2">${s.icon}</div><div class="font-heading font-black text-4xl md:text-5xl text-primary-700 mb-1"><span class="counter" data-target="${s.value}">0</span></div><div class="text-sm text-gray-500 mb-1">${s.suffix}</div><div class="font-medium text-dark">${s.label}</div></div>`).join(""); animateCounters(); }
+function animateCounters() { const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if (!entry.isIntersecting) return; entry.target.querySelectorAll(".counter").forEach(counter => { const target = +counter.getAttribute("data-target"); const step = target / 90; let current = 0; const tick = () => { current += step; if (current < target) { counter.textContent = Math.floor(current); requestAnimationFrame(tick); } else counter.textContent = target; }; tick(); }); observer.unobserve(entry.target); }); }, { threshold: 0.4 }); document.querySelectorAll(".stat-card").forEach(el => observer.observe(el)); }
+function renderSports() { document.getElementById("sportsGrid").innerHTML = DATA.sports.map(s => `<div class="group bg-white rounded-2xl p-6 shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-primary-100 cursor-pointer" onclick="showPage('bracket')"><div class="flex items-start justify-between mb-4"><div class="text-5xl group-hover:scale-125 transition-transform">${s.icon}</div><span class="text-xs px-3 py-1 rounded-full bg-primary-100 text-primary-800 font-medium">${s.category}</span></div><h3 class="font-heading font-bold text-lg text-dark mb-2">${s.name}</h3><div class="flex items-center gap-2 text-sm text-gray-500"><span>${s.gender !== "-" ? s.gender : "รวม"}</span><span>•</span><span>${s.level}</span></div><div class="mt-4 pt-4 border-t border-primary-50 flex items-center justify-between"><span class="text-xs text-gray-500">ดูผลการแข่งขัน</span><span class="text-primary-600 font-bold text-sm group-hover:translate-x-1 transition">ดูคะแนน →</span></div></div>`).join(""); }
+function renderAthletics() { const ages = ["อ", "8", "10", "12", "15"]; document.getElementById("athleticsTable").innerHTML = DATA.athletics.map(e => { const mCells = ages.map(a => { const has = e.male.includes(a); return `<td class="px-2 py-2 text-center border-l border-white/20 ${has ? "text-secondary font-bold text-lg" : "text-white/20"}">${has ? "✓" : "-"}</td>`; }).join(""); const fCells = ages.map(a => { const has = e.female.includes(a); return `<td class="px-2 py-2 text-center border-l border-white/20 ${has ? "text-secondary font-bold text-lg" : "text-white/20"}">${has ? "✓" : "-"}</td>`; }).join(""); return `<tr><td class="px-3 py-2 font-mono">${e.no}</td><td class="px-3 py-2 font-medium">${e.name}</td>${mCells}${fCells}</tr>`; }).join(""); document.getElementById("ageTable").innerHTML = DATA.ageReference.map(a => `<tr><td class="px-4 py-2">${a.age}</td><td class="px-4 py-2 font-mono">${a.year}</td></tr>`).join(""); }
+function renderCommittees() { document.getElementById("committeesList").innerHTML = DATA.committees.map(c => `<div class="bg-white rounded-2xl shadow-md border border-primary-100 overflow-hidden"><button class="accordion-btn w-full flex items-center justify-between p-5 text-left hover:bg-primary-50 transition"><div class="flex items-center gap-3"><span class="text-3xl">${c.icon}</span><span class="font-heading font-bold text-lg text-primary-800">${c.title}</span><span class="text-xs px-2 py-0.5 rounded-full bg-secondary/20 text-secondary-600 font-medium">${c.members.length} ท่าน</span></div><svg class="accordion-icon w-6 h-6 text-primary-600 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button><div class="accordion-content"><div class="p-5 pt-0"><div class="grid grid-cols-1 md:grid-cols-2 gap-3">${c.members.map(m => `<div class="p-3 bg-primary-50/50 rounded-xl border-l-4 border-primary-500"><p class="font-semibold text-dark">${m.name}</p><p class="text-xs text-gray-600 mt-1">${m.role}</p><p class="text-xs text-secondary-600 font-medium mt-1">${m.position}</p></div>`).join("")}</div></div></div></div>`).join(""); document.querySelectorAll(".accordion-btn").forEach(btn => { btn.addEventListener("click", () => { const content = btn.nextElementSibling; const icon = btn.querySelector(".accordion-icon"); content.classList.toggle("open"); icon.style.transform = content.classList.contains("open") ? "rotate(180deg)" : "rotate(0deg)"; }); }); }
+function renderSchools() { const labels = { large: "ขนาดใหญ่", medium: "ขนาดกลาง", small: "ขนาดเล็ก" }; const colors = { large: "bg-primary-100 text-primary-800", medium: "bg-secondary/20 text-secondary-600", small: "bg-accent/10 text-accent" }; document.getElementById("schoolsGrid").innerHTML = DATA.schools.map(s => `<div class="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition border border-primary-100"><div class="flex items-start justify-between mb-3">${getLogoHTML(s.name, "lg")}<span class="text-xs px-2 py-1 rounded-full ${colors[s.size]} font-medium">${labels[s.size]}</span></div><h3 class="font-heading font-bold text-base text-dark mb-2">${s.name}</h3><p class="text-xs text-gray-600">👤 ${s.director}</p></div>`).join(""); }
 
 // ================================================================
 // BRACKET SYSTEM
@@ -681,130 +641,26 @@ let selectedSport = "";
 let previousMatchState = {};
 let isFirstBracketLoad = true;
 
-function initBracket() {
-  setInterval(fetchBracketData, CONFIG.REFRESH_INTERVAL);
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden && document.getElementById("page-bracket").classList.contains("active")) fetchBracketData();
-  });
-}
-
-async function fetchBracketData() {
-  const url = CONFIG.SCORE_SHEET_URL;
-  if (!url) { setConnectionStatus("error", "ยังไม่ตั้งค่า"); return; }
-  try {
-    setConnectionStatus("loading", "กำลังโหลด...");
-    const res = await fetch(url + "&t=" + Date.now(), { cache: "no-store" });
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    const csv = await res.text();
-    const matches = parseCSV(csv);
-    const changes = detectChanges(matches);
-    allMatches = matches;
-    previousMatchState = Object.fromEntries(matches.map(m => [m.no, { scoreA: m.scoreA, scoreB: m.scoreB, status: m.status }]));
-    renderSportTabs();
-    renderBracketContent();
-    setConnectionStatus("ok", "เชื่อมต่อแล้ว");
-    updateLastUpdate();
-    if (!isFirstBracketLoad && changes.length > 0) changes.forEach(c => showToast("🔔 คะแนนอัปเดต!", `${c.teamA} ${c.scoreA} - ${c.scoreB} ${c.teamB}`));
-    isFirstBracketLoad = false;
-  } catch (err) { console.error("Fetch error:", err); setConnectionStatus("error", "เชื่อมต่อไม่ได้"); }
-}
-
-function parseCSV(csv) {
-  const lines = csv.trim().split("\n");
-  if (lines.length < 2) return [];
-  const headers = parseCSVLine(lines[0]);
-  const rows = [];
-  for (let i = 1; i < lines.length; i++) {
-    const values = parseCSVLine(lines[i]);
-    if (values.length === 0 || !values[0]) continue;
-    const obj = {};
-    headers.forEach((h, idx) => obj[h.trim()] = (values[idx] || "").trim());
-    if (!obj.no || !obj.teamA) continue;
-    rows.push({
-      no: obj.no, date: obj.date || "", time: obj.time || "",
-      sport: obj.sport || "", teamA: obj.teamA || "", teamB: obj.teamB || "",
-      group: obj.group || "", scoreA: obj.scoreA || "0", scoreB: obj.scoreB || "0",
-      status: (obj.status || "upcoming").toLowerCase().trim(), referee: obj.referee || ""
-    });
-  }
-  return rows;
-}
-function parseCSVLine(line) {
-  const result = []; let current = ""; let inQuotes = false;
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
-    if (char === '"') inQuotes = !inQuotes;
-    else if (char === "," && !inQuotes) { result.push(current); current = ""; }
-    else current += char;
-  }
-  result.push(current);
-  return result.map(v => v.trim().replace(/^"|"$/g, ""));
-}
-function detectChanges(newMatches) {
-  const changes = [];
-  newMatches.forEach(m => {
-    const prev = previousMatchState[m.no];
-    if (!prev) return;
-    if (prev.scoreA !== m.scoreA || prev.scoreB !== m.scoreB) changes.push(m);
-  });
-  return changes;
-}
-
-function renderSportTabs() {
-  const sports = [...new Set(allMatches.map(m => m.sport).filter(Boolean))].sort();
-  if (!selectedSport && sports.length > 0) selectedSport = sports[0];
-  document.getElementById("bracketSportTabs").innerHTML = sports.map(s => {
-    const active = s === selectedSport;
-    return `<button onclick="selectSport('${s}')" class="px-4 py-2 rounded-xl whitespace-nowrap text-sm font-medium transition ${active ? 'bg-gradient-to-r from-primary-700 to-primary-500 text-white shadow-lg' : 'glass-dark text-white/70 hover:text-white hover:bg-white/10'}">${s}</button>`;
-  }).join("");
-}
+function initBracket() { setInterval(fetchBracketData, CONFIG.REFRESH_INTERVAL); document.addEventListener("visibilitychange", () => { if (!document.hidden && document.getElementById("page-bracket").classList.contains("active")) fetchBracketData(); }); }
+async function fetchBracketData() { const url = CONFIG.SCORE_SHEET_URL; if (!url) { setConnectionStatus("error", "ยังไม่ตั้งค่า"); return; } try { setConnectionStatus("loading", "กำลังโหลด..."); const res = await fetch(url + "&t=" + Date.now(), { cache: "no-store" }); if (!res.ok) throw new Error("HTTP " + res.status); const csv = await res.text(); const matches = parseCSV(csv); const changes = detectChanges(matches); allMatches = matches; previousMatchState = Object.fromEntries(matches.map(m => [m.no, { scoreA: m.scoreA, scoreB: m.scoreB, status: m.status }])); renderSportTabs(); renderBracketContent(); setConnectionStatus("ok", "เชื่อมต่อแล้ว"); updateLastUpdate(); if (!isFirstBracketLoad && changes.length > 0) changes.forEach(c => showToast("🔔 คะแนนอัปเดต!", `${c.teamA} ${c.scoreA} - ${c.scoreB} ${c.teamB}`)); isFirstBracketLoad = false; } catch (err) { console.error("Fetch error:", err); setConnectionStatus("error", "เชื่อมต่อไม่ได้"); } }
+function parseCSV(csv) { const lines = csv.trim().split("\n"); if (lines.length < 2) return []; const headers = parseCSVLine(lines[0]); const rows = []; for (let i = 1; i < lines.length; i++) { const values = parseCSVLine(lines[i]); if (values.length === 0 || !values[0]) continue; const obj = {}; headers.forEach((h, idx) => obj[h.trim()] = (values[idx] || "").trim()); if (!obj.no || !obj.teamA) continue; rows.push({ no: obj.no, date: obj.date || "", time: obj.time || "", sport: obj.sport || "", teamA: obj.teamA || "", teamB: obj.teamB || "", group: obj.group || "", scoreA: obj.scoreA || "0", scoreB: obj.scoreB || "0", status: (obj.status || "upcoming").toLowerCase().trim(), referee: obj.referee || "" }); } return rows; }
+function parseCSVLine(line) { const result = []; let current = ""; let inQuotes = false; for (let i = 0; i < line.length; i++) { const char = line[i]; if (char === '"') inQuotes = !inQuotes; else if (char === "," && !inQuotes) { result.push(current); current = ""; } else current += char; } result.push(current); return result.map(v => v.trim().replace(/^"|"$/g, "")); }
+function detectChanges(newMatches) { const changes = []; newMatches.forEach(m => { const prev = previousMatchState[m.no]; if (!prev) return; if (prev.scoreA !== m.scoreA || prev.scoreB !== m.scoreB) changes.push(m); }); return changes; }
+function renderSportTabs() { const sports = [...new Set(allMatches.map(m => m.sport).filter(Boolean))].sort(); if (!selectedSport && sports.length > 0) selectedSport = sports[0]; document.getElementById("bracketSportTabs").innerHTML = sports.map(s => { const active = s === selectedSport; return `<button onclick="selectSport('${s}')" class="px-4 py-2 rounded-xl whitespace-nowrap text-sm font-medium transition ${active ? 'bg-gradient-to-r from-primary-700 to-primary-500 text-white shadow-lg' : 'glass-dark text-white/70 hover:text-white hover:bg-white/10'}">${s}</button>`; }).join(""); }
 function selectSport(sport) { selectedSport = sport; renderSportTabs(); renderBracketContent(); }
 
 // ================================================================
-// RENDER BRACKET CONTENT
+// RENDER BRACKET CONTENT (TABS & EXACT MOCKUP LAYOUT)
 // ================================================================
 function renderBracketContent() {
   const container = document.getElementById("bracketContent");
   if (!selectedSport) { container.innerHTML = `<div class="text-center py-20 text-white/50">เลือกประเภทกีฬาเพื่อดูผลการแข่งขัน</div>`; return; }
 
-  const sportMatches = allMatches.filter(m => m.sport === selectedSport);
-
-  const groupMatches = sportMatches.filter(m => ["A","B","C","D"].includes((m.group || "").trim()));
-  const knockoutMatches = sportMatches.filter(m => { const g = (m.group || "").trim(); return !["A","B","C","D","-",""].includes(g); });
-
-  const groups = {};
-  groupMatches.forEach(m => {
-    const g = m.group;
-    if (!groups[g]) groups[g] = {};
-    [m.teamA, m.teamB].forEach(t => {
-      if (t && t !== "-" && !t.startsWith("ที่") && !t.startsWith("ผู้")) {
-        if (!groups[g][t]) groups[g][t] = { name: t, played: 0, win: 0, draw: 0, loss: 0, gf: 0, ga: 0, pts: 0 };
-      }
-    });
-    if (m.status === "finished" && !isNaN(+m.scoreA) && !isNaN(+m.scoreB)) {
-      const a = +m.scoreA, b = +m.scoreB;
-      if (groups[g][m.teamA] && groups[g][m.teamB]) {
-        groups[g][m.teamA].played++; groups[g][m.teamB].played++;
-        groups[g][m.teamA].gf += a; groups[g][m.teamA].ga += b;
-        groups[g][m.teamB].gf += b; groups[g][m.teamB].ga += a;
-        if (a > b) { groups[g][m.teamA].win++; groups[g][m.teamA].pts += 3; groups[g][m.teamB].loss++; }
-        else if (b > a) { groups[g][m.teamB].win++; groups[g][m.teamB].pts += 3; groups[g][m.teamA].loss++; }
-        else { groups[g][m.teamA].draw++; groups[g][m.teamB].draw++; groups[g][m.teamA].pts++; groups[g][m.teamB].pts++; }
-      }
-    }
-  });
-  Object.keys(groups).forEach(g => {
-    groups[g] = Object.values(groups[g]).sort((a, b) => {
-      if (b.pts !== a.pts) return b.pts - a.pts;
-      const diffA = a.gf - a.ga, diffB = b.gf - b.ga;
-      if (diffB !== diffA) return diffB - diffA;
-      return b.gf - a.gf;
-    });
-  });
-
-  const qfMatches = knockoutMatches.filter(m => { const g = (m.group || ""); return g.includes("ก่อนรอง") || g.includes("8 ทีม") || g.includes("รอบ 8"); });
-  const sfMatches = knockoutMatches.filter(m => (m.group || "").includes("รองชนะเลิศ") && !(m.group || "").includes("ชิง"));
-  const finalMatches = knockoutMatches.filter(m => (m.group || "").includes("ชิงที่ 1") || (m.group || "").includes("ชิงชนะเลิศ"));
+  currentSportMatches = allMatches.filter(m => m.sport === selectedSport);
+  
+  // แยกข้อมูล Group และ Knockout
+  const groupMatches = currentSportMatches.filter(m => ["A","B","C","D"].includes((m.group || "").trim()));
+  const knockoutMatches = currentSportMatches.filter(m => { const g = (m.group || "").trim(); return !["A","B","C","D","-",""].includes(g); });
 
   let html = `
     <div class="glass-dark rounded-3xl p-6 md:p-8 mb-6">
@@ -815,21 +671,59 @@ function renderBracketContent() {
         </div>
         <div>
           <h2 class="font-heading font-black text-2xl md:text-3xl text-transparent bg-gradient-to-r from-secondary via-yellow-300 to-secondary bg-clip-text">${selectedSport}</h2>
-          <p class="text-white/60 text-sm">ผังการแข่งขัน · ${sportMatches.length} คู่</p>
+          <p class="text-white/60 text-sm">ผังการแข่งขัน · ${currentSportMatches.length} คู่</p>
         </div>
       </div>
   `;
 
-  if (Object.keys(groups).length > 0) {
-    html += `<h3 class="font-heading font-bold text-xl text-secondary mb-4">📊 ตารางคะแนนรอบแบ่งกลุ่ม</h3>`;
-    html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">`;
+  // Tabs
+  html += `
+    <div class="flex gap-2 mb-6 border-b border-white/10 pb-4">
+      <button onclick="switchTab('group')" class="px-5 py-2.5 rounded-xl font-heading font-semibold transition text-sm ${currentTab === 'group' ? 'bg-gradient-to-r from-primary-600 to-primary-800 text-white shadow-lg' : 'glass-dark text-white/60 hover:text-white'}" id="tab-group">📊 รอบแบ่งกลุ่ม</button>
+      <button onclick="switchTab('knockout')" class="px-5 py-2.5 rounded-xl font-heading font-semibold transition text-sm ${currentTab === 'knockout' ? 'bg-gradient-to-r from-primary-600 to-primary-800 text-white shadow-lg' : 'glass-dark text-white/60 hover:text-white'}" id="tab-knockout">🏆 รอบ Knockout</button>
+    </div>
+  `;
+
+  // Tab Content: Group Stage
+  html += `<div id="content-group" class="tab-content ${currentTab === 'group' ? '' : 'hidden'}">`;
+  if (Object.keys(groupMatches).length > 0) {
+    // คำนวณตารางคะแนน
+    const groups = {};
+    groupMatches.forEach(m => {
+      const g = m.group;
+      if (!groups[g]) groups[g] = {};
+      [m.teamA, m.teamB].forEach(t => {
+        if (t && t !== "-" && !t.startsWith("ที่") && !t.startsWith("ผู้")) {
+          if (!groups[g][t]) groups[g][t] = { name: t, played: 0, win: 0, draw: 0, loss: 0, gf: 0, ga: 0, pts: 0 };
+        }
+      });
+      if (m.status === "finished" && !isNaN(+m.scoreA) && !isNaN(+m.scoreB)) {
+        const a = +m.scoreA, b = +m.scoreB;
+        if (groups[g][m.teamA] && groups[g][m.teamB]) {
+          groups[g][m.teamA].played++; groups[g][m.teamB].played++;
+          groups[g][m.teamA].gf += a; groups[g][m.teamA].ga += b;
+          groups[g][m.teamB].gf += b; groups[g][m.teamB].ga += a;
+          if (a > b) { groups[g][m.teamA].win++; groups[g][m.teamA].pts += 3; groups[g][m.teamB].loss++; }
+          else if (b > a) { groups[g][m.teamB].win++; groups[g][m.teamB].pts += 3; groups[g][m.teamA].loss++; }
+          else { groups[g][m.teamA].draw++; groups[g][m.teamB].draw++; groups[g][m.teamA].pts++; groups[g][m.teamB].pts++; }
+        }
+      }
+    });
+    Object.keys(groups).forEach(g => {
+      groups[g] = Object.values(groups[g]).sort((a, b) => {
+        if (b.pts !== a.pts) return b.pts - a.pts;
+        const diffA = a.gf - a.ga, diffB = b.gf - b.ga;
+        if (diffB !== diffA) return diffB - diffA;
+        return b.gf - a.gf;
+      });
+    });
+
+    html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-4">`;
     Object.keys(groups).sort().forEach(g => {
       html += `<div class="group-table">
         <div class="px-4 py-3 bg-gradient-to-r from-primary-800 to-primary-900 border-b border-yellow-500/30"><h4 class="font-heading font-bold text-secondary text-lg">สาย ${g}</h4></div>
         <div class="overflow-x-auto"><table class="w-full">
-          <thead><tr>
-            <th class="text-left px-3 py-2">ทีม</th><th class="text-center px-2 py-2">แข่ง</th><th class="text-center px-2 py-2">ชนะ</th><th class="text-center px-2 py-2">เสมอ</th><th class="text-center px-2 py-2">แพ้</th><th class="text-center px-2 py-2">ได้</th><th class="text-center px-2 py-2">เสีย</th><th class="text-center px-2 py-2">แต้ม</th>
-          </tr></thead>
+          <thead><tr><th class="text-left px-3 py-2">ทีม</th><th class="text-center px-2 py-2">แข่ง</th><th class="text-center px-2 py-2">ชนะ</th><th class="text-center px-2 py-2">เสมอ</th><th class="text-center px-2 py-2">แพ้</th><th class="text-center px-2 py-2">ได้</th><th class="text-center px-2 py-2">เสีย</th><th class="text-center px-2 py-2">แต้ม</th></tr></thead>
           <tbody>
             ${groups[g].map((t, idx) => `<tr class="${idx < 2 ? 'qualified' : ''}">
               <td class="px-3 py-2"><div class="flex items-center gap-2">${getLogoHTML(t.name, "md")}<span class="font-semibold text-sm">${shortTeamName(t.name)}</span>${idx < 2 ? '<span class="text-yellow-400 text-xs ml-1">★</span>' : ''}</div></td>
@@ -840,27 +734,37 @@ function renderBracketContent() {
       </div>`;
     });
     html += `</div>`;
+  } else {
+    html += `<div class="text-center py-20 text-white/50"><div class="text-6xl mb-4">⏳</div><p>ยังไม่มีข้อมูลการแข่งขันรอบแบ่งกลุ่ม</p></div>`;
   }
+  html += `</div>`; // End content-group
+
+  // Tab Content: Knockout Stage
+  html += `<div id="content-knockout" class="tab-content ${currentTab === 'knockout' ? '' : 'hidden'}">`;
+  const qfMatches = knockoutMatches.filter(m => { const g = (m.group || ""); return g.includes("ก่อนรอง") || g.includes("8 ทีม") || g.includes("รอบ 8"); });
+  const sfMatches = knockoutMatches.filter(m => (m.group || "").includes("รองชนะเลิศ") && !(m.group || "").includes("ชิง"));
+  const finalMatches = knockoutMatches.filter(m => (m.group || "").includes("ชิงที่ 1") || (m.group || "").includes("ชิงชนะเลิศ"));
 
   if (qfMatches.length > 0 || sfMatches.length > 0 || finalMatches.length > 0) {
-    html += `<h3 class="font-heading font-bold text-xl text-secondary mb-6 flex items-center gap-2 mt-8">🏆 ผังการแข่งขันรอบ Knockout</h3>`;
-    html += `<div class="bracket-scroll"><div class="bracket-layout">`;
+    html += `<div class="bracket-wrapper"><div class="bracket-container">`;
 
+    // ฝั่งซ้าย
     html += `<div class="bracket-side left">`;
     if (qfMatches.length > 0) {
       html += `<div class="bracket-round qf">`;
       for (let i = 0; i < qfMatches.length; i += 2) {
-        html += `<div class="bracket-pair">`;
-        html += renderBracketMatchV2(qfMatches[i]);
-        if (qfMatches[i+1]) html += renderBracketMatchV2(qfMatches[i+1]);
+        html += `<div class="bracket-match-wrapper">`;
+        html += renderBracketMatch(qfMatches[i]);
+        if (qfMatches[i+1]) html += renderBracketMatch(qfMatches[i+1]);
         html += `</div>`;
       }
       html += `</div>`;
     }
-    if (sfMatches.length > 0) { html += `<div class="bracket-round sf">${sfMatches.map(m => renderBracketMatchV2(m)).join("")}</div>`; }
-    if (finalMatches.length > 0) { html += `<div class="bracket-round final">${renderBracketMatchV2(finalMatches[0])}</div>`; }
+    if (sfMatches.length > 0) { html += `<div class="bracket-round sf">${sfMatches.map(m => renderBracketMatch(m)).join("")}</div>`; }
+    if (finalMatches.length > 0) { html += `<div class="bracket-round final">${renderBracketMatch(finalMatches[0])}</div>`; }
     html += `</div>`;
 
+    // กลาง: ถ้วยรางวัล
     html += `<div class="bracket-center">
       <div class="trophy-icon">🏆</div>
       <div class="final-label">รอบชิงชนะเลิศ</div>`;
@@ -880,15 +784,16 @@ function renderBracketContent() {
     }
     html += `</div>`;
 
+    // ฝั่งขวา
     html += `<div class="bracket-side right">`;
-    if (finalMatches.length > 0) { html += `<div class="bracket-round final">${renderBracketMatchV2(finalMatches[0])}</div>`; }
-    if (sfMatches.length > 0) { html += `<div class="bracket-round sf">${sfMatches.map(m => renderBracketMatchV2(m)).join("")}</div>`; }
+    if (finalMatches.length > 0) { html += `<div class="bracket-round final">${renderBracketMatch(finalMatches[0])}</div>`; }
+    if (sfMatches.length > 0) { html += `<div class="bracket-round sf">${sfMatches.map(m => renderBracketMatch(m)).join("")}</div>`; }
     if (qfMatches.length > 0) {
       html += `<div class="bracket-round qf">`;
       for (let i = 0; i < qfMatches.length; i += 2) {
-        html += `<div class="bracket-pair">`;
-        html += renderBracketMatchV2(qfMatches[i]);
-        if (qfMatches[i+1]) html += renderBracketMatchV2(qfMatches[i+1]);
+        html += `<div class="bracket-match-wrapper">`;
+        html += renderBracketMatch(qfMatches[i]);
+        if (qfMatches[i+1]) html += renderBracketMatch(qfMatches[i+1]);
         html += `</div>`;
       }
       html += `</div>`;
@@ -896,17 +801,24 @@ function renderBracketContent() {
     html += `</div>`;
 
     html += `</div></div>`;
+  } else {
+    html += `<div class="text-center py-20 text-white/50"><div class="text-6xl mb-4">⏳</div><p>ยังไม่มีข้อมูลการแข่งขันรอบ Knockout</p><p class="text-sm mt-2">กรุณากรอกข้อมูลใน Google Sheet คอลัมน์ group เป็น "รอบก่อนรองชนะเลิศ", "รอบรองชนะเลิศ", "รอบชิงชนะเลิศ"</p></div>`;
   }
+  html += `</div>`; // End content-knockout
 
-  if (groupMatches.length === 0 && knockoutMatches.length === 0) {
-    html += `<div class="text-center py-20 text-white/50"><div class="text-6xl mb-4">⏳</div><p>ยังไม่มีข้อมูลการแข่งขันสำหรับกีฬานี้</p></div>`;
-  }
-
-  html += `</div>`;
+  html += `</div>`; // End glass-dark container
   container.innerHTML = html;
 }
 
-function renderBracketMatchV2(m) {
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById('tab-group').className = `px-5 py-2.5 rounded-xl font-heading font-semibold transition text-sm ${tab === 'group' ? 'bg-gradient-to-r from-primary-600 to-primary-800 text-white shadow-lg' : 'glass-dark text-white/60 hover:text-white'}`;
+  document.getElementById('tab-knockout').className = `px-5 py-2.5 rounded-xl font-heading font-semibold transition text-sm ${tab === 'knockout' ? 'bg-gradient-to-r from-primary-600 to-primary-800 text-white shadow-lg' : 'glass-dark text-white/60 hover:text-white'}`;
+  document.getElementById('content-group').classList.toggle('hidden', tab !== 'group');
+  document.getElementById('content-knockout').classList.toggle('hidden', tab !== 'knockout');
+}
+
+function renderBracketMatch(m) {
   const isLive = m.status === "live";
   const isFinished = m.status === "finished";
   const isUpcoming = m.status === "upcoming";
@@ -916,25 +828,21 @@ function renderBracketMatchV2(m) {
   const aWon = winner && winner === m.teamA;
   const bWon = winner && winner === m.teamB;
 
-  let cardClass = "";
-  if (isLive) cardClass = "match-live";
-  else if (isFinished && winner) cardClass = "match-finished";
-
   return `
-    <div class="bracket-match-v2 ${cardClass}">
-      <div class="bracket-team-v2 ${aWon ? 'team-winner' : (isFinished && bWon ? 'team-loser' : '')}">
+    <div class="bracket-match">
+      <div class="bracket-team ${aWon ? 'team-winner' : (isFinished && bWon ? 'team-loser' : '')}">
         ${getLogoHTML(m.teamA, "md")}
-        <span class="bracket-name-v2">${shortTeamName(m.teamA)}</span>
-        <span class="bracket-score-v2">${scoreA}</span>
+        <span class="bracket-team-name">${shortTeamName(m.teamA)}</span>
+        <span class="bracket-team-score">${scoreA}</span>
         ${aWon ? '<span>🏆</span>' : ''}
       </div>
-      <div class="bracket-team-v2 ${bWon ? 'team-winner' : (isFinished && aWon ? 'team-loser' : '')}">
+      <div class="bracket-team ${bWon ? 'team-winner' : (isFinished && aWon ? 'team-loser' : '')}">
         ${getLogoHTML(m.teamB, "md")}
-        <span class="bracket-name-v2">${shortTeamName(m.teamB)}</span>
-        <span class="bracket-score-v2">${scoreB}</span>
+        <span class="bracket-team-name">${shortTeamName(m.teamB)}</span>
+        <span class="bracket-team-score">${scoreB}</span>
         ${bWon ? '<span>🏆</span>' : ''}
       </div>
-      <div class="mm-time">
+      <div class="bracket-time">
         📅 ${m.date} · ${m.time}
         ${isLive ? '<span class="live-badge bg-accent text-white ml-2">LIVE</span>' :
           isFinished ? '<span class="text-green-400 ml-2">✅ จบ</span>' :
@@ -943,51 +851,18 @@ function renderBracketMatchV2(m) {
     </div>`;
 }
 
-function getWinner(m) {
-  if (!m || m.status !== "finished") return null;
-  const a = parseFloat(m.scoreA), b = parseFloat(m.scoreB);
-  if (isNaN(a) || isNaN(b)) return null;
-  if (a > b) return m.teamA;
-  if (b > a) return m.teamB;
-  return null;
-}
-
-function setConnectionStatus(type, text) {
-  const dot = document.getElementById("statusDot");
-  const label = document.getElementById("statusText");
-  const colors = { ok: "bg-green-400", loading: "bg-yellow-400 animate-pulse", error: "bg-red-500" };
-  dot.className = "w-2 h-2 rounded-full " + (colors[type] || "bg-gray-400");
-  label.textContent = text;
-}
-function updateLastUpdate() {
-  document.getElementById("lastUpdate").textContent = new Date().toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-}
-function showToast(title, message) {
-  const toast = document.getElementById("toast");
-  document.getElementById("toastTitle").textContent = title;
-  document.getElementById("toastMessage").textContent = message;
-  toast.classList.remove("hidden");
-  if (CONFIG.ENABLE_SOUND) playSound();
-  setTimeout(() => toast.classList.add("hidden"), 5000);
-}
-function playSound() {
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator(); const gain = ctx.createGain();
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.frequency.value = 880; osc.type = "sine";
-    gain.gain.setValueAtTime(0.08, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.3);
-  } catch (e) {}
-}
+function getWinner(m) { if (!m || m.status !== "finished") return null; const a = parseFloat(m.scoreA), b = parseFloat(m.scoreB); if (isNaN(a) || isNaN(b)) return null; if (a > b) return m.teamA; if (b > a) return m.teamB; return null; }
+function setConnectionStatus(type, text) { const dot = document.getElementById("statusDot"); const label = document.getElementById("statusText"); const colors = { ok: "bg-green-400", loading: "bg-yellow-400 animate-pulse", error: "bg-red-500" }; dot.className = "w-2 h-2 rounded-full " + (colors[type] || "bg-gray-400"); label.textContent = text; }
+function updateLastUpdate() { document.getElementById("lastUpdate").textContent = new Date().toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit", second: "2-digit" }); }
+function showToast(title, message) { const toast = document.getElementById("toast"); document.getElementById("toastTitle").textContent = title; document.getElementById("toastMessage").textContent = message; toast.classList.remove("hidden"); if (CONFIG.ENABLE_SOUND) playSound(); setTimeout(() => toast.classList.add("hidden"), 5000); }
+function playSound() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination); osc.frequency.value = 880; osc.type = "sine"; gain.gain.setValueAtTime(0.08, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.3); } catch (e) {} }
 
 // ================================================================
 // INIT
 // ================================================================
 document.addEventListener("DOMContentLoaded", () => {
   startCountdown(); renderStats(); renderSports(); renderAthletics(); renderCommittees(); renderSchools();
-  console.log("✅ Doytao Sports 2026 + Corrected Thai Spelling");
+  console.log("✅ Doytao Sports 2026 + Tab System + Exact Mockup Bracket");
 });
 </script>
 
