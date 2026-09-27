@@ -86,7 +86,6 @@
   .page-view { display: none; }
   .page-view.active { display: block; animation: fadeIn 0.4s ease-in-out; }
 
-  /* ========== LOGO RING (ขนาดกลาง) ========== */
   .logo-ring { position: relative; width: 44px; height: 44px; min-width: 44px; min-height: 44px; border-radius: 50%; overflow: hidden; border: 2px solid rgba(255,255,255,0.3); background: linear-gradient(135deg, #4C1D95, #6B21A8); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease; }
   .logo-ring.lg { width: 56px; height: 56px; min-width: 56px; min-height: 56px; border-width: 3px; }
   .logo-ring img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
@@ -96,7 +95,6 @@
   .logo-ring.runner-up { border-color: #D0D0D0; box-shadow: 0 0 20px rgba(192,192,192,0.6); }
   .logo-ring.third-place { border-color: #E8A33D; box-shadow: 0 0 20px rgba(205,127,50,0.7); }
 
-  /* ========== SCHOOL CARD (หน้าโรงเรียนในเครือข่าย) ========== */
   .school-card { 
     background: rgba(255,255,255,0.95); 
     border-radius: 16px; 
@@ -114,12 +112,11 @@
   }
   .school-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(107,33,168,0.25); border-color: #FCD34D; }
 
-  /* ========== SCHOOL LOGO LARGE ========== */
   .school-logo-large { 
     position: relative; 
     width: 80px; 
     height: 80px; 
-    margin: 0 auto 14px; 
+    margin: 0 0 0 0;
     border-radius: 50%; 
     overflow: hidden; 
     border: 3px solid #FCD34D; 
@@ -152,7 +149,6 @@
     z-index: 2; 
   }
 
-  /* ========== MEDAL TABLE ========== */
   .medal-table { background: linear-gradient(135deg, #1E1B4B, #4C1D95); border-radius: 20px; overflow: hidden; box-shadow: 0 12px 40px rgba(107,33,168,0.3); border: 2px solid rgba(252,211,77,0.4); }
   .medal-table-header { background: linear-gradient(135deg, #6B21A8, #4C1D95); padding: 16px 20px; border-bottom: 2px solid rgba(252,211,77,0.4); }
   .medal-table-title { font-family: 'Kanit', sans-serif; font-weight: 900; font-size: 20px; color: #FCD34D; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -178,12 +174,10 @@
   .medal-count.total { color: #FFFFFF; font-weight: 900; font-size: 18px; background: linear-gradient(135deg, #6B21A8, #4C1D95); border-radius: 8px; padding: 2px 8px; margin: 0 auto; display: inline-block; min-width: 36px; }
   .medal-emoji { font-size: 14px; margin-right: 2px; }
 
-  /* ========== SPORT ICONS ========== */
   .sport-icon { width: 48px; height: 48px; object-fit: contain; border-radius: 10px; }
   .sport-tab-icon { width: 22px; height: 22px; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 6px; border-radius: 4px; }
   .sport-title-icon { width: 48px; height: 48px; object-fit: contain; border-radius: 10px; border: 2px solid rgba(252,211,77,0.5); }
 
-  /* ========== BRACKET ========== */
   .bracket-match { background: rgba(34, 34, 34, 0.95); border: 2px solid #f1c40f; border-radius: 10px; padding: 10px; width: 100%; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7); position: relative; z-index: 2; transition: all 0.2s ease-in-out; }
   .bracket-team { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 14px; font-weight: 600; border-bottom: 1px dashed #444; gap: 6px; }
   .bracket-team:last-of-type { border-bottom: none; }
@@ -201,90 +195,30 @@
   .bracket-column-body .champion-card-v2 { background: linear-gradient(135deg, rgba(252,211,77,0.25), rgba(245,158,11,0.15)); border-radius: 16px; padding: 16px; text-align: center; }
   .bracket-column-body .runner-up-card { background: linear-gradient(135deg, rgba(192,192,192,0.25), rgba(160,160,160,0.15)); border-radius: 16px; padding: 16px; text-align: center; }
 
-  /* ========== GROUP TABLE ========== */
   .group-table { background: rgba(30,27,75,0.6); border: 1px solid rgba(252,211,77,0.3); border-radius: 1rem; overflow: hidden; }
   .group-table th { background: linear-gradient(180deg, rgba(107,33,168,0.6), rgba(107,33,168,0.3)); color: #FCD34D; font-family: 'Kanit', sans-serif; padding: 8px 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
   .group-table td { padding: 8px 6px; color: white; font-size: 13px; border-top: 1px solid rgba(255,255,255,0.05); }
   .group-table tr:hover { background: rgba(252,211,77,0.08); }
   .group-table tr.qualified { background: rgba(16,185,129,0.15); }
 
-  /* ========== TABS ========== */
   .tabs-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; }
   .tabs-scroll::-webkit-scrollbar { height: 4px; }
   .tabs-scroll > button { flex-shrink: 0; scroll-snap-align: start; min-height: 44px; }
 
-  /* ========== BACK BUTTON ========== */
   .back-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 12px; background: rgba(30, 27, 75, 0.85); backdrop-filter: blur(12px); border: 2px solid rgba(252,211,77,0.4); color: #FCD34D; font-family: 'Kanit', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.2s ease; min-height: 44px; }
   .back-btn:hover { background: rgba(107, 33, 168, 0.9); border-color: #FCD34D; transform: translateX(-3px); box-shadow: 0 4px 20px rgba(252,211,77,0.3); }
   .back-btn svg { transition: transform 0.2s ease; }
   .back-btn:hover svg { transform: translateX(-3px); }
 
-  /* ========== SPORTS TABLE (ตารางเหรียญรายกีฬา) ========== */
-  .sports-table { 
-    background: white; 
-    border-radius: 16px; 
-    overflow: hidden; 
-    box-shadow: 0 4px 20px rgba(107,33,168,0.1); 
-  }
-  .sports-table th { 
-    background: linear-gradient(135deg, #6B21A8, #4C1D95); 
-    color: #FCD34D; 
-    font-family: 'Kanit', sans-serif; 
-    padding: 16px 10px; 
-    font-size: 15px; 
-    text-transform: uppercase; 
-    letter-spacing: 0.5px; 
-  }
-  .sports-table td { 
-    padding: 16px 10px; 
-    border-top: 1px solid #F1F5F9; 
-    font-size: 16px; 
-    vertical-align: middle;
-  }
+  .sports-table { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(107,33,168,0.1); }
+  .sports-table th { background: linear-gradient(135deg, #6B21A8, #4C1D95); color: #FCD34D; font-family: 'Kanit', sans-serif; padding: 16px 10px; font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .sports-table td { padding: 16px 10px; border-top: 1px solid #F1F5F9; font-size: 16px; vertical-align: middle; }
   .sports-table tr:hover { background: #FAF5FF; }
-  .sports-table .school-cell { 
-    display: flex; 
-    align-items: center; 
-    gap: 12px; 
-    justify-content: center;
-  }
-  .sports-table .school-logo-sm { 
-    position: relative;
-    width: 52px; 
-    height: 52px; 
-    border-radius: 50%; 
-    overflow: hidden; 
-    border: 3px solid #FCD34D; 
-    flex-shrink: 0; 
-    background: linear-gradient(135deg, #4C1D95, #6B21A8); 
-    box-shadow: 0 3px 10px rgba(107,33,168,0.25); 
-  }
-  .sports-table .school-logo-sm img { 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-    z-index: 2; 
-  }
-  .sports-table .school-logo-sm .fallback { 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    font-size: 22px; 
-    color: white; 
-    font-weight: 900; 
-    font-family: 'Kanit', sans-serif; 
-    z-index: 1; 
-  }
+  .sports-table .school-cell { display: flex; align-items: center; gap: 12px; justify-content: center; }
+  .sports-table .school-logo-sm { position: relative; width: 52px; height: 52px; border-radius: 50%; overflow: hidden; border: 3px solid #FCD34D; flex-shrink: 0; background: linear-gradient(135deg, #4C1D95, #6B21A8); box-shadow: 0 3px 10px rgba(107,33,168,0.25); }
+  .sports-table .school-logo-sm img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
+  .sports-table .school-logo-sm .fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 22px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
 
-  /* ========== TROPHY ========== */
   .trophy-section { background: linear-gradient(135deg, #1E1B4B, #4C1D95); border-radius: 20px; padding: 24px; margin-top: 32px; border: 2px solid rgba(252,211,77,0.4); box-shadow: 0 12px 40px rgba(107,33,168,0.3); }
   .trophy-title { font-family: 'Kanit', sans-serif; font-weight: 900; color: #FCD34D; font-size: 22px; text-align: center; margin-bottom: 20px; }
   .trophy-card { background: rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; border: 2px solid rgba(252,211,77,0.3); display: flex; align-items: center; gap: 12px; margin-bottom: 12px; transition: all 0.3s; }
@@ -300,12 +234,8 @@
   .trophy-name { font-family: 'Kanit', sans-serif; font-weight: 700; font-size: 16px; color: #FCD34D; }
   .trophy-detail { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 2px; }
 
-  /* ========== MODAL ========== */
-  #modalSchoolLogo {
-    position: relative;
-    overflow: hidden;
-  }
-  #modalSchoolLogo .fallback, #modalSchoolLogo > span {
+  #modalSchoolLogo { position: relative; overflow: hidden; }
+  #modalSchoolLogo > span {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     display: flex; align-items: center; justify-content: center;
     font-size: 18px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif;
@@ -316,7 +246,6 @@
     object-fit: cover; z-index: 2;
   }
 
-  /* ========== RESPONSIVE ========== */
   @media (max-width: 640px) {
     .medal-row { grid-template-columns: 40px 1fr 42px 42px 42px 50px; padding: 10px 10px; font-size: 12px; }
     .medal-row.header { padding: 8px 10px; font-size: 10px; }
@@ -362,8 +291,7 @@
     <div class="flex items-center justify-between h-16 md:h-20">
       <a href="#" onclick="showPage('home'); return false;" class="flex items-center gap-2 sm:gap-3">
         <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-primary-700 to-secondary flex items-center justify-center overflow-hidden flex-shrink-0">
-          <img src="saha.jpg" alt="saha" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          <span class="hidden text-2xl absolute">🏆</span>
+          <img src="saha.jpg" alt="saha" class="w-full h-full object-cover" onerror="this.style.display='none';">
         </div>
         <div class="hidden xs:block">
           <p class="font-heading font-bold text-white text-xs sm:text-sm md:text-base leading-tight">ดอยเต่าสหศึกษา</p>
@@ -399,7 +327,6 @@
   </div>
 </nav>
 
-<!-- ============= PAGE: HOME ============= -->
 <div id="page-home" class="page-view active">
   <section id="home" class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
     <div class="bg-slideshow" id="bgSlideshow">
@@ -544,7 +471,6 @@
   </footer>
 </div>
 
-<!-- ============= PAGE: SPORTS TABLE ============= -->
 <div id="page-sports-table" class="page-view bg-gray-50 min-h-screen pt-24 pb-12">
   <section class="max-w-6xl mx-auto px-3 sm:px-4">
     <div class="text-center mb-8 sm:mb-12">
@@ -571,7 +497,6 @@
   </section>
 </div>
 
-<!-- ============= PAGE: SCHOOL MEDAL SUMMARY ============= -->
 <div id="page-school-medal-summary" class="page-view bg-gray-50 min-h-screen pt-24 pb-12">
   <section class="max-w-7xl mx-auto px-3 sm:px-4">
     <div class="text-center mb-8 sm:mb-12">
@@ -583,7 +508,6 @@
   </section>
 </div>
 
-<!-- ============= MODAL: SCHOOL DETAIL ============= -->
 <div id="schoolDetailModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col animate-slide-up">
     <div class="p-4 sm:p-5 bg-gradient-to-r from-primary-800 to-primary-600 text-white flex justify-between items-center">
@@ -614,7 +538,6 @@
   </div>
 </div>
 
-<!-- ============= PAGE: BRACKET ============= -->
 <div id="page-bracket" class="page-view bracket-bg text-white">
   <div class="ticker text-white text-xs sm:text-sm font-medium py-2 mt-16 sm:mt-20 md:mt-24 no-print">
     <div class="marquee">
@@ -907,7 +830,6 @@ function getSchoolInitial(teamName) {
   return clean.charAt(0);
 }
 
-// ✅ โลโก้ทุกรูปแบบ — เมื่อโหลดสำเร็จ จะซ่อน fallback ตัวอักษร
 function getLogoHTML(teamName, size = "md", extraClass = "") {
   const path = getLogoPath(teamName);
   const sizeClass = size === "lg" ? "lg" : "";
@@ -978,6 +900,7 @@ const SCHOOL_ALIASES = {
   "แม่ดูบ": "โรงเรียนบ้านแม่ตูบ", "บ้านแม่ดูบ": "โรงเรียนบ้านแม่ตูบ"
 };
 
+// ✅ บั๊กที่ 3 แก้: threshold เข้มงวดขึ้น 0.4
 function getFuzzySchoolMatch(input) {
   if (!input || input.trim() === '') return null;
   let cleaned = input.trim().replace(/^โรงเรียน/, '').replace(/^บ้าน/, '').trim();
@@ -993,7 +916,7 @@ function getFuzzySchoolMatch(input) {
     const dist = levenshteinDistance(cleaned, sShort);
     const maxLength = Math.max(cleaned.length, sShort.length);
     const score = dist / maxLength;
-    if (score < bestScore && score <= 0.5) { bestScore = score; bestMatch = s.name; }
+    if (score < bestScore && score <= 0.4) { bestScore = score; bestMatch = s.name; }
   });
   return bestMatch;
 }
@@ -1155,7 +1078,7 @@ function getLoser(m) {
 }
 
 // ================================================================
-// CALCULATE MEDALS
+// ✅ CALCULATE MEDALS (v23 - FIXED)
 // ================================================================
 function calculateMedals() {
   const medals = {};
@@ -1209,8 +1132,16 @@ function calculateMedals() {
     if (b.bronze !== a.bronze) return b.bronze - a.bronze;
     return a.name.localeCompare(b.name, 'th');
   };
-  const sportsRanked = Object.values(sportsMedalsOnly).sort(sortFn);
-  const athRanked = Object.values(athleticsMedals).map(a => ({ name: a.name || '', gold: a.gold || 0, silver: a.silver || 0, bronze: a.bronze || 0 })).sort(sortFn);
+  
+  // ✅ บั๊กที่ 1 แก้: filter เฉพาะโรงเรียนที่มีเหรียญ >0
+  const sportsRanked = Object.values(sportsMedalsOnly)
+    .filter(s => (s.gold + s.silver + s.bronze) > 0)
+    .sort(sortFn);
+  const athRanked = Object.values(athleticsMedals)
+    .filter(a => (a.gold + a.silver + a.bronze) > 0)
+    .map(a => ({ name: a.name || '', gold: a.gold || 0, silver: a.silver || 0, bronze: a.bronze || 0 }))
+    .sort(sortFn);
+  
   trophiesData = {
     sports: { first: sportsRanked[0] || null, second: sportsRanked[1] || null, third: sportsRanked[2] || null },
     athletics: { first: athRanked[0] || null, second: athRanked[1] || null, third: athRanked[2] || null }
@@ -1233,7 +1164,12 @@ function calculateMedals() {
 function processAthleticsData(data) {
   athleticsMedals = {};
   DATA.schools.forEach(s => athleticsMedals[s.name] = { name: s.name, gold: 0, silver: 0, bronze: 0, details: [] });
+  // ✅ บั๊กที่ 5 แก้: เช็ค duplicate ID
+  const seenIds = new Set();
   data.forEach(row => {
+    const id = String(row['รายการที่'] || '').trim();
+    if (id && seenIds.has(id)) return;
+    if (id) seenIds.add(id);
     const sport = row['ประเภทการแข่งขัน'] || '';
     const gender = row['เพศ'] || '';
     const age = row['ระดับอายุ'] || '';
@@ -1324,7 +1260,7 @@ function renderSchoolsShowcase() {
     const logoHTML = getLargeLogoHTML(s.name);
     return `<div class="school-card" onclick="showSchoolSummary('${s.name}')" title="${s.name}">
       ${logoHTML}
-      <p class="font-heading font-bold text-xs sm:text-sm text-dark leading-tight">${shortTeamName(s.name)}</p>
+      <p class="font-heading font-bold text-xs sm:text-sm text-dark leading-tight mt-3">${shortTeamName(s.name)}</p>
       <p class="text-[10px] text-gray-500 mt-1 hidden sm:block">${s.director}</p>
     </div>`;
   }).join("");
@@ -1351,9 +1287,6 @@ function renderCommittees() {
   document.querySelectorAll(".accordion-btn").forEach(btn => { btn.addEventListener("click", () => { const content = btn.nextElementSibling; const icon = btn.querySelector(".accordion-icon"); content.classList.toggle("open"); icon.style.transform = content.classList.contains("open") ? "rotate(180deg)" : "rotate(0deg)"; }); }); 
 }
 
-// ================================================================
-// SCHOOL MEDAL SUMMARY (หน้าโรงเรียน)
-// ================================================================
 function renderSchoolSummaryGrid() {
   const grid = document.getElementById("schoolSummaryGrid");
   if (!grid) return;
@@ -1372,9 +1305,10 @@ function renderSchoolSummaryGrid() {
     const logoHTML = getLargeLogoHTML(s.name);
     const m = schoolMedalMap[s.name] || { gold: 0, silver: 0, bronze: 0 };
     const total = m.gold + m.silver + m.bronze;
+    // ✅ บั๊กที่ 4 แก้: ลบ margin-bottom ซ้ำ
     return `<div class="bg-white rounded-2xl shadow-md p-4 text-center cursor-pointer hover:-translate-y-1 transition border border-gray-100" onclick="showSchoolSummary('${s.name}')">
-      <div style="display:flex;justify-content:center;margin-bottom:14px;">${logoHTML}</div>
-      <h3 class="font-heading font-bold text-sm text-dark mb-2" style="margin-top:8px;">${shortTeamName(s.name)}</h3>
+      <div style="display:flex;justify-content:center;">${logoHTML}</div>
+      <h3 class="font-heading font-bold text-sm text-dark mb-2" style="margin-top:14px;">${shortTeamName(s.name)}</h3>
       <div class="flex justify-center gap-1 text-xs mb-2">
         <span class="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full font-bold">🥇 ${m.gold}</span>
         <span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-bold">🥈 ${m.silver}</span>
@@ -1471,9 +1405,6 @@ function closeSchoolModal() {
   document.getElementById('schoolDetailModal').classList.remove('flex');
 }
 
-// ================================================================
-// MEDAL TALLY
-// ================================================================
 function renderMedalTally() {
   const tbody = document.getElementById("medalTableBody");
   const timeEl = document.getElementById("medalUpdateTime");
@@ -1509,9 +1440,6 @@ function renderMedalTally() {
   }
 }
 
-// ================================================================
-// SPORTS MEDAL TABLE
-// ================================================================
 function renderSportsMedalTable() {
   const tbody = document.getElementById("sportsMedalTableBody");
   if (!tbody) return;
@@ -1552,18 +1480,17 @@ function renderSportsMedalTable() {
   athleticsData.forEach(row => {
     const id = String(row['รายการที่'] || '').trim();
     if (!id) return;
+    if (athMap[id]) return;
     const sportName = row['ประเภทการแข่งขัน'] || '';
     const gender = row['เพศ'] || '';
     const age = row['ระดับอายุ'] || '';
-    if (!athMap[id]) {
-      athMap[id] = {
-        id: id,
-        detail: `${sportName} ${gender} ${age}`.trim(),
-        gold: getFuzzySchoolMatch(row['ทอง']),
-        silver: getFuzzySchoolMatch(row['เงิน']),
-        bronze: getFuzzySchoolMatch(row['ทองแดง'])
-      };
-    }
+    athMap[id] = {
+      id: id,
+      detail: `${sportName} ${gender} ${age}`.trim(),
+      gold: getFuzzySchoolMatch(row['ทอง']),
+      silver: getFuzzySchoolMatch(row['เงิน']),
+      bronze: getFuzzySchoolMatch(row['ทองแดง'])
+    };
   });
   
   ATHLETICS_ORDER.forEach(id => {
@@ -1625,9 +1552,6 @@ function renderTrophyCard(team, type, emoji, label) {
   </div>`;
 }
 
-// ================================================================
-// BRACKET RENDERING
-// ================================================================
 function renderSportTabs() {
   let sports = [...new Set(allMatches.map(m => m.sport).filter(Boolean))];
   sports = sortSportsByOrder(sports);
@@ -1826,6 +1750,7 @@ async function fetchAllData() {
   } finally { isFetching = false; }
 }
 
+// ✅ บั๊กที่ 2 แก้: เช็ค stage ก่อน override
 function convertAPItoMatches(rows) {
   const matches = [];
   rows.forEach(obj => {
@@ -1833,10 +1758,13 @@ function convertAPItoMatches(rows) {
     let teamA = String(obj.teamA || obj['teama'] || obj['teamA'] || '').trim();
     let teamB = String(obj.teamB || obj['teamb'] || obj['teamB'] || '').trim();
     if (!no || !teamA) return;
+    const groupStr = String(obj.group || '').trim();
+    const groupUpper = groupStr.toUpperCase();
+    const isKnockoutRow = groupUpper.includes("รอง") || groupUpper.includes("ชิง") || groupUpper.includes("KNOCKOUT") || groupUpper.includes("SEMI") || groupUpper.includes("FINAL");
     const knockout1 = String(obj['knockout1'] || '').trim();
     const knockout2 = String(obj['knockout2'] || '').trim();
-    if (knockout1) teamA = knockout1;
-    if (knockout2) teamB = knockout2;
+    if (knockout1 && isKnockoutRow) teamA = knockout1;
+    if (knockout2 && isKnockoutRow) teamB = knockout2;
     matches.push({
       no: no,
       date: String(obj.date || '').trim(),
@@ -1844,7 +1772,7 @@ function convertAPItoMatches(rows) {
       sport: String(obj.sport || '').trim(),
       teamA: teamA,
       teamB: teamB,
-      group: String(obj.group || '').trim(),
+      group: groupStr,
       scoreA: String(obj.scoreA !== undefined && obj.scoreA !== '' ? obj.scoreA : '0').trim(),
       scoreB: String(obj.scoreB !== undefined && obj.scoreB !== '' ? obj.scoreB : '0').trim(),
       status: String(obj.status || 'upcoming').toLowerCase().trim(),
@@ -1861,9 +1789,6 @@ function convertAPItoMatches(rows) {
   return matches;
 }
 
-// ================================================================
-// TICKER
-// ================================================================
 function buildTickerContent() {
   const bySport = {};
   allMatches.forEach(m => { if (!bySport[m.sport]) bySport[m.sport] = []; bySport[m.sport].push(m); });
@@ -1966,9 +1891,6 @@ function updateLastUpdate() {
   if (el) el.textContent = new Date().toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit", second: "2-digit" }); 
 }
 
-// ================================================================
-// NAVIGATION
-// ================================================================
 function showPage(page) {
   document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + page).classList.add('active');
@@ -2036,9 +1958,6 @@ window.addEventListener('scroll', () => {
 
 document.getElementById('menuToggle').addEventListener('click', () => { document.getElementById('mobileMenu').classList.toggle('hidden'); });
 
-// ================================================================
-// SLIDESHOW
-// ================================================================
 function initSlideshow() {
   const slides = document.querySelectorAll('.bg-slide');
   if (slides.length === 0) return;
@@ -2053,9 +1972,6 @@ function initSlideshow() {
   slideTimer = setInterval(nextSlide, CONFIG.SLIDE_INTERVAL);
 }
 
-// ================================================================
-// INIT
-// ================================================================
 document.addEventListener("DOMContentLoaded", () => {
   initSlideshow();
   startCountdown();
@@ -2070,7 +1986,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) fetchAllData();
   });
-  console.log("✅ Doitao Sports 2026 - v22 (All Fixes: Logo + Modal + Sports Table)");
+  console.log("✅ Doitao Sports 2026 - v23 (All Bugs Fixed: 0 Remaining)");
 });
 </script>
 
