@@ -86,6 +86,27 @@
   .page-view { display: none; }
   .page-view.active { display: block; animation: fadeIn 0.4s ease-in-out; }
 
+  /* ========== NAV SCROLL (Horizontal Mobile Nav) ========== */
+  .nav-scroll { 
+    display: flex; 
+    gap: 6px; 
+    overflow-x: auto; 
+    padding: 8px 12px; 
+    -webkit-overflow-scrolling: touch; 
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+  .nav-scroll::-webkit-scrollbar { display: none; }
+  .nav-scroll > button { 
+    flex-shrink: 0; 
+    scroll-snap-align: start; 
+    white-space: nowrap;
+    min-height: 40px;
+    font-size: 13px;
+    padding: 8px 14px;
+  }
+
+  /* ========== LOGO RING ========== */
   .logo-ring { position: relative; width: 44px; height: 44px; min-width: 44px; min-height: 44px; border-radius: 50%; overflow: hidden; border: 2px solid rgba(255,255,255,0.3); background: linear-gradient(135deg, #4C1D95, #6B21A8); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease; }
   .logo-ring.lg { width: 56px; height: 56px; min-width: 56px; min-height: 56px; border-width: 3px; }
   .logo-ring img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
@@ -116,7 +137,7 @@
     position: relative; 
     width: 80px; 
     height: 80px; 
-    margin: 0 0 0 0;
+    margin: 0;
     border-radius: 50%; 
     overflow: hidden; 
     border: 3px solid #FCD34D; 
@@ -124,30 +145,8 @@
     background: linear-gradient(135deg, #4C1D95, #6B21A8); 
     flex-shrink: 0;
   }
-  .school-logo-large .fallback { 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    font-size: 32px; 
-    color: white; 
-    font-weight: 900; 
-    font-family: 'Kanit', sans-serif; 
-    z-index: 1; 
-  }
-  .school-logo-large img { 
-    position: absolute; 
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-    z-index: 2; 
-  }
+  .school-logo-large .fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
+  .school-logo-large img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
 
   .medal-table { background: linear-gradient(135deg, #1E1B4B, #4C1D95); border-radius: 20px; overflow: hidden; box-shadow: 0 12px 40px rgba(107,33,168,0.3); border: 2px solid rgba(252,211,77,0.4); }
   .medal-table-header { background: linear-gradient(135deg, #6B21A8, #4C1D95); padding: 16px 20px; border-bottom: 2px solid rgba(252,211,77,0.4); }
@@ -210,14 +209,107 @@
   .back-btn svg { transition: transform 0.2s ease; }
   .back-btn:hover svg { transform: translateX(-3px); }
 
-  .sports-table { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(107,33,168,0.1); }
-  .sports-table th { background: linear-gradient(135deg, #6B21A8, #4C1D95); color: #FCD34D; font-family: 'Kanit', sans-serif; padding: 16px 10px; font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .sports-table td { padding: 16px 10px; border-top: 1px solid #F1F5F9; font-size: 16px; vertical-align: middle; }
-  .sports-table tr:hover { background: #FAF5FF; }
-  .sports-table .school-cell { display: flex; align-items: center; gap: 12px; justify-content: center; }
-  .sports-table .school-logo-sm { position: relative; width: 52px; height: 52px; border-radius: 50%; overflow: hidden; border: 3px solid #FCD34D; flex-shrink: 0; background: linear-gradient(135deg, #4C1D95, #6B21A8); box-shadow: 0 3px 10px rgba(107,33,168,0.25); }
+  .back-btn-light { 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 8px; 
+    padding: 8px 14px; 
+    border-radius: 10px; 
+    background: linear-gradient(135deg, #6B21A8, #4C1D95); 
+    color: #FCD34D; 
+    font-family: 'Kanit', sans-serif; 
+    font-weight: 700; 
+    font-size: 14px; 
+    cursor: pointer; 
+    transition: all 0.2s ease; 
+    border: 2px solid rgba(252,211,77,0.4);
+    min-height: 40px;
+    margin-bottom: 16px;
+  }
+  .back-btn-light:hover { 
+    transform: translateX(-3px); 
+    box-shadow: 0 4px 16px rgba(107,33,168,0.4); 
+  }
+
+  /* ========== SPORTS TABLE with STICKY HEADER ========== */
+  .sports-table-wrapper {
+    background: white; 
+    border-radius: 16px; 
+    overflow: hidden; 
+    box-shadow: 0 4px 20px rgba(107,33,168,0.1);
+    max-height: 80vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .sports-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+  .sports-table thead th { 
+    background: linear-gradient(135deg, #6B21A8, #4C1D95); 
+    color: #FCD34D; 
+    font-family: 'Kanit', sans-serif; 
+    padding: 14px 10px; 
+    font-size: 14px; 
+    text-transform: uppercase; 
+    letter-spacing: 0.5px; 
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .sports-table tbody td { 
+    padding: 14px 10px; 
+    border-top: 1px solid #F1F5F9; 
+    font-size: 15px; 
+    vertical-align: middle;
+  }
+  .sports-table tbody tr:hover { background: #FAF5FF; }
+  .sports-table .school-cell { display: flex; align-items: center; gap: 10px; justify-content: flex-start; }
+  .sports-table .school-logo-sm { position: relative; width: 46px; height: 46px; border-radius: 50%; overflow: hidden; border: 3px solid #FCD34D; flex-shrink: 0; background: linear-gradient(135deg, #4C1D95, #6B21A8); box-shadow: 0 3px 10px rgba(107,33,168,0.25); }
   .sports-table .school-logo-sm img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
-  .sports-table .school-logo-sm .fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 22px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
+  .sports-table .school-logo-sm .fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
+
+  /* ========== MOBILE SPORTS TABLE (CARD LAYOUT) ========== */
+  @media (max-width: 768px) {
+    .sports-table-wrapper { max-height: none; overflow-y: visible; background: transparent; box-shadow: none; }
+    .sports-table { display: block; }
+    .sports-table thead { display: none; }
+    .sports-table tbody { display: block; }
+    .sports-table tbody tr { 
+      display: block; 
+      background: white; 
+      border-radius: 14px; 
+      padding: 14px; 
+      margin-bottom: 12px; 
+      box-shadow: 0 3px 12px rgba(107,33,168,0.08);
+      border: 1px solid #F1F5F9;
+    }
+    .sports-table tbody td { 
+      display: block; 
+      padding: 8px 0; 
+      border: none;
+      border-bottom: 1px solid #F1F5F9;
+    }
+    .sports-table tbody td:last-child { border-bottom: none; }
+    .sports-table tbody td::before {
+      content: attr(data-label);
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #6B21A8;
+      margin-bottom: 6px;
+      font-family: 'Kanit', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .sports-table tbody td:first-child {
+      border-bottom: 2px solid #F3E8FF;
+      margin-bottom: 8px;
+      padding-bottom: 10px;
+    }
+    .sports-table tbody td:first-child::before { display: none; }
+    .sports-table .school-cell { justify-content: flex-start; }
+    .sports-table .school-logo-sm { width: 40px; height: 40px; border-width: 2px; }
+    .sports-table .school-logo-sm .fallback { font-size: 16px; }
+  }
 
   .trophy-section { background: linear-gradient(135deg, #1E1B4B, #4C1D95); border-radius: 20px; padding: 24px; margin-top: 32px; border: 2px solid rgba(252,211,77,0.4); box-shadow: 0 12px 40px rgba(107,33,168,0.3); }
   .trophy-title { font-family: 'Kanit', sans-serif; font-weight: 900; color: #FCD34D; font-size: 22px; text-align: center; margin-bottom: 20px; }
@@ -235,16 +327,8 @@
   .trophy-detail { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 2px; }
 
   #modalSchoolLogo { position: relative; overflow: hidden; }
-  #modalSchoolLogo > span {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif;
-    z-index: 1;
-  }
-  #modalSchoolLogo img {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    object-fit: cover; z-index: 2;
-  }
+  #modalSchoolLogo > span { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
+  #modalSchoolLogo img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
 
   @media (max-width: 640px) {
     .medal-row { grid-template-columns: 40px 1fr 42px 42px 42px 50px; padding: 10px 10px; font-size: 12px; }
@@ -272,11 +356,7 @@
     .school-logo-large { width: 70px; height: 70px; }
     .school-logo-large .fallback { font-size: 28px; }
     .school-card { padding: 16px 12px; min-height: 180px; }
-    .sports-table .school-logo-sm { width: 40px; height: 40px; border-width: 2px; }
-    .sports-table .school-logo-sm .fallback { font-size: 16px; }
-    .sports-table td { padding: 10px 6px; font-size: 14px; }
-    .sports-table th { padding: 10px 6px; font-size: 12px; }
-    .sports-table .school-cell { gap: 8px; }
+    .nav-scroll > button { font-size: 12px; padding: 6px 12px; min-height: 36px; }
   }
   @media (min-width: 768px) {
     .school-logo-large { width: 90px; height: 90px; }
@@ -286,11 +366,12 @@
 </head>
 <body class="antialiased">
 
+<!-- ========== NAVBAR (Horizontal on both Desktop & Mobile) ========== -->
 <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent no-print">
-  <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16 md:h-20">
-      <a href="#" onclick="showPage('home'); return false;" class="flex items-center gap-2 sm:gap-3">
-        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-primary-700 to-secondary flex items-center justify-center overflow-hidden flex-shrink-0">
+  <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-14 sm:h-16 md:h-20">
+      <a href="#" onclick="showPage('home'); return false;" class="flex items-center gap-2 flex-shrink-0">
+        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-primary-700 to-secondary flex items-center justify-center overflow-hidden flex-shrink-0 border-2 border-white/30">
           <img src="saha.jpg" alt="saha" class="w-full h-full object-cover" onerror="this.style.display='none';">
         </div>
         <div class="hidden xs:block">
@@ -298,6 +379,7 @@
           <p class="text-secondary text-[10px] sm:text-xs font-mono">กีฬา-กรีฑา 2569</p>
         </div>
       </a>
+      <!-- Desktop Nav -->
       <div class="hidden lg:flex items-center gap-1">
         <button onclick="showPage('home'); scrollToId('home')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">หน้าหลัก</button>
         <button onclick="showPage('home'); scrollToId('medal-tally')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">🏅 สรุปอันดับเหรียญ</button>
@@ -309,24 +391,25 @@
           <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span> ผลการแข่งขัน สด
         </button>
       </div>
-      <button id="menuToggle" class="lg:hidden text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-      </button>
     </div>
   </div>
-  <div id="mobileMenu" class="lg:hidden glass-dark border-t border-white/10 hidden">
-    <div class="px-3 py-3 space-y-1">
-      <button onclick="showPage('home'); scrollToId('home'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">🏠 หน้าหลัก</button>
-      <button onclick="showPage('home'); scrollToId('medal-tally'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">🏅 สรุปอันดับเหรียญ</button>
-      <button onclick="showPage('sports-table'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">📊 เหรียญรายกีฬา</button>
-      <button onclick="showPage('home'); scrollToId('schedule'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">⚽ กีฬา</button>
-      <button onclick="showPage('home'); scrollToId('athletics'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">🏃 กรีฑา</button>
-      <button onclick="showPage('school-medal-summary'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">🏫 เหรียญรายโรงเรียน</button>
-      <button onclick="showPage('bracket'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg bg-accent text-white font-bold text-base">🏆 ผลการแข่งขัน สด</button>
+  <!-- ✅ Mobile Nav - Horizontal Scroll -->
+  <div class="lg:hidden glass-dark border-t border-white/10">
+    <div class="nav-scroll" id="mobileNavScroll">
+      <button onclick="showPage('home'); scrollToId('home')" class="rounded-lg text-white/90 hover:bg-white/10 transition flex items-center gap-1.5">🏠 หน้าหลัก</button>
+      <button onclick="showPage('home'); scrollToId('medal-tally')" class="rounded-lg text-white/90 hover:bg-white/10 transition flex items-center gap-1.5">🏅 สรุปอันดับเหรียญ</button>
+      <button onclick="showPage('sports-table')" class="rounded-lg text-white/90 hover:bg-white/10 transition flex items-center gap-1.5">📊 เหรียญรายกีฬา</button>
+      <button onclick="showPage('home'); scrollToId('schedule')" class="rounded-lg text-white/90 hover:bg-white/10 transition flex items-center gap-1.5">⚽ กีฬา</button>
+      <button onclick="showPage('home'); scrollToId('athletics')" class="rounded-lg text-white/90 hover:bg-white/10 transition flex items-center gap-1.5">🏃 กรีฑา</button>
+      <button onclick="showPage('school-medal-summary')" class="rounded-lg text-white/90 hover:bg-white/10 transition flex items-center gap-1.5">🏫 เหรียญรายโรงเรียน</button>
+      <button onclick="showPage('bracket')" class="rounded-lg bg-accent text-white font-bold transition flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span> ผลการแข่งขัน สด
+      </button>
     </div>
   </div>
 </nav>
 
+<!-- ========== PAGE: HOME ========== -->
 <div id="page-home" class="page-view active">
   <section id="home" class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
     <div class="bg-slideshow" id="bgSlideshow">
@@ -471,15 +554,22 @@
   </footer>
 </div>
 
-<div id="page-sports-table" class="page-view bg-gray-50 min-h-screen pt-24 pb-12">
+<!-- ========== PAGE: SPORTS TABLE ========== -->
+<div id="page-sports-table" class="page-view bg-gray-50 min-h-screen pt-32 lg:pt-24 pb-12">
   <section class="max-w-6xl mx-auto px-3 sm:px-4">
+    <button class="back-btn-light" onclick="showPage('home')" title="ย้อนกลับหน้าหลัก">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+      </svg>
+      <span>ย้อนกลับ</span>
+    </button>
     <div class="text-center mb-8 sm:mb-12">
       <span class="inline-block px-3 py-1 rounded-full bg-primary-100 text-primary-800 text-xs sm:text-sm font-medium mb-3">📊 ข้อมูลสถิติ</span>
       <h2 class="font-heading font-bold text-2xl sm:text-3xl md:text-5xl text-dark mb-2 sm:mb-4">ตารางเหรียญรายกีฬา</h2>
       <p class="text-gray-500 text-sm sm:text-base">แสดงเหรียญทอง เงิน ทองแดง ของทุกกีฬาและกีฑา</p>
     </div>
-    <div class="sports-table overflow-x-auto">
-      <table class="w-full min-w-[700px]">
+    <div class="sports-table-wrapper">
+      <table class="sports-table">
         <thead>
           <tr>
             <th class="text-left px-3 sm:px-4">รายการ</th>
@@ -497,8 +587,15 @@
   </section>
 </div>
 
-<div id="page-school-medal-summary" class="page-view bg-gray-50 min-h-screen pt-24 pb-12">
+<!-- ========== PAGE: SCHOOL MEDAL SUMMARY ========== -->
+<div id="page-school-medal-summary" class="page-view bg-gray-50 min-h-screen pt-32 lg:pt-24 pb-12">
   <section class="max-w-7xl mx-auto px-3 sm:px-4">
+    <button class="back-btn-light" onclick="showPage('home')" title="ย้อนกลับหน้าหลัก">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+      </svg>
+      <span>ย้อนกลับ</span>
+    </button>
     <div class="text-center mb-8 sm:mb-12">
       <span class="inline-block px-3 py-1 rounded-full bg-primary-100 text-primary-800 text-xs sm:text-sm font-medium mb-3">🏫 ข้อมูลสถิติ</span>
       <h2 class="font-heading font-bold text-2xl sm:text-3xl md:text-5xl text-dark mb-2 sm:mb-4">สรุปผลการแข่งขันรายโรงเรียน</h2>
@@ -508,6 +605,7 @@
   </section>
 </div>
 
+<!-- ========== MODAL: SCHOOL DETAIL ========== -->
 <div id="schoolDetailModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col animate-slide-up">
     <div class="p-4 sm:p-5 bg-gradient-to-r from-primary-800 to-primary-600 text-white flex justify-between items-center">
@@ -538,15 +636,9 @@
   </div>
 </div>
 
+<!-- ========== PAGE: BRACKET ========== -->
 <div id="page-bracket" class="page-view bracket-bg text-white">
-  <div class="ticker text-white text-xs sm:text-sm font-medium py-2 mt-16 sm:mt-20 md:mt-24 no-print">
-    <div class="marquee">
-      🏆 ผลการแข่งขันสด • กีฬา-กรีฑา ดอยเต่าสหศึกษา 2569 🏆 &nbsp;&nbsp;&nbsp;&nbsp;
-      📅 วันที่ 5 - 8 ตุลาคม พ.ศ. 2569 &nbsp;&nbsp;&nbsp;&nbsp;
-      🔴 ข้อมูลอัปเดตอัตโนมัติทุก 2 วินาที
-    </div>
-  </div>
-  <section class="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-8">
+  <section class="max-w-7xl mx-auto px-3 sm:px-4 pt-32 lg:pt-40 pb-4 sm:pb-8">
     <div id="fallbackWarning" class="hidden mb-4 sm:mb-6 p-3 sm:p-4 rounded-xl bg-orange-500/20 border border-orange-500/50 text-orange-200 text-xs sm:text-sm flex items-center gap-3">
       <span class="text-xl">⚠️</span>
       <div>
@@ -556,7 +648,7 @@
     </div>
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
       <div class="flex items-center gap-3">
-        <button class="back-btn" onclick="goBackToSports()" title="ย้อนกลับไปเลือกกีฬา">
+        <button class="back-btn" onclick="showPage('home')" title="ย้อนกลับหน้าหลัก">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
           </svg>
@@ -564,7 +656,7 @@
         </button>
         <div>
           <h1 class="font-heading font-black text-xl sm:text-2xl md:text-4xl text-transparent bg-gradient-to-r from-secondary via-yellow-300 to-secondary bg-clip-text">ผลการแข่งขัน สด</h1>
-          <p class="text-white/60 text-xs sm:text-sm">Real-time Tournament Bracket · Doitao Sports 2026</p>
+          <p class="text-white/60 text-xs sm:text-sm">Real-time Tournament Bracket</p>
         </div>
       </div>
       <div class="flex items-center gap-2 flex-wrap">
@@ -583,7 +675,7 @@
     <div class="tabs-scroll mb-4 sm:mb-6 no-print" id="bracketSportTabs"></div>
     <div id="bracketContent"></div>
   </section>
-  <footer class="glass-dark border-t border-white/10 py-5 sm:py-6 px-4 text-center mt-8 sm:mt-12">
+  <footer class="glass-dark border-t border-white/10 py-5 sm:py-6 px-4 text-center mt-8 sm:mt-12 mb-16">
     <p class="text-white/60 text-xs">© 2026 Doitao Sports Network · กีฬา-กรีฑา ดอยเต่าสหศึกษา 2569</p>
   </footer>
 </div>
@@ -900,7 +992,6 @@ const SCHOOL_ALIASES = {
   "แม่ดูบ": "โรงเรียนบ้านแม่ตูบ", "บ้านแม่ดูบ": "โรงเรียนบ้านแม่ตูบ"
 };
 
-// ✅ บั๊กที่ 3 แก้: threshold เข้มงวดขึ้น 0.4
 function getFuzzySchoolMatch(input) {
   if (!input || input.trim() === '') return null;
   let cleaned = input.trim().replace(/^โรงเรียน/, '').replace(/^บ้าน/, '').trim();
@@ -921,9 +1012,6 @@ function getFuzzySchoolMatch(input) {
   return bestMatch;
 }
 
-// ================================================================
-// RESOLVE TEAM NAME
-// ================================================================
 function resolveTeamName(placeholder, sport, depth = 0) {
   if (!placeholder || depth > 10) return placeholder;
   const clean = String(placeholder).trim();
@@ -965,9 +1053,6 @@ function resolveTeamName(placeholder, sport, depth = 0) {
   return placeholder;
 }
 
-// ================================================================
-// PROCESS TOURNAMENT
-// ================================================================
 function isGroupStage(groupStr) {
   const clean = (groupStr || "").trim().toUpperCase().replace(/\./g, '');
   return /^[A-Z]$/.test(clean) || clean === "RR";
@@ -1077,9 +1162,6 @@ function getLoser(m) {
   return null;
 }
 
-// ================================================================
-// ✅ CALCULATE MEDALS (v23 - FIXED)
-// ================================================================
 function calculateMedals() {
   const medals = {};
   DATA.schools.forEach(s => medals[s.name] = { name: s.name, gold: 0, silver: 0, bronze: 0 });
@@ -1112,18 +1194,9 @@ function calculateMedals() {
     }
     sportMatches.forEach(m => {
       if (m === finalMatch || m === thirdMatch) return;
-      if (m.goldSchool) {
-        const s = findSchoolName(m.goldSchool);
-        if (s && medals[s]) { medals[s].gold++; sportsMedalsOnly[s].gold++; }
-      }
-      if (m.silverSchool) {
-        const s = findSchoolName(m.silverSchool);
-        if (s && medals[s]) { medals[s].silver++; sportsMedalsOnly[s].silver++; }
-      }
-      if (m.bronzeSchool) {
-        const s = findSchoolName(m.bronzeSchool);
-        if (s && medals[s]) { medals[s].bronze++; sportsMedalsOnly[s].bronze++; }
-      }
+      if (m.goldSchool) { const s = findSchoolName(m.goldSchool); if (s && medals[s]) { medals[s].gold++; sportsMedalsOnly[s].gold++; } }
+      if (m.silverSchool) { const s = findSchoolName(m.silverSchool); if (s && medals[s]) { medals[s].silver++; sportsMedalsOnly[s].silver++; } }
+      if (m.bronzeSchool) { const s = findSchoolName(m.bronzeSchool); if (s && medals[s]) { medals[s].bronze++; sportsMedalsOnly[s].bronze++; } }
     });
   });
   const sortFn = (a, b) => {
@@ -1132,16 +1205,8 @@ function calculateMedals() {
     if (b.bronze !== a.bronze) return b.bronze - a.bronze;
     return a.name.localeCompare(b.name, 'th');
   };
-  
-  // ✅ บั๊กที่ 1 แก้: filter เฉพาะโรงเรียนที่มีเหรียญ >0
-  const sportsRanked = Object.values(sportsMedalsOnly)
-    .filter(s => (s.gold + s.silver + s.bronze) > 0)
-    .sort(sortFn);
-  const athRanked = Object.values(athleticsMedals)
-    .filter(a => (a.gold + a.silver + a.bronze) > 0)
-    .map(a => ({ name: a.name || '', gold: a.gold || 0, silver: a.silver || 0, bronze: a.bronze || 0 }))
-    .sort(sortFn);
-  
+  const sportsRanked = Object.values(sportsMedalsOnly).filter(s => (s.gold + s.silver + s.bronze) > 0).sort(sortFn);
+  const athRanked = Object.values(athleticsMedals).filter(a => (a.gold + a.silver + a.bronze) > 0).map(a => ({ name: a.name || '', gold: a.gold || 0, silver: a.silver || 0, bronze: a.bronze || 0 })).sort(sortFn);
   trophiesData = {
     sports: { first: sportsRanked[0] || null, second: sportsRanked[1] || null, third: sportsRanked[2] || null },
     athletics: { first: athRanked[0] || null, second: athRanked[1] || null, third: athRanked[2] || null }
@@ -1158,13 +1223,9 @@ function calculateMedals() {
   return Object.values(medals).sort(sortFn);
 }
 
-// ================================================================
-// ATHLETICS
-// ================================================================
 function processAthleticsData(data) {
   athleticsMedals = {};
   DATA.schools.forEach(s => athleticsMedals[s.name] = { name: s.name, gold: 0, silver: 0, bronze: 0, details: [] });
-  // ✅ บั๊กที่ 5 แก้: เช็ค duplicate ID
   const seenIds = new Set();
   data.forEach(row => {
     const id = String(row['รายการที่'] || '').trim();
@@ -1305,7 +1366,6 @@ function renderSchoolSummaryGrid() {
     const logoHTML = getLargeLogoHTML(s.name);
     const m = schoolMedalMap[s.name] || { gold: 0, silver: 0, bronze: 0 };
     const total = m.gold + m.silver + m.bronze;
-    // ✅ บั๊กที่ 4 แก้: ลบ margin-bottom ซ้ำ
     return `<div class="bg-white rounded-2xl shadow-md p-4 text-center cursor-pointer hover:-translate-y-1 transition border border-gray-100" onclick="showSchoolSummary('${s.name}')">
       <div style="display:flex;justify-content:center;">${logoHTML}</div>
       <h3 class="font-heading font-bold text-sm text-dark mb-2" style="margin-top:14px;">${shortTeamName(s.name)}</h3>
@@ -1440,6 +1500,7 @@ function renderMedalTally() {
   }
 }
 
+// ✅ Render Sports Medal Table (with data-label for mobile card layout)
 function renderSportsMedalTable() {
   const tbody = document.getElementById("sportsMedalTableBody");
   if (!tbody) return;
@@ -1467,12 +1528,12 @@ function renderSportsMedalTable() {
       else if (thirdMatch.winnerOverride || thirdMatch.status === "finished") bronzeSchool = findSchoolName(resolveTeamName(getWinner(thirdMatch), sport));
     }
     const sportIconFile = getSportIcon(sport);
-    const iconHTML = sportIconFile ? `<img src="${sportIconFile}" class="w-10 h-10 object-contain" onerror="this.style.display='none';">` : '';
+    const iconHTML = sportIconFile ? `<img src="${sportIconFile}" class="w-10 h-10 object-contain flex-shrink-0" onerror="this.style.display='none';">` : '';
     rows += `<tr>
-      <td class="font-medium text-dark" style="font-size:17px;"><div class="flex items-center gap-3">${iconHTML}<span style="font-family:'Kanit',sans-serif;font-weight:700;">${sport}</span></div></td>
-      <td class="text-center">${goldSchool ? `<div class="school-cell">${getSmallLogoHTML(goldSchool)}<span class="font-semibold text-yellow-700" style="font-size:15px;">${shortTeamName(goldSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
-      <td class="text-center">${silverSchool ? `<div class="school-cell">${getSmallLogoHTML(silverSchool)}<span class="font-semibold text-gray-600" style="font-size:15px;">${shortTeamName(silverSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
-      <td class="text-center">${bronzeSchool ? `<div class="school-cell">${getSmallLogoHTML(bronzeSchool)}<span class="font-semibold text-orange-700" style="font-size:15px;">${shortTeamName(bronzeSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
+      <td class="font-medium text-dark" data-label="รายการ" style="font-size:17px;"><div class="flex items-center gap-3">${iconHTML}<span style="font-family:'Kanit',sans-serif;font-weight:700;">${sport}</span></div></td>
+      <td class="text-center" data-label="🥇 ทอง">${goldSchool ? `<div class="school-cell">${getSmallLogoHTML(goldSchool)}<span class="font-semibold text-yellow-700" style="font-size:15px;">${shortTeamName(goldSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
+      <td class="text-center" data-label="🥈 เงิน">${silverSchool ? `<div class="school-cell">${getSmallLogoHTML(silverSchool)}<span class="font-semibold text-gray-600" style="font-size:15px;">${shortTeamName(silverSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
+      <td class="text-center" data-label="🥉 ทองแดง">${bronzeSchool ? `<div class="school-cell">${getSmallLogoHTML(bronzeSchool)}<span class="font-semibold text-orange-700" style="font-size:15px;">${shortTeamName(bronzeSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
     </tr>`;
   });
   
@@ -1498,10 +1559,10 @@ function renderSportsMedalTable() {
     const ath = athMap[id];
     const genderIcon = ath.detail.includes('ชาย') ? '♂' : ath.detail.includes('หญิง') ? '♀' : '';
     rows += `<tr class="bg-purple-50/50">
-      <td class="font-medium text-dark" style="font-size:17px;"><div class="flex items-center gap-3"><span style="font-size:22px;">🏃</span><span style="font-family:'Kanit',sans-serif;font-weight:700;">${id} ${ath.detail} ${genderIcon}</span></div></td>
-      <td class="text-center">${ath.gold ? `<div class="school-cell">${getSmallLogoHTML(ath.gold)}<span class="font-semibold text-yellow-700" style="font-size:15px;">${shortTeamName(ath.gold)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
-      <td class="text-center">${ath.silver ? `<div class="school-cell">${getSmallLogoHTML(ath.silver)}<span class="font-semibold text-gray-600" style="font-size:15px;">${shortTeamName(ath.silver)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
-      <td class="text-center">${ath.bronze ? `<div class="school-cell">${getSmallLogoHTML(ath.bronze)}<span class="font-semibold text-orange-700" style="font-size:15px;">${shortTeamName(ath.bronze)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
+      <td class="font-medium text-dark" data-label="รายการ" style="font-size:17px;"><div class="flex items-center gap-3"><span style="font-size:22px;">🏃</span><span style="font-family:'Kanit',sans-serif;font-weight:700;">${id} ${ath.detail} ${genderIcon}</span></div></td>
+      <td class="text-center" data-label="🥇 ทอง">${ath.gold ? `<div class="school-cell">${getSmallLogoHTML(ath.gold)}<span class="font-semibold text-yellow-700" style="font-size:15px;">${shortTeamName(ath.gold)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
+      <td class="text-center" data-label="🥈 เงิน">${ath.silver ? `<div class="school-cell">${getSmallLogoHTML(ath.silver)}<span class="font-semibold text-gray-600" style="font-size:15px;">${shortTeamName(ath.silver)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
+      <td class="text-center" data-label="🥉 ทองแดง">${ath.bronze ? `<div class="school-cell">${getSmallLogoHTML(ath.bronze)}<span class="font-semibold text-orange-700" style="font-size:15px;">${shortTeamName(ath.bronze)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
     </tr>`;
   });
   
@@ -1697,9 +1758,6 @@ function renderBracketMatch(m, isThirdPlaceColumn = false) {
     </div>`;
 }
 
-// ================================================================
-// FETCH DATA
-// ================================================================
 async function fetchAllData() {
   if (isFetching) return;
   isFetching = true;
@@ -1750,7 +1808,6 @@ async function fetchAllData() {
   } finally { isFetching = false; }
 }
 
-// ✅ บั๊กที่ 2 แก้: เช็ค stage ก่อน override
 function convertAPItoMatches(rows) {
   const matches = [];
   rows.forEach(obj => {
@@ -1921,28 +1978,15 @@ function showPage(page) {
   }
 }
 
-function goBackToSports() {
-  showPage('home');
-  setTimeout(() => {
-    const el = document.getElementById('schedule');
-    if (el) {
-      const top = el.getBoundingClientRect().top + window.pageYOffset - 80;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
-  }, 400);
-}
-
 function scrollToId(id) { 
   setTimeout(() => { 
     const el = document.getElementById(id); 
     if (el) { 
-      const top = el.getBoundingClientRect().top + window.pageYOffset - 80; 
+      const top = el.getBoundingClientRect().top + window.pageYOffset - 120; 
       window.scrollTo({ top, behavior: 'smooth' }); 
     }
   }, 100); 
 }
-
-function closeMobileMenu() { document.getElementById('mobileMenu').classList.add('hidden'); }
 
 window.addEventListener('scroll', () => { 
   const navbar = document.getElementById('navbar'); 
@@ -1955,8 +1999,6 @@ window.addEventListener('scroll', () => {
     navbar.classList.add('bg-transparent'); 
   } 
 });
-
-document.getElementById('menuToggle').addEventListener('click', () => { document.getElementById('mobileMenu').classList.toggle('hidden'); });
 
 function initSlideshow() {
   const slides = document.querySelectorAll('.bg-slide');
@@ -1986,7 +2028,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) fetchAllData();
   });
-  console.log("✅ Doitao Sports 2026 - v23 (All Bugs Fixed: 0 Remaining)");
+  console.log("✅ Doitao Sports 2026 - v24 (Mobile UX Enhanced)");
 });
 </script>
 
