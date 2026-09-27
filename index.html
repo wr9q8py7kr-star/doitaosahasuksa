@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700;900&family=Sarabun:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script> <!-- เพิ่ม PapaParse -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script>
   tailwind.config = {
     darkMode: 'class',
@@ -312,12 +312,11 @@
       </a>
       <div class="hidden lg:flex items-center gap-1">
         <button onclick="showPage('home'); scrollToId('home')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">หน้าหลัก</button>
-        <button onclick="showPage('home'); scrollToId('medal-tally')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">🏅 เหรียญรางวัล</button>
-        <button onclick="showPage('home'); scrollToId('schedule')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">โปรแกรม</button>
-        <!-- ✅ เมนูใหม่ สรุปเหรียญรายโรงเรียน -->
+        <button onclick="showPage('home'); scrollToId('medal-tally')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">🏅 สรุปอันดับเหรียญ</button>
+        <button onclick="showPage('home'); scrollToId('schedule')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">⚽ กีฬา</button>
+        <button onclick="showPage('home'); scrollToId('athletics')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">🏃 กรีฑา</button>
         <button onclick="showPage('school-medal-summary')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">🏫 เหรียญรายโรงเรียน</button>
-        <button onclick="showPage('home'); scrollToId('athletics')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">กรีฑา</button>
-        <button onclick="showPage('home'); scrollToId('schools-showcase')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">โรงเรียน</button>
+        <button onclick="showPage('home'); scrollToId('schools-showcase')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">🏫 โรงเรียน</button>
         <button onclick="showPage('bracket')" class="px-4 py-2 rounded-lg bg-accent text-white hover:bg-red-700 transition text-sm flex items-center gap-2 whitespace-nowrap">
           <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span> ผลการแข่งขัน สด
         </button>
@@ -330,10 +329,10 @@
   <div id="mobileMenu" class="lg:hidden glass-dark border-t border-white/10 hidden">
     <div class="px-3 py-3 space-y-1">
       <button onclick="showPage('home'); scrollToId('home'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">🏠 หน้าหลัก</button>
-      <button onclick="showPage('home'); scrollToId('medal-tally'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">🏅 สรุปเหรียญรางวัล</button>
-      <button onclick="showPage('home'); scrollToId('schedule'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">📅 โปรแกรมการแข่งขัน</button>
-      <button onclick="showPage('school-medal-summary'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">🏫 สรุปเหรียญรายโรงเรียน</button>
+      <button onclick="showPage('home'); scrollToId('medal-tally'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">🏅 สรุปอันดับเหรียญ</button>
+      <button onclick="showPage('home'); scrollToId('schedule'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">⚽ กีฬา</button>
       <button onclick="showPage('home'); scrollToId('athletics'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">🏃 กรีฑา</button>
+      <button onclick="showPage('school-medal-summary'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">🏫 เหรียญรายโรงเรียน</button>
       <button onclick="showPage('home'); scrollToId('schools-showcase'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">🏫 โรงเรียน</button>
       <button onclick="showPage('bracket'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg bg-accent text-white font-bold text-base">🏆 ผลการแข่งขัน สด</button>
     </div>
@@ -496,7 +495,6 @@
   </footer>
 </div>
 
-<!-- ✅ หน้าใหม่: สรุปผลการแข่งขันรายโรงเรียน -->
 <div id="page-school-medal-summary" class="page-view bg-gray-50 min-h-screen pt-24 pb-12">
   <section class="max-w-7xl mx-auto px-3 sm:px-4">
     <div class="text-center mb-8 sm:mb-12">
@@ -508,7 +506,6 @@
   </section>
 </div>
 
-<!-- ✅ Modal แสดงรายละเอียดเหรียญของโรงเรียน -->
 <div id="schoolDetailModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col animate-slide-up">
     <div class="p-4 sm:p-5 bg-gradient-to-r from-primary-800 to-primary-600 text-white flex justify-between items-center">
@@ -521,9 +518,7 @@
       </button>
     </div>
     <div class="p-4 sm:p-6 overflow-y-auto flex-1">
-      <div class="grid grid-cols-3 gap-2 sm:gap-4 mb-6" id="modalMedalSummaryCards">
-        <!-- การ์ดสรุปเหรียญ -->
-      </div>
+      <div class="grid grid-cols-3 gap-2 sm:gap-4 mb-6" id="modalMedalSummaryCards"></div>
       <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <table class="w-full text-sm">
           <thead class="bg-gray-50">
@@ -534,9 +529,7 @@
               <th class="p-3 text-center font-semibold text-orange-700">🥉 ทองแดง</th>
             </tr>
           </thead>
-          <tbody id="modalMedalDetailsBody" class="divide-y divide-gray-100">
-            <!-- รายละเอียดเหรียญ -->
-          </tbody>
+          <tbody id="modalMedalDetailsBody" class="divide-y divide-gray-100"></tbody>
         </table>
       </div>
     </div>
@@ -563,7 +556,8 @@
 
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
       <div class="flex items-center gap-3">
-        <button class="back-btn" onclick="showPage('home')" title="ย้อนกลับหน้าหลัก">
+        <!-- ✅ ปุ่มย้อนกลับ: กลับไปที่หน้าหลัก + เลื่อนไปที่สไลด์ "การแข่งขัน 13 รายการ" -->
+        <button class="back-btn" onclick="goBackToSports()" title="ย้อนกลับไปเลือกกีฬา">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
           </svg>
@@ -608,7 +602,6 @@
 // ================================================================
 const CONFIG = {
   SCORE_SHEET_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWb9ZjnqXGwVDlJ3zc5QfeNIcOLlWFoHgmBLrxDOLeYtzeNV1T63bWw79-WLdqGiriB8mjSNI8erSP/pub?gid=0&single=true&output=csv",
-  // ✅ ลิงก์ CSV ของกีฑา (ผ่าน Proxy เพื่อแก้ปัญหา CORS)
   ATHLETICS_CSV_URL: "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://docs.google.com/spreadsheets/d/e/2PACX-1vTWb9ZjnqXGwVDlJ3zc5QfeNIcOLlWFoHgmBLrxDOLeYtzeNV1T63bWw79-WLdqGiriB8mjSNI8erSP/pub?gid=1685634183&single=true&output=csv"),
   REFRESH_INTERVAL: 30000,
   SLIDE_INTERVAL: 4500,
@@ -810,7 +803,7 @@ const DATA = {
 };
 
 // ================================================================
-// STATE (Global Variables)
+// STATE
 // ================================================================
 let bracketInitialized = false;
 let currentTab = 'group';
@@ -821,10 +814,8 @@ let allMatches = [];
 let selectedSport = "";
 let previousMatchState = {};
 let isFirstBracketLoad = true;
-
-// ✅ ตัวแปรสำหรับกีฑา
 let athleticsData = [];
-let athleticsMedals = {}; // เก็บเหรียญจากกีฑาแยกตามโรงเรียน
+let athleticsMedals = {};
 
 // ================================================================
 // PAGE NAVIGATION
@@ -841,7 +832,7 @@ function showPage(page) {
     navbar.classList.add('glass-dark', 'shadow-lg');
     navbar.classList.remove('bg-transparent');
     if (!bracketInitialized) { initBracket(); bracketInitialized = true; }
-    fetchAllData(); // เปลี่ยนเป็น fetchAllData
+    fetchAllData();
     setTimeout(() => updateTickerVisibility(), 300);
   } else if (page === 'school-medal-summary') {
     navbar.classList.add('glass-dark', 'shadow-lg');
@@ -855,6 +846,19 @@ function showPage(page) {
       navbar.classList.add('bg-transparent');
     }
   }
+}
+
+// ✅ ฟังก์ชันใหม่: ย้อนกลับจากหน้า Bracket ไปที่สไลด์ "การแข่งขัน 13 รายการ"
+function goBackToSports() {
+  showPage('home');
+  // รอให้หน้าหลักแสดงผลเสร็จก่อน แล้วค่อยเลื่อนไปที่ schedule
+  setTimeout(() => {
+    const el = document.getElementById('schedule');
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.pageYOffset - 80;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  }, 400);
 }
 
 function scrollToId(id) { 
@@ -943,12 +947,10 @@ function renderSports() {
     const iconHTML = iconFile 
       ? `<img src="${iconFile}" alt="${s.name}" class="sport-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><span style="display:none; font-size:40px;">${s.icon}</span>`
       : `<span style="font-size:40px;">${s.icon}</span>`;
-    // ✅ เปลี่ยน onclick ให้ไปที่ bracket พร้อมเลือกกีฬานั้น
     return `<div class="group bg-white rounded-2xl p-4 sm:p-6 shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-primary-100 cursor-pointer" onclick="openSportBracket('${s.name}')"><div class="flex items-start justify-between mb-3 sm:mb-4"><div class="group-hover:scale-110 transition-transform">${iconHTML}</div><span class="text-[10px] sm:text-xs px-2 py-1 rounded-full bg-primary-100 text-primary-800 font-medium">${s.category}</span></div><h3 class="font-heading font-bold text-sm sm:text-base text-dark mb-1 sm:mb-2 leading-tight">${s.name}</h3><div class="flex items-center gap-1 text-xs sm:text-sm text-gray-500"><span>${s.gender !== "-" ? s.gender : "รวม"}</span><span>•</span><span>${s.level}</span></div><div class="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-primary-50 flex items-center justify-between"><span class="text-[10px] sm:text-xs text-gray-500">ดูผลการแข่งขัน</span><span class="text-primary-600 font-bold text-xs sm:text-sm group-hover:translate-x-1 transition">ดู →</span></div></div>`;
   }).join(""); 
 }
 
-// ✅ ฟังก์ชันใหม่สำหรับเปิด bracket ตามกีฬาที่เลือก
 function openSportBracket(sportName) {
   showPage('bracket');
   setTimeout(() => {
@@ -957,7 +959,7 @@ function openSportBracket(sportName) {
       renderSportTabs();
       renderBracketContent();
     }
-  }, 500); // รอให้ข้อมูลโหลด
+  }, 500);
 }
 
 function renderSchoolsShowcase() {
@@ -968,7 +970,6 @@ function renderSchoolsShowcase() {
     const logoHTML = logoPath 
       ? `<div class="school-logo-large"><img src="${logoPath}" alt="${s.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="fallback" style="display:none;">🏫</span></div>`
       : `<div class="school-logo-large"><span class="fallback">🏫</span></div>`;
-    // ✅ เปลี่ยน onclick ให้เปิด Modal สรุปเหรียญโรงเรียน
     return `<div class="school-card" onclick="showSchoolSummary('${s.name}')" title="${s.name}">
       ${logoHTML}
       <p class="font-heading font-bold text-xs sm:text-sm text-dark leading-tight">${shortTeamName(s.name)}</p>
@@ -999,13 +1000,12 @@ function renderCommittees() {
 }
 
 // ================================================================
-// 🏫 SCHOOL MEDAL SUMMARY (NEW FEATURE)
+// 🏫 SCHOOL MEDAL SUMMARY
 // ================================================================
 function renderSchoolSummaryGrid() {
   const grid = document.getElementById("schoolSummaryGrid");
   if (!grid) return;
   
-  // คำนวณเหรียญรวมทั้งหมดก่อน
   const totalMedals = calculateMedals(); 
   const schoolMedalMap = {};
   totalMedals.forEach(m => schoolMedalMap[m.name] = m);
@@ -1041,7 +1041,6 @@ function showSchoolSummary(schoolName) {
   const summaryCards = document.getElementById('modalMedalSummaryCards');
   const detailsBody = document.getElementById('modalMedalDetailsBody');
 
-  // Set Title & Logo
   title.textContent = shortTeamName(schoolName);
   const logoPath = getLogoPath(schoolName);
   if (logoPath) {
@@ -1050,10 +1049,8 @@ function showSchoolSummary(schoolName) {
     logoContainer.innerHTML = `🏫`;
   }
 
-  // 1. รวบรวมเหรียญจากกีฑา
   const athData = athleticsMedals[schoolName] || { gold: 0, silver: 0, bronze: 0, details: [] };
   
-  // 2. รวบรวมเหรียญจากกีฬา (Bracket)
   const sportDetails = [];
   let sportGold = 0, sportSilver = 0, sportBronze = 0;
 
@@ -1087,12 +1084,10 @@ function showSchoolSummary(schoolName) {
     }
   });
 
-  // 3. รวมยอดทั้งหมด
   const totalGold = athData.gold + sportGold;
   const totalSilver = athData.silver + sportSilver;
   const totalBronze = athData.bronze + sportBronze;
 
-  // 4. Render Summary Cards
   summaryCards.innerHTML = `
     <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-3 text-center">
       <div class="text-2xl mb-1">🥇</div>
@@ -1111,13 +1106,10 @@ function showSchoolSummary(schoolName) {
     </div>
   `;
 
-  // 5. Render Details Table
   let rowsHTML = '';
 
-  // แสดงผลกีฑา
   if (athData.details.length > 0) {
     rowsHTML += `<tr class="bg-primary-50"><td colspan="4" class="p-2 font-bold text-primary-800 text-xs">🏃 ประเภทกรีฑา</td></tr>`;
-    // Group by sport for athletics
     const athGroup = {};
     athData.details.forEach(d => {
       if (!athGroup[d.sport]) athGroup[d.sport] = { gold: 0, silver: 0, bronze: 0 };
@@ -1135,7 +1127,6 @@ function showSchoolSummary(schoolName) {
     });
   }
 
-  // แสดงผลกีฬา
   if (sportDetails.length > 0) {
     rowsHTML += `<tr class="bg-primary-50"><td colspan="4" class="p-2 font-bold text-primary-800 text-xs">⚽ ประเภทกีฬา</td></tr>`;
     const sportGroup = {};
@@ -1160,7 +1151,6 @@ function showSchoolSummary(schoolName) {
   }
   detailsBody.innerHTML = rowsHTML;
 
-  // Show Modal
   modal.classList.remove('hidden');
   modal.classList.add('flex');
 }
@@ -1172,7 +1162,7 @@ function closeSchoolModal() {
 }
 
 // ================================================================
-// BRACKET SYSTEM (Original)
+// BRACKET SYSTEM
 // ================================================================
 function initBracket() { 
   setInterval(fetchAllData, CONFIG.REFRESH_INTERVAL); 
@@ -1310,7 +1300,6 @@ function resolveTeamName(placeholder, sport, depth = 0) {
   return placeholder;
 }
 
-// ✅ ฟังก์ชันใหม่: ดึงข้อมูลทั้ง 2 ระบบพร้อมกัน
 async function fetchAllData() {
   const url = CONFIG.SCORE_SHEET_URL;
   if (!url) { setConnectionStatus("error", "ยังไม่ตั้งค่า URL"); return; }
@@ -1319,7 +1308,6 @@ async function fetchAllData() {
     setConnectionStatus("loading", "กำลังโหลด...");
     document.getElementById('fallbackWarning').classList.add('hidden');
     
-    // ดึงข้อมูล Bracket
     const resBracket = await fetch(url + "&t=" + Date.now(), { cache: "no-store" });
     if (!resBracket.ok) throw new Error(`HTTP ${resBracket.status}`);
     const csvBracket = await resBracket.text();
@@ -1327,7 +1315,6 @@ async function fetchAllData() {
     if (matches.length === 0) throw new Error("ไม่พบข้อมูลกีฬา");
     allMatches = matches;
     
-    // ดึงข้อมูล Athletics
     const resAth = await fetch(CONFIG.ATHLETICS_CSV_URL + "&t=" + Date.now(), { cache: "no-store" });
     if (resAth.ok) {
         const csvAth = await resAth.text();
@@ -1346,7 +1333,6 @@ async function fetchAllData() {
     renderBracketContent();
     renderMedalTally();
     
-    // อัปเดตหน้า School Summary ถ้าเปิดอยู่
     if (document.getElementById('page-school-medal-summary').classList.contains('active')) {
       renderSchoolSummaryGrid();
     }
@@ -1397,7 +1383,7 @@ function parseCSVLine(line) {
 }
 
 // ================================================================
-// 🏅 FUZZY MATCHING & ATHLETICS PROCESSING (NEW)
+// 🏅 FUZZY MATCHING & ATHLETICS PROCESSING
 // ================================================================
 function levenshteinDistance(a, b) {
     const matrix = [];
@@ -1467,7 +1453,7 @@ function processAthleticsData(data) {
 }
 
 // ================================================================
-// 🏅 MEDAL TALLY (Updated to include Athletics)
+// 🏅 MEDAL TALLY
 // ================================================================
 function findSchoolName(teamName) {
   if (!teamName || isPlaceholder(teamName)) return null;
@@ -1493,7 +1479,6 @@ function calculateMedals() {
     medals[s.name] = { name: s.name, gold: 0, silver: 0, bronze: 0 };
   });
   
-  // 1. จาก Bracket Matches
   const bySport = {};
   allMatches.forEach(m => {
     if (!bySport[m.sport]) bySport[m.sport] = [];
@@ -1531,7 +1516,6 @@ function calculateMedals() {
     }
   });
   
-  // 2. จาก Athletics (เพิ่มเข้ามา)
   Object.keys(athleticsMedals).forEach(school => {
     if (medals[school]) {
       medals[school].gold += athleticsMedals[school].gold;
@@ -1598,7 +1582,7 @@ function renderMedalTally() {
 }
 
 // ================================================================
-// BRACKET RENDERING (Original)
+// BRACKET RENDERING
 // ================================================================
 function renderSportTabs() {
   let sports = [...new Set(allMatches.map(m => m.sport).filter(Boolean))].sort();
@@ -1861,7 +1845,7 @@ function getWinner(m) { if (!m || m.status !== "finished") return null; const a 
 function getLoser(m) { if (!m || m.status !== "finished") return null; const a = parseFloat(m.scoreA), b = parseFloat(m.scoreB); if (isNaN(a) || isNaN(b)) return null; if (a > b) return m.teamB; if (b > a) return m.teamA; return null; }
 
 // ================================================================
-// TICKER (Updated to include Athletics)
+// TICKER
 // ================================================================
 function buildTickerContent() {
   const bySport = {};
@@ -1872,7 +1856,6 @@ function buildTickerContent() {
   
   const items = [];
   
-  // 1. จากกีฬา
   Object.keys(bySport).sort().forEach(sport => {
     const sportMatches = bySport[sport];
     const hasResults = sportMatches.some(m => m.status === "finished");
@@ -1921,9 +1904,8 @@ function buildTickerContent() {
     }
   });
   
-  // 2. จากกีฑา (แสดงผลลัพธ์ล่าสุด)
   if (athleticsData.length > 0) {
-      const recentAth = athleticsData.slice(-5); // เอา 5 รายการล่าสุด
+      const recentAth = athleticsData.slice(-5);
       recentAth.forEach(row => {
           const sport = row['ประเภทการแข่งขัน'] || '';
           const gender = row['เพศ'] || '';
@@ -2005,10 +1987,9 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCommittees();
   updateTickerVisibility();
   
-  // โหลดข้อมูลเริ่มต้น
   fetchAllData();
   
-  console.log("✅ Doitao Sports 2026 - v12 (Athletics + Fuzzy Match + School Summary)");
+  console.log("✅ Doitao Sports 2026 - v13 (Menu reorder + Back to Sports)");
 });
 </script>
 
