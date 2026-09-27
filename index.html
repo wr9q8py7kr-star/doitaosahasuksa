@@ -541,7 +541,7 @@
     <div class="marquee">
       🏆 ผลการแข่งขันสด • กีฬา-กรีฑา ดอยเต่าสหศึกษา 2569 🏆 &nbsp;&nbsp;&nbsp;&nbsp;
       📅 วันที่ 5 - 8 ตุลาคม พ.ศ. 2569 &nbsp;&nbsp;&nbsp;&nbsp;
-      🔴 ข้อมูลอัปเดตอัตโนมัติทุก 30 วินาที
+      🔴 ข้อมูลอัปเดตอัตโนมัติทุก 3 วินาที
     </div>
   </div>
 
@@ -556,7 +556,6 @@
 
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
       <div class="flex items-center gap-3">
-        <!-- ✅ ปุ่มย้อนกลับ: กลับไปที่หน้าหลัก + เลื่อนไปที่สไลด์ "การแข่งขัน 13 รายการ" -->
         <button class="back-btn" onclick="goBackToSports()" title="ย้อนกลับไปเลือกกีฬา">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
@@ -601,9 +600,10 @@
 // CONFIG
 // ================================================================
 const CONFIG = {
-  SCORE_SHEET_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWb9ZjnqXGwVDlJ3zc5QfeNIcOLlWFoHgmBLrxDOLeYtzeNV1T63bWw79-WLdqGiriB8mjSNI8erSP/pub?gid=0&single=true&output=csv",
-  ATHLETICS_CSV_URL: "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://docs.google.com/spreadsheets/d/e/2PACX-1vTWb9ZjnqXGwVDlJ3zc5QfeNIcOLlWFoHgmBLrxDOLeYtzeNV1T63bWw79-WLdqGiriB8mjSNI8erSP/pub?gid=1685634183&single=true&output=csv"),
-  REFRESH_INTERVAL: 30000,
+  // ✅ ใช้ Proxy codetabs (Rate Limit 5 ครั้ง/วินาที)
+  SCORE_SHEET_URL: "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent("https://docs.google.com/spreadsheets/d/e/2PACX-1vTWb9ZjnqXGwVDlJ3zc5QfeNIcOLlWFoHgmBLrxDOLeYtzeNV1T63bWw79-WLdqGiriB8mjSNI8erSP/pub?gid=0&single=true&output=csv"),
+  ATHLETICS_CSV_URL: "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent("https://docs.google.com/spreadsheets/d/e/2PACX-1vTWb9ZjnqXGwVDlJ3zc5QfeNIcOLlWFoHgmBLrxDOLeYtzeNV1T63bWw79-WLdqGiriB8mjSNI8erSP/pub?gid=1685634183&single=true&output=csv"),
+  REFRESH_INTERVAL: 3000, // ✅ 3 วินาที
   SLIDE_INTERVAL: 4500,
 };
 
@@ -851,7 +851,6 @@ function showPage(page) {
 // ✅ ฟังก์ชันใหม่: ย้อนกลับจากหน้า Bracket ไปที่สไลด์ "การแข่งขัน 13 รายการ"
 function goBackToSports() {
   showPage('home');
-  // รอให้หน้าหลักแสดงผลเสร็จก่อน แล้วค่อยเลื่อนไปที่ schedule
   setTimeout(() => {
     const el = document.getElementById('schedule');
     if (el) {
@@ -1300,32 +1299,43 @@ function resolveTeamName(placeholder, sport, depth = 0) {
   return placeholder;
 }
 
+// ✅ ฟังก์ชันใหม่: ดึงข้อมูลทั้ง 2 ระบบพร้อมกัน
 async function fetchAllData() {
-  const url = CONFIG.SCORE_SHEET_URL;
-  if (!url) { setConnectionStatus("error", "ยังไม่ตั้งค่า URL"); return; }
+  const scoreUrl = CONFIG.SCORE_SHEET_URL;
+  const athleticsUrl = CONFIG.ATHLETICS_CSV_URL;
+  
+  if (!scoreUrl || !athleticsUrl) { 
+    setConnectionStatus("error", "ยังไม่ตั้งค่า URL"); 
+    return; 
+  }
   
   try {
     setConnectionStatus("loading", "กำลังโหลด...");
     document.getElementById('fallbackWarning').classList.add('hidden');
     
-    const resBracket = await fetch(url + "&t=" + Date.now(), { cache: "no-store" });
-    if (!resBracket.ok) throw new Error(`HTTP ${resBracket.status}`);
+    // ✅ ใช้ Promise.all ดึงข้อมูลทั้ง 2 ชีตพร้อมกัน
+    const [resBracket, resAth] = await Promise.all([
+      fetch(scoreUrl + "&t=" + Date.now(), { cache: "no-store" }),
+      fetch(athleticsUrl + "&t=" + Date.now(), { cache: "no-store" })
+    ]);
+
+    if (!resBracket.ok) throw new Error(`Score HTTP ${resBracket.status}`);
     const csvBracket = await resBracket.text();
     const matches = parseCSV(csvBracket);
     if (matches.length === 0) throw new Error("ไม่พบข้อมูลกีฬา");
     allMatches = matches;
-    
-    const resAth = await fetch(CONFIG.ATHLETICS_CSV_URL + "&t=" + Date.now(), { cache: "no-store" });
+
     if (resAth.ok) {
-        const csvAth = await resAth.text();
-        const parsedAth = Papa.parse(csvAth, { header: true, skipEmptyLines: true, transformHeader: h => h.trim() });
-        athleticsData = parsedAth.data.filter(row => {
-          const id = (row['รายการที่'] || '').trim();
-          return id && id !== '' && !isNaN(parseInt(id));
-        });
-        processAthleticsData(athleticsData);
+      const csvAth = await resAth.text();
+      const parsedAth = Papa.parse(csvAth, { header: true, skipEmptyLines: true, transformHeader: h => h.trim() });
+      athleticsData = parsedAth.data.filter(row => {
+        const id = (row['รายการที่'] || '').trim();
+        return id && id !== '' && !isNaN(parseInt(id));
+      });
+      processAthleticsData(athleticsData);
+      console.log(`[Athletics] โหลด ${athleticsData.length} รายการ`);
     } else {
-        console.warn("ไม่สามารถดึงข้อมูลกีฑาได้");
+      console.warn("ไม่สามารถดึงข้อมูลกีฑาได้");
     }
 
     processTournamentData(allMatches);
@@ -1989,7 +1999,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   fetchAllData();
   
-  console.log("✅ Doitao Sports 2026 - v13 (Menu reorder + Back to Sports)");
+  console.log("✅ Doitao Sports 2026 - v14 (3s refresh + codetabs proxy)");
 });
 </script>
 
