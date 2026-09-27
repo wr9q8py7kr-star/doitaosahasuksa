@@ -4,13 +4,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
 <title>ติดตามผลการแข่งขัน กีฬากีฑา ดอยเต่าสหศึกษา</title>
-<meta name="description" content="ติดตามผลการแข่งขัน กีฬากีฑา ดอยเต่าสหศึกษา" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="ติดตามผลการแข่งขัน กีฬากีฑา ดอยเต่าสหศึกษา" />
 <meta property="og:url" content="https://wr9q8py7kr-star.github.io/doitaosahasuka/" />
 <meta property="og:image" content="https://wr9q8py7kr-star.github.io/doitaosahasuka/saha.jpg" />
-<meta property="og:site_name" content="กีฬา-กรีฑา ดอยเต่าสหศึกษา 2569" />
-<meta property="og:locale" content="th_TH" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -57,7 +54,6 @@
   @keyframes goldGlow { 0%, 100% { box-shadow: 0 0 20px rgba(252,211,77,0.5), 0 0 40px rgba(252,211,77,0.3); } 50% { box-shadow: 0 0 40px rgba(252,211,77,0.9), 0 0 80px rgba(252,211,77,0.5); } }
   @keyframes silverGlow { 0%, 100% { box-shadow: 0 0 20px rgba(192,192,192,0.4), 0 0 40px rgba(192,192,192,0.2); } 50% { box-shadow: 0 0 40px rgba(220,220,220,0.9), 0 0 80px rgba(192,192,192,0.5); } }
   @keyframes bronzeGlow { 0%, 100% { box-shadow: 0 0 20px rgba(205,127,50,0.4), 0 0 40px rgba(205,127,50,0.2); } 50% { box-shadow: 0 0 40px rgba(232,163,61,0.9), 0 0 80px rgba(205,127,50,0.5); } }
-  @keyframes trophyBounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-8px) scale(1.1); } }
   @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
   @keyframes pulseBtn { 0%, 100% { box-shadow: 0 0 0 0 rgba(252,211,77,0.7), 0 6px 20px rgba(107,33,168,0.5); } 50% { box-shadow: 0 0 0 10px rgba(252,211,77,0), 0 6px 24px rgba(107,33,168,0.8); } }
   @keyframes shine { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
@@ -169,6 +165,29 @@
   .back-btn:hover { background: rgba(107, 33, 168, 0.9); border-color: #FCD34D; transform: translateX(-3px); box-shadow: 0 4px 20px rgba(252,211,77,0.3); }
   .back-btn svg { transition: transform 0.2s ease; }
   .back-btn:hover svg { transform: translateX(-3px); }
+  /* ✅ Sports Medal Table styles */
+  .sports-table { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(107,33,168,0.1); }
+  .sports-table th { background: linear-gradient(135deg, #6B21A8, #4C1D95); color: #FCD34D; font-family: 'Kanit', sans-serif; padding: 12px 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .sports-table td { padding: 12px 8px; border-top: 1px solid #F1F5F9; font-size: 13px; }
+  .sports-table tr:hover { background: #FAF5FF; }
+  .sports-table .school-cell { display: flex; align-items: center; gap: 8px; }
+  .sports-table .school-logo-sm { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; border: 2px solid #FCD34D; flex-shrink: 0; background: linear-gradient(135deg, #4C1D95, #6B21A8); display: flex; align-items: center; justify-content: center; position: relative; }
+  .sports-table .school-logo-sm img { width: 100%; height: 100%; object-fit: cover; }
+  .sports-table .school-logo-sm .fallback { position: absolute; font-size: 16px; color: white; }
+  .trophy-section { background: linear-gradient(135deg, #1E1B4B, #4C1D95); border-radius: 20px; padding: 24px; margin-top: 32px; border: 2px solid rgba(252,211,77,0.4); box-shadow: 0 12px 40px rgba(107,33,168,0.3); }
+  .trophy-title { font-family: 'Kanit', sans-serif; font-weight: 900; color: #FCD34D; font-size: 22px; text-align: center; margin-bottom: 20px; }
+  .trophy-card { background: rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; border: 2px solid rgba(252,211,77,0.3); display: flex; align-items: center; gap: 12px; margin-bottom: 12px; transition: all 0.3s; }
+  .trophy-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(252,211,77,0.3); }
+  .trophy-card.gold { background: linear-gradient(135deg, rgba(252,211,77,0.2), rgba(245,158,11,0.1)); border-color: #FCD34D; }
+  .trophy-card.silver { background: linear-gradient(135deg, rgba(192,192,192,0.2), rgba(160,160,160,0.1)); border-color: #D0D0D0; }
+  .trophy-card.bronze { background: linear-gradient(135deg, rgba(205,127,50,0.2), rgba(160,90,30,0.1)); border-color: #E8A33D; }
+  .trophy-emoji { font-size: 40px; flex-shrink: 0; }
+  .trophy-logo { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; border: 3px solid rgba(252,211,77,0.6); flex-shrink: 0; background: linear-gradient(135deg, #4C1D95, #6B21A8); display: flex; align-items: center; justify-content: center; position: relative; }
+  .trophy-logo img { width: 100%; height: 100%; object-fit: cover; }
+  .trophy-logo .fallback { position: absolute; font-size: 24px; color: white; }
+  .trophy-info { flex: 1; color: white; }
+  .trophy-name { font-family: 'Kanit', sans-serif; font-weight: 700; font-size: 16px; color: #FCD34D; }
+  .trophy-detail { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 2px; }
   @media (max-width: 640px) {
     .bracket-column { min-width: 200px; max-width: 200px; }
     .bracket-match { padding: 8px; }
@@ -185,6 +204,9 @@
     .school-logo-large { width: 70px; height: 70px; }
     .school-logo-large .fallback { font-size: 34px; }
     .school-card { padding: 12px; }
+    .sports-table .school-logo-sm { width: 26px; height: 26px; }
+    .sports-table td { padding: 8px 4px; font-size: 11px; }
+    .sports-table th { padding: 8px 4px; font-size: 10px; }
   }
   @media (min-width: 768px) {
     .school-logo-large { width: 90px; height: 90px; }
@@ -210,10 +232,10 @@
       <div class="hidden lg:flex items-center gap-1">
         <button onclick="showPage('home'); scrollToId('home')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">หน้าหลัก</button>
         <button onclick="showPage('home'); scrollToId('medal-tally')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">🏅 สรุปอันดับเหรียญ</button>
+        <button onclick="showPage('sports-table')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">📊 เหรียญรายกีฬา</button>
         <button onclick="showPage('home'); scrollToId('schedule')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">⚽ กีฬา</button>
         <button onclick="showPage('home'); scrollToId('athletics')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">🏃 กรีฑา</button>
         <button onclick="showPage('school-medal-summary')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">🏫 เหรียญรายโรงเรียน</button>
-        <button onclick="showPage('home'); scrollToId('schools-showcase')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">🏫 โรงเรียน</button>
         <button onclick="showPage('bracket')" class="px-4 py-2 rounded-lg bg-accent text-white hover:bg-red-700 transition text-sm flex items-center gap-2 whitespace-nowrap">
           <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span> ผลการแข่งขัน สด
         </button>
@@ -227,15 +249,16 @@
     <div class="px-3 py-3 space-y-1">
       <button onclick="showPage('home'); scrollToId('home'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">🏠 หน้าหลัก</button>
       <button onclick="showPage('home'); scrollToId('medal-tally'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">🏅 สรุปอันดับเหรียญ</button>
+      <button onclick="showPage('sports-table'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">📊 เหรียญรายกีฬา</button>
       <button onclick="showPage('home'); scrollToId('schedule'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">⚽ กีฬา</button>
       <button onclick="showPage('home'); scrollToId('athletics'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">🏃 กรีฑา</button>
       <button onclick="showPage('school-medal-summary'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">🏫 เหรียญรายโรงเรียน</button>
-      <button onclick="showPage('home'); scrollToId('schools-showcase'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg text-white/90 hover:bg-white/10 transition text-base">🏫 โรงเรียน</button>
       <button onclick="showPage('bracket'); closeMobileMenu()" class="block w-full text-left px-4 py-3 rounded-lg bg-accent text-white font-bold text-base">🏆 ผลการแข่งขัน สด</button>
     </div>
   </div>
 </nav>
 
+<!-- ============= PAGE: HOME ============= -->
 <div id="page-home" class="page-view active">
   <section id="home" class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
     <div class="bg-slideshow" id="bgSlideshow">
@@ -380,17 +403,48 @@
   </footer>
 </div>
 
+<!-- ============= PAGE: SPORTS TABLE (ใหม่) ============= -->
+<div id="page-sports-table" class="page-view bg-gray-50 min-h-screen pt-24 pb-12">
+  <section class="max-w-6xl mx-auto px-3 sm:px-4">
+    <div class="text-center mb-8 sm:mb-12">
+      <span class="inline-block px-3 py-1 rounded-full bg-primary-100 text-primary-800 text-xs sm:text-sm font-medium mb-3">📊 ข้อมูลสถิติ</span>
+      <h2 class="font-heading font-bold text-2xl sm:text-3xl md:text-5xl text-dark mb-2 sm:mb-4">ตารางเหรียญรายกีฬา</h2>
+      <p class="text-gray-500 text-sm sm:text-base">แสดงเหรียญทอง เงิน ทองแดง ของทุกกีฬาและกีฑา</p>
+    </div>
+
+    <div class="sports-table overflow-x-auto">
+      <table class="w-full min-w-[700px]">
+        <thead>
+          <tr>
+            <th class="text-left px-3 sm:px-4">รายการ</th>
+            <th class="text-center px-2">🥇 ทอง</th>
+            <th class="text-center px-2">🥈 เงิน</th>
+            <th class="text-center px-2">🥉 ทองแดง</th>
+          </tr>
+        </thead>
+        <tbody id="sportsMedalTableBody">
+          <tr><td colspan="4" class="text-center py-8 text-gray-400">กำลังโหลด...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="trophyContainer"></div>
+  </section>
+</div>
+
+<!-- ============= PAGE: SCHOOL MEDAL SUMMARY ============= -->
 <div id="page-school-medal-summary" class="page-view bg-gray-50 min-h-screen pt-24 pb-12">
   <section class="max-w-7xl mx-auto px-3 sm:px-4">
     <div class="text-center mb-8 sm:mb-12">
       <span class="inline-block px-3 py-1 rounded-full bg-primary-100 text-primary-800 text-xs sm:text-sm font-medium mb-3">🏫 ข้อมูลสถิติ</span>
       <h2 class="font-heading font-bold text-2xl sm:text-3xl md:text-5xl text-dark mb-2 sm:mb-4">สรุปผลการแข่งขันรายโรงเรียน</h2>
-      <p class="text-gray-500 text-sm sm:text-base">คลิกที่โรงเรียนเพื่อดูรายละเอียดเหรียญที่ได้รับ</p>
+      <p class="text-gray-500 text-sm sm:text-base">เรียงตามจำนวนเหรียญทอง → เงิน → ทองแดง</p>
     </div>
     <div id="schoolSummaryGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
   </section>
 </div>
 
+<!-- ============= MODAL: SCHOOL DETAIL ============= -->
 <div id="schoolDetailModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col animate-slide-up">
     <div class="p-4 sm:p-5 bg-gradient-to-r from-primary-800 to-primary-600 text-white flex justify-between items-center">
@@ -421,6 +475,7 @@
   </div>
 </div>
 
+<!-- ============= PAGE: BRACKET ============= -->
 <div id="page-bracket" class="page-view bracket-bg text-white">
   <div class="ticker text-white text-xs sm:text-sm font-medium py-2 mt-16 sm:mt-20 md:mt-24 no-print">
     <div class="marquee">
@@ -492,7 +547,6 @@ let isFetching = false;
 let lastTickerHTML = '';
 let currentSlide = 0;
 let slideTimer = null;
-let bracketInitialized = false;
 let currentTab = 'group';
 let currentSportMatches = [];
 let groupStandings = {};
@@ -501,9 +555,10 @@ let allMatches = [];
 let selectedSport = "";
 let athleticsData = [];
 let athleticsMedals = {};
+let trophiesData = { sports: { first: null, second: null, third: null }, athletics: { first: null, second: null, third: null } };
 
 // ================================================================
-// DATA
+// DATA (คงเดิมจาก v19)
 // ================================================================
 const DATA = {
   stats: [
@@ -628,7 +683,7 @@ function shortTeamName(name) {
 }
 function isPlaceholder(text) {
   if (!text) return true;
-  return /^(ที่\s*[0-9๑๒๓๔๕๖๗๘๙]|ผู้ชนะ|ผู้แพ้|ผู้พัสดุ|ผู้แคชู่|ผู้แพ|มัธยม|VIP|รอง)/.test(String(text).trim());
+  return /^(ที่\s*[0-9๑๒๓๔๕๖๗๘๙]|ผู้ชนะ|ผู้แพ้|ผู้พัสดุ|ผู้แคชู่|ผู้แพ|มัธยม|VIP|รอง|knockout)/.test(String(text).trim());
 }
 
 // ================================================================
@@ -653,19 +708,19 @@ function getSportIcon(sportName) {
 }
 
 const LOGO_MAP = {
-  "โรงเรียนบ้านโปง": "banpong.jpg", "บ้านโปง": "banpong.jpg", "โปง": "banpong.jpg",
-  "โรงเรียนบ้านแม่ตูบ": "maetoop.jpg", "บ้านแม่ตูบ": "maetoop.jpg", "แม่ตูบ": "maetoop.jpg",
-  "โรงเรียนบ้านเกาะหลวง": "kohluang.jpg", "บ้านเกาะหลวง": "kohluang.jpg", "เกาะหลวง": "kohluang.jpg",
-  "โรงเรียนบ้านโปงทุ่ง": "pongtoong.jpg", "บ้านโปงทุ่ง": "pongtoong.jpg", "โปงทุ่ง": "pongtoong.jpg",
-  "โรงเรียนบ้านงิ้วสูง": "kiwsoong.jpg", "บ้านงิ้วสูง": "kiwsoong.jpg", "งิ้วสูง": "kiwsoong.jpg",
-  "โรงเรียนบ้านแม่บวน": "maebuan.jpg", "บ้านแม่บวน": "maebuan.jpg", "แม่บวน": "maebuan.jpg",
-  "โรงเรียนบ้านไร่": "banrai.jpg", "บ้านไร่": "banrai.jpg", "ไร่": "banrai.jpg",
-  "โรงเรียนบ้านฉิมพลี": "shimplee.jpg", "บ้านฉิมพลี": "shimplee.jpg", "ฉิมพลี": "shimplee.jpg",
-  "โรงเรียนชุมชนบ้านดอยเต่า": "choomchon.jpg", "ชุมชนบ้านดอยเต่า": "choomchon.jpg", "ชุมชนดอยเต่า": "choomchon.jpg",
-  "โรงเรียนบ้านถิ่นสำราญ": "tinsamran.jpg", "บ้านถิ่นสำราญ": "tinsamran.jpg", "ถิ่นสำราญ": "tinsamran.jpg",
-  "โรงเรียนบ้านผาจุก": "phajook.jpg", "บ้านผาจุก": "phajook.jpg", "ผาจุก": "phajook.jpg",
-  "โรงเรียนบ้านสันติสุข": "santisuk.jpg", "บ้านสันติสุข": "santisuk.jpg", "สันติสุข": "santisuk.jpg",
-  "ดอยเต่าสหศึกษา": "saha.jpg", "สหศึกษา": "saha.jpg", "saha": "saha.jpg"
+  "โรงเรียนบ้านโปง": "banpong.jpg", "บ้านโปง": "banpong.jpg",
+  "โรงเรียนบ้านแม่ตูบ": "maetoop.jpg", "บ้านแม่ตูบ": "maetoop.jpg",
+  "โรงเรียนบ้านเกาะหลวง": "kohluang.jpg", "บ้านเกาะหลวง": "kohluang.jpg",
+  "โรงเรียนบ้านโปงทุ่ง": "pongtoong.jpg", "บ้านโปงทุ่ง": "pongtoong.jpg",
+  "โรงเรียนบ้านงิ้วสูง": "kiwsoong.jpg", "บ้านงิ้วสูง": "kiwsoong.jpg",
+  "โรงเรียนบ้านแม่บวน": "maebuan.jpg", "บ้านแม่บวน": "maebuan.jpg",
+  "โรงเรียนบ้านไร่": "banrai.jpg", "บ้านไร่": "banrai.jpg",
+  "โรงเรียนบ้านฉิมพลี": "shimplee.jpg", "บ้านฉิมพลี": "shimplee.jpg",
+  "โรงเรียนชุมชนบ้านดอยเต่า": "choomchon.jpg", "ชุมชนบ้านดอยเต่า": "choomchon.jpg",
+  "โรงเรียนบ้านถิ่นสำราญ": "tinsamran.jpg", "บ้านถิ่นสำราญ": "tinsamran.jpg",
+  "โรงเรียนบ้านผาจุก": "phajook.jpg", "บ้านผาจุก": "phajook.jpg",
+  "โรงเรียนบ้านสันติสุข": "santisuk.jpg", "บ้านสันติสุข": "santisuk.jpg",
+  "ดอยเต่าสหศึกษา": "saha.jpg"
 };
 function getLogoPath(teamName) {
   if (!teamName) return null;
@@ -684,6 +739,18 @@ function getLogoHTML(teamName, size = "md", extraClass = "") {
   if (path) return `<div class="logo-ring ${sizeClass} ${extraClass}">${fallback}<img src="${path}" alt="${teamName}" loading="lazy" onerror="this.style.display='none';"></div>`;
   return `<div class="logo-ring ${sizeClass} ${extraClass}">${fallback}</div>`;
 }
+function getSmallLogoHTML(teamName) {
+  const path = getLogoPath(teamName);
+  const fallback = `<div class="fallback">🏫</div>`;
+  if (path) return `<div class="school-logo-sm">${fallback}<img src="${path}" onerror="this.style.display='none';"></div>`;
+  return `<div class="school-logo-sm">${fallback}</div>`;
+}
+function getTrophyLogoHTML(teamName) {
+  const path = getLogoPath(teamName);
+  const fallback = `<div class="fallback">🏫</div>`;
+  if (path) return `<div class="trophy-logo">${fallback}<img src="${path}" onerror="this.style.display='none';"></div>`;
+  return `<div class="trophy-logo">${fallback}</div>`;
+}
 
 // ================================================================
 // FUZZY MATCHING
@@ -694,11 +761,8 @@ function levenshteinDistance(a, b) {
   for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
   for (let i = 1; i <= b.length; i++) {
     for (let j = 1; j <= a.length; j++) {
-      if (b.charAt(i - 1) === a.charAt(j - 1)) {
-        matrix[i][j] = matrix[i - 1][j - 1];
-      } else {
-        matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1));
-      }
+      if (b.charAt(i - 1) === a.charAt(j - 1)) matrix[i][j] = matrix[i - 1][j - 1];
+      else matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1));
     }
   }
   return matrix[b.length][a.length];
@@ -728,7 +792,6 @@ function getFuzzySchoolMatch(input) {
 
   let bestMatch = null;
   let bestScore = Infinity;
-
   DATA.schools.forEach(s => {
     let sShort = s.name.replace("โรงเรียน", "").replace("บ้าน", "").trim();
     if (cleaned === sShort || cleaned === s.name) { bestMatch = s.name; bestScore = 0; return; }
@@ -737,7 +800,6 @@ function getFuzzySchoolMatch(input) {
     const score = dist / maxLength;
     if (score < bestScore && score <= 0.5) { bestScore = score; bestMatch = s.name; }
   });
-
   return bestMatch;
 }
 
@@ -755,9 +817,7 @@ function resolveTeamName(placeholder, sport, depth = 0) {
     const rank = thaiMap[groupMatch[1]] || parseInt(groupMatch[1], 10);
     const groupLetter = groupMatch[2].toUpperCase();
     const standings = groupStandings[sportKey];
-    if (standings && standings[groupLetter] && standings[groupLetter][rank - 1]) {
-      return standings[groupLetter][rank - 1].name;
-    }
+    if (standings && standings[groupLetter] && standings[groupLetter][rank - 1]) return standings[groupLetter][rank - 1].name;
   }
   
   const rrMatch = clean.match(/^ที่\s*([1-9]|[1-9][0-9]|[๑๒๓๔๕๖๗๘๙])$/);
@@ -773,27 +833,19 @@ function resolveTeamName(placeholder, sport, depth = 0) {
   
   const wm = clean.match(/(?:ผู้)?ชนะ\s*(?:คู่)?\s*(?:ที่)?\s*(\d+)/i);
   if (wm) {
-    const no = wm[1];
     const results = matchResults[sportKey];
-    if (results && results[no] && results[no].winner) {
-      const raw = results[no].winner;
-      if (raw) {
-        if (isPlaceholder(raw)) return resolveTeamName(raw, sport, depth + 1);
-        return raw;
-      }
+    if (results && results[wm[1]] && results[wm[1]].winner) {
+      const raw = results[wm[1]].winner;
+      if (raw) { if (isPlaceholder(raw)) return resolveTeamName(raw, sport, depth + 1); return raw; }
     }
   }
   
   const lm = clean.match(/(?:ผู้)?(?:แพ้|พัสดุ|พัศดุ|แพ|แพ่|แฟ้|แคชู่)\s*(?:คู่)?\s*(?:ที่)?\s*(\d+)/i);
   if (lm) {
-    const no = lm[1];
     const results = matchResults[sportKey];
-    if (results && results[no] && results[no].loser) {
-      const raw = results[no].loser;
-      if (raw) {
-        if (isPlaceholder(raw)) return resolveTeamName(raw, sport, depth + 1);
-        return raw;
-      }
+    if (results && results[lm[1]] && results[lm[1]].loser) {
+      const raw = results[lm[1]].loser;
+      if (raw) { if (isPlaceholder(raw)) return resolveTeamName(raw, sport, depth + 1); return raw; }
     }
   }
   
@@ -801,13 +853,12 @@ function resolveTeamName(placeholder, sport, depth = 0) {
 }
 
 // ================================================================
-// PROCESS TOURNAMENT DATA
+// PROCESS TOURNAMENT
 // ================================================================
 function isGroupStage(groupStr) {
   const clean = (groupStr || "").trim().toUpperCase().replace(/\./g, '');
   return /^[A-Z]$/.test(clean) || clean === "RR";
 }
-
 function extractGroupLetter(groupStr) {
   const clean = (groupStr || "").trim().toUpperCase().replace(/\./g, '');
   if (clean === "RR") return "RR";
@@ -882,7 +933,6 @@ function findSchoolName(teamName) {
   if (!teamName || isPlaceholder(teamName)) return null;
   const clean = shortTeamName(teamName);
   if (!clean) return null;
-  
   if (SCHOOL_ALIASES[teamName]) return SCHOOL_ALIASES[teamName];
   if (SCHOOL_ALIASES[clean]) return SCHOOL_ALIASES[clean];
   
@@ -903,13 +953,42 @@ function findSchoolName(teamName) {
 }
 
 // ================================================================
-// ✅ CALCULATE MEDALS v19 (Direct Entry ทันที ไม่ต้องรอ status finished)
+// ✅ GET WINNER / LOSER (พร้อม Override L/M)
+// ================================================================
+function getWinner(m) {
+  if (!m) return null;
+  // 🎯 Priority 1: L column override
+  if (m.winnerOverride) return m.winnerOverride;
+  // Priority 2: score
+  if (m.status !== "finished") return null;
+  const a = parseFloat(m.scoreA), b = parseFloat(m.scoreB);
+  if (isNaN(a) || isNaN(b)) return null;
+  if (a > b) return m.teamA;
+  if (b > a) return m.teamB;
+  return null;
+}
+function getLoser(m) {
+  if (!m) return null;
+  // 🎯 Priority 1: M column override
+  if (m.loserOverride) return m.loserOverride;
+  // Priority 2: score
+  if (m.status !== "finished") return null;
+  const a = parseFloat(m.scoreA), b = parseFloat(m.scoreB);
+  if (isNaN(a) || isNaN(b)) return null;
+  if (a > b) return m.teamB;
+  if (b > a) return m.teamA;
+  return null;
+}
+
+// ================================================================
+// 🎯 CALCULATE MEDALS + TROPHIES
 // ================================================================
 function calculateMedals() {
   const medals = {};
-  DATA.schools.forEach(s => {
-    medals[s.name] = { name: s.name, gold: 0, silver: 0, bronze: 0 };
-  });
+  DATA.schools.forEach(s => medals[s.name] = { name: s.name, gold: 0, silver: 0, bronze: 0 });
+  
+  const sportsMedalsOnly = {};
+  DATA.schools.forEach(s => sportsMedalsOnly[s.name] = { name: s.name, gold: 0, silver: 0, bronze: 0 });
   
   const bySport = {};
   allMatches.forEach(m => {
@@ -926,37 +1005,33 @@ function calculateMedals() {
       const g = (m.group || "").trim().toUpperCase();
       return g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ");
     });
-    const thirdMatch = sportMatches.find(m => 
-      (m.group || "").trim().toUpperCase().includes("ชิงที่ 3")
-    );
+    const thirdMatch = sportMatches.find(m => (m.group || "").trim().toUpperCase().includes("ชิงที่ 3"));
     
     // ============= GOLD + SILVER =============
     if (finalMatch) {
-      // ✅ GOLD: ถ้าพิมพ์ชื่อ → นับเลย | ถ้าไม่พิมพ์ → ดู status
       let goldSchool = null;
       if (finalMatch.goldSchool) {
         goldSchool = findSchoolName(finalMatch.goldSchool);
         debugInfo.push({ sport, type: "GOLD (direct)", input: finalMatch.goldSchool, school: goldSchool });
-      } else if (finalMatch.status === "finished") {
+      } else if (finalMatch.winnerOverride || finalMatch.status === "finished") {
         const winner = getWinner(finalMatch);
         const wName = resolveTeamName(winner, sport);
         goldSchool = findSchoolName(wName);
         debugInfo.push({ sport, type: "GOLD (auto)", input: wName, school: goldSchool });
       }
-      if (goldSchool && medals[goldSchool]) medals[goldSchool].gold++;
+      if (goldSchool && medals[goldSchool]) { medals[goldSchool].gold++; sportsMedalsOnly[goldSchool].gold++; }
       
-      // ✅ SILVER
       let silverSchool = null;
       if (finalMatch.silverSchool) {
         silverSchool = findSchoolName(finalMatch.silverSchool);
         debugInfo.push({ sport, type: "SILVER (direct)", input: finalMatch.silverSchool, school: silverSchool });
-      } else if (finalMatch.status === "finished") {
+      } else if (finalMatch.loserOverride || finalMatch.status === "finished") {
         const loser = getLoser(finalMatch);
         const lName = resolveTeamName(loser, sport);
         silverSchool = findSchoolName(lName);
         debugInfo.push({ sport, type: "SILVER (auto)", input: lName, school: silverSchool });
       }
-      if (silverSchool && medals[silverSchool]) medals[silverSchool].silver++;
+      if (silverSchool && medals[silverSchool]) { medals[silverSchool].silver++; sportsMedalsOnly[silverSchool].silver++; }
     }
     
     // ============= BRONZE =============
@@ -965,34 +1040,69 @@ function calculateMedals() {
       if (thirdMatch.bronzeSchool) {
         bronzeSchool = findSchoolName(thirdMatch.bronzeSchool);
         debugInfo.push({ sport, type: "BRONZE (direct)", input: thirdMatch.bronzeSchool, school: bronzeSchool });
-      } else if (thirdMatch.status === "finished") {
+      } else if (thirdMatch.winnerOverride || thirdMatch.status === "finished") {
         const winner = getWinner(thirdMatch);
         const wName = resolveTeamName(winner, sport);
         bronzeSchool = findSchoolName(wName);
         debugInfo.push({ sport, type: "BRONZE (auto)", input: wName, school: bronzeSchool });
       }
-      if (bronzeSchool && medals[bronzeSchool]) medals[bronzeSchool].bronze++;
+      if (bronzeSchool && medals[bronzeSchool]) { medals[bronzeSchool].bronze++; sportsMedalsOnly[bronzeSchool].bronze++; }
     }
     
-    // ============= EXTRA DIRECT ENTRIES (แถวอื่นที่พิมพ์ชื่อ) =============
+    // ============= EXTRA DIRECT =============
     sportMatches.forEach(m => {
       if (m === finalMatch || m === thirdMatch) return;
       if (m.goldSchool) {
         const s = findSchoolName(m.goldSchool);
-        if (s && medals[s]) { medals[s].gold++; debugInfo.push({ sport, type: "GOLD (extra)", input: m.goldSchool, school: s }); }
+        if (s && medals[s]) { medals[s].gold++; sportsMedalsOnly[s].gold++; }
       }
       if (m.silverSchool) {
         const s = findSchoolName(m.silverSchool);
-        if (s && medals[s]) { medals[s].silver++; debugInfo.push({ sport, type: "SILVER (extra)", input: m.silverSchool, school: s }); }
+        if (s && medals[s]) { medals[s].silver++; sportsMedalsOnly[s].silver++; }
       }
       if (m.bronzeSchool) {
         const s = findSchoolName(m.bronzeSchool);
-        if (s && medals[s]) { medals[s].bronze++; debugInfo.push({ sport, type: "BRONZE (extra)", input: m.bronzeSchool, school: s }); }
+        if (s && medals[s]) { medals[s].bronze++; sportsMedalsOnly[s].bronze++; }
       }
     });
   });
   
-  // Athletics
+  // ============= TROPHIES =============
+  const sortFn = (a, b) => {
+    if (b.gold !== a.gold) return b.gold - a.gold;
+    if (b.silver !== a.silver) return b.silver - a.silver;
+    if (b.bronze !== a.bronze) return b.bronze - a.bronze;
+    return a.name.localeCompare(b.name, 'th');
+  };
+  
+  const sportsRanked = Object.values(sportsMedalsOnly).sort(sortFn);
+  const athRanked = Object.values(athleticsMedals).map(a => ({
+    name: a.name || '', gold: a.gold || 0, silver: a.silver || 0, bronze: a.bronze || 0
+  })).sort(sortFn);
+  
+  trophiesData = {
+    sports: {
+      first: sportsRanked[0] || null,
+      second: sportsRanked[1] || null,
+      third: sportsRanked[2] || null
+    },
+    athletics: {
+      first: athRanked[0] || null,
+      second: athRanked[1] || null,
+      third: athRanked[2] || null
+    }
+  };
+  
+  // ✅ เฉพาะถ้วย #1 กีฬา → +1 gold
+  if (trophiesData.sports.first && trophiesData.sports.first.name && medals[trophiesData.sports.first.name]) {
+    medals[trophiesData.sports.first.name].gold++;
+  }
+  // ✅ เฉพาะถ้วย #1 กีฑา → +1 gold
+  if (trophiesData.athletics.first && trophiesData.athletics.first.name && medals[trophiesData.athletics.first.name]) {
+    medals[trophiesData.athletics.first.name].gold++;
+  }
+  
+  // ============= MERGE ATHLETICS =============
   Object.keys(athleticsMedals).forEach(school => {
     if (medals[school]) {
       medals[school].gold += athleticsMedals[school].gold;
@@ -1001,28 +1111,7 @@ function calculateMedals() {
     }
   });
   
-  console.log("🔍 DEBUG: รายละเอียดการคำนวณเหรียญ");
-  console.table(debugInfo);
-  
-  return Object.values(medals).sort((a, b) => {
-    if (b.gold !== a.gold) return b.gold - a.gold;
-    if (b.silver !== a.silver) return b.silver - a.silver;
-    if (b.bronze !== a.bronze) return b.bronze - a.bronze;
-    return a.name.localeCompare(b.name, 'th');
-  });
-}
-
-function getWinner(m) { 
-  if (!m || m.status !== "finished") return null; 
-  const a = parseFloat(m.scoreA), b = parseFloat(m.scoreB); 
-  if (isNaN(a) || isNaN(b)) return null; 
-  if (a > b) return m.teamA; if (b > a) return m.teamB; return null; 
-}
-function getLoser(m) { 
-  if (!m || m.status !== "finished") return null; 
-  const a = parseFloat(m.scoreA), b = parseFloat(m.scoreB); 
-  if (isNaN(a) || isNaN(b)) return null; 
-  if (a > b) return m.teamB; if (b > a) return m.teamA; return null; 
+  return Object.values(medals).sort(sortFn);
 }
 
 // ================================================================
@@ -1030,7 +1119,7 @@ function getLoser(m) {
 // ================================================================
 function processAthleticsData(data) {
   athleticsMedals = {};
-  DATA.schools.forEach(s => athleticsMedals[s.name] = { gold: 0, silver: 0, bronze: 0, details: [] });
+  DATA.schools.forEach(s => athleticsMedals[s.name] = { name: s.name, gold: 0, silver: 0, bronze: 0, details: [] });
   
   data.forEach(row => {
     const sport = row['ประเภทการแข่งขัน'] || '';
@@ -1042,9 +1131,9 @@ function processAthleticsData(data) {
     const silverSchool = getFuzzySchoolMatch(row['เงิน']);
     const bronzeSchool = getFuzzySchoolMatch(row['ทองแดง']);
     
-    if (goldSchool) { athleticsMedals[goldSchool].gold++; athleticsMedals[goldSchool].details.push({ sport: detailStr, medal: 'gold' }); }
-    if (silverSchool) { athleticsMedals[silverSchool].silver++; athleticsMedals[silverSchool].details.push({ sport: detailStr, medal: 'silver' }); }
-    if (bronzeSchool) { athleticsMedals[bronzeSchool].bronze++; athleticsMedals[bronzeSchool].details.push({ sport: detailStr, medal: 'bronze' }); }
+    if (goldSchool && athleticsMedals[goldSchool]) { athleticsMedals[goldSchool].gold++; athleticsMedals[goldSchool].details.push({ sport: detailStr, medal: 'gold' }); }
+    if (silverSchool && athleticsMedals[silverSchool]) { athleticsMedals[silverSchool].silver++; athleticsMedals[silverSchool].details.push({ sport: detailStr, medal: 'silver' }); }
+    if (bronzeSchool && athleticsMedals[bronzeSchool]) { athleticsMedals[bronzeSchool].bronze++; athleticsMedals[bronzeSchool].details.push({ sport: detailStr, medal: 'bronze' }); }
   });
 }
 
@@ -1155,14 +1244,28 @@ function renderCommittees() {
   document.querySelectorAll(".accordion-btn").forEach(btn => { btn.addEventListener("click", () => { const content = btn.nextElementSibling; const icon = btn.querySelector(".accordion-icon"); content.classList.toggle("open"); icon.style.transform = content.classList.contains("open") ? "rotate(180deg)" : "rotate(0deg)"; }); }); 
 }
 
+// ================================================================
+// 🏫 SCHOOL SUMMARY (Sort by medals)
+// ================================================================
 function renderSchoolSummaryGrid() {
   const grid = document.getElementById("schoolSummaryGrid");
   if (!grid) return;
+  
   const totalMedals = calculateMedals(); 
   const schoolMedalMap = {};
   totalMedals.forEach(m => schoolMedalMap[m.name] = m);
 
-  grid.innerHTML = DATA.schools.map(s => {
+  // ✅ เรียงตาม (gold desc, silver desc, bronze desc)
+  const sortedSchools = [...DATA.schools].sort((a, b) => {
+    const ma = schoolMedalMap[a.name] || { gold: 0, silver: 0, bronze: 0 };
+    const mb = schoolMedalMap[b.name] || { gold: 0, silver: 0, bronze: 0 };
+    if (mb.gold !== ma.gold) return mb.gold - ma.gold;
+    if (mb.silver !== ma.silver) return mb.silver - ma.silver;
+    if (mb.bronze !== ma.bronze) return mb.bronze - ma.bronze;
+    return a.name.localeCompare(b.name, 'th');
+  });
+
+  grid.innerHTML = sortedSchools.map(s => {
     const logoPath = getLogoPath(s.name);
     const logoHTML = logoPath 
       ? `<div class="w-16 h-16 mx-auto mb-3 rounded-full overflow-hidden border-2 border-primary-200"><img src="${logoPath}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><span class="fallback hidden w-full h-full items-center justify-center text-2xl bg-primary-100">🏫</span></div>`
@@ -1206,28 +1309,23 @@ function showSchoolSummary(schoolName) {
 
   Object.keys(bySport).forEach(sport => {
     const sportMatches = bySport[sport];
-    const finalMatch = sportMatches.find(m => {
-      const g = (m.group || "").trim().toUpperCase();
-      return g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ");
-    });
+    const finalMatch = sportMatches.find(m => { const g = (m.group || "").trim().toUpperCase(); return g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ"); });
     const thirdMatch = sportMatches.find(m => (m.group || "").trim().toUpperCase().includes("ชิงที่ 3"));
 
     if (finalMatch) {
       let wSchool = null, lSchool = null;
       if (finalMatch.goldSchool) wSchool = findSchoolName(finalMatch.goldSchool);
-      else if (finalMatch.status === "finished") wSchool = findSchoolName(resolveTeamName(getWinner(finalMatch), sport));
-      
+      else if (finalMatch.winnerOverride || finalMatch.status === "finished") wSchool = findSchoolName(resolveTeamName(getWinner(finalMatch), sport));
       if (finalMatch.silverSchool) lSchool = findSchoolName(finalMatch.silverSchool);
-      else if (finalMatch.status === "finished") lSchool = findSchoolName(resolveTeamName(getLoser(finalMatch), sport));
-
-      if (wSchool === schoolName) { sportGold++; sportDetails.push({ sport: sport, medal: 'gold' }); }
-      if (lSchool === schoolName) { sportSilver++; sportDetails.push({ sport: sport, medal: 'silver' }); }
+      else if (finalMatch.loserOverride || finalMatch.status === "finished") lSchool = findSchoolName(resolveTeamName(getLoser(finalMatch), sport));
+      if (wSchool === schoolName) { sportGold++; sportDetails.push({ sport, medal: 'gold' }); }
+      if (lSchool === schoolName) { sportSilver++; sportDetails.push({ sport, medal: 'silver' }); }
     }
     if (thirdMatch) {
       let bSchool = null;
       if (thirdMatch.bronzeSchool) bSchool = findSchoolName(thirdMatch.bronzeSchool);
-      else if (thirdMatch.status === "finished") bSchool = findSchoolName(resolveTeamName(getWinner(thirdMatch), sport));
-      if (bSchool === schoolName) { sportBronze++; sportDetails.push({ sport: sport, medal: 'bronze' }); }
+      else if (thirdMatch.winnerOverride || thirdMatch.status === "finished") bSchool = findSchoolName(resolveTeamName(getWinner(thirdMatch), sport));
+      if (bSchool === schoolName) { sportBronze++; sportDetails.push({ sport, medal: 'bronze' }); }
     }
   });
 
@@ -1236,21 +1334,9 @@ function showSchoolSummary(schoolName) {
   const totalBronze = athData.bronze + sportBronze;
 
   summaryCards.innerHTML = `
-    <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-3 text-center">
-      <div class="text-2xl mb-1">🥇</div>
-      <div class="font-heading font-black text-2xl text-yellow-600">${totalGold}</div>
-      <div class="text-xs text-yellow-700 font-medium">ทอง</div>
-    </div>
-    <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 text-center">
-      <div class="text-2xl mb-1">🥈</div>
-      <div class="font-heading font-black text-2xl text-gray-600">${totalSilver}</div>
-      <div class="text-xs text-gray-700 font-medium">เงิน</div>
-    </div>
-    <div class="bg-orange-50 border border-orange-200 rounded-xl p-3 text-center">
-      <div class="text-2xl mb-1">🥉</div>
-      <div class="font-heading font-black text-2xl text-orange-700">${totalBronze}</div>
-      <div class="text-xs text-orange-800 font-medium">ทองแดง</div>
-    </div>
+    <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-3 text-center"><div class="text-2xl mb-1">🥇</div><div class="font-heading font-black text-2xl text-yellow-600">${totalGold}</div><div class="text-xs text-yellow-700 font-medium">ทอง</div></div>
+    <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 text-center"><div class="text-2xl mb-1">🥈</div><div class="font-heading font-black text-2xl text-gray-600">${totalSilver}</div><div class="text-xs text-gray-700 font-medium">เงิน</div></div>
+    <div class="bg-orange-50 border border-orange-200 rounded-xl p-3 text-center"><div class="text-2xl mb-1">🥉</div><div class="font-heading font-black text-2xl text-orange-700">${totalBronze}</div><div class="text-xs text-orange-800 font-medium">ทองแดง</div></div>
   `;
 
   let rowsHTML = '';
@@ -1329,6 +1415,151 @@ function renderMedalTally() {
     const now = new Date();
     timeEl.textContent = `อัปเดตล่าสุด: ${now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}${totalMedals === 0 ? ' · รอผลการแข่งขัน' : ''}`;
   }
+}
+
+// ================================================================
+// ✅ SPORTS MEDAL TABLE (ใหม่)
+// ================================================================
+function renderSportsMedalTable() {
+  const tbody = document.getElementById("sportsMedalTableBody");
+  if (!tbody) return;
+  
+  // คำนวณเหรียญใหม่
+  calculateMedals();
+  
+  const bySport = {};
+  allMatches.forEach(m => {
+    if (!bySport[m.sport]) bySport[m.sport] = [];
+    bySport[m.sport].push(m);
+  });
+  
+  let rows = '';
+  
+  // เรียงตามชื่อกีฬา
+  const sortedSports = Object.keys(bySport).sort((a, b) => a.localeCompare(b, 'th'));
+  
+  sortedSports.forEach(sport => {
+    const sportMatches = bySport[sport];
+    const finalMatch = sportMatches.find(m => { const g = (m.group || "").trim().toUpperCase(); return g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ"); });
+    const thirdMatch = sportMatches.find(m => (m.group || "").trim().toUpperCase().includes("ชิงที่ 3"));
+    
+    let goldSchool = null, silverSchool = null, bronzeSchool = null;
+    
+    if (finalMatch) {
+      if (finalMatch.goldSchool) goldSchool = findSchoolName(finalMatch.goldSchool);
+      else if (finalMatch.winnerOverride || finalMatch.status === "finished") goldSchool = findSchoolName(resolveTeamName(getWinner(finalMatch), sport));
+      if (finalMatch.silverSchool) silverSchool = findSchoolName(finalMatch.silverSchool);
+      else if (finalMatch.loserOverride || finalMatch.status === "finished") silverSchool = findSchoolName(resolveTeamName(getLoser(finalMatch), sport));
+    }
+    if (thirdMatch) {
+      if (thirdMatch.bronzeSchool) bronzeSchool = findSchoolName(thirdMatch.bronzeSchool);
+      else if (thirdMatch.winnerOverride || thirdMatch.status === "finished") bronzeSchool = findSchoolName(resolveTeamName(getWinner(thirdMatch), sport));
+    }
+    
+    const sportIconFile = getSportIcon(sport);
+    const iconHTML = sportIconFile ? `<img src="${sportIconFile}" class="w-8 h-8 object-contain" onerror="this.style.display='none';">` : '🏆';
+    
+    rows += `<tr>
+      <td class="font-medium text-dark"><div class="flex items-center gap-2">${iconHTML}<span>${sport}</span></div></td>
+      <td class="text-center">${goldSchool ? `<div class="school-cell justify-center">${getSmallLogoHTML(goldSchool)}<span class="font-semibold text-yellow-700 text-xs">${shortTeamName(goldSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
+      <td class="text-center">${silverSchool ? `<div class="school-cell justify-center">${getSmallLogoHTML(silverSchool)}<span class="font-semibold text-gray-600 text-xs">${shortTeamName(silverSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
+      <td class="text-center">${bronzeSchool ? `<div class="school-cell justify-center">${getSmallLogoHTML(bronzeSchool)}<span class="font-semibold text-orange-700 text-xs">${shortTeamName(bronzeSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
+    </tr>`;
+  });
+  
+  // กีฑา - ใช้ athleticsMedals
+  DATA.schools.forEach(s => {
+    const ath = athleticsMedals[s.name];
+    if (!ath) return;
+  });
+  
+  // แสดงเหรียญกีฑารวม (แต่ละโรงเรียน)
+  const athSummary = {};
+  athleticsData.forEach(row => {
+    const sportName = row['ประเภทการแข่งขัน'] || '';
+    const gender = row['เพศ'] || '';
+    const age = row['ระดับอายุ'] || '';
+    const detailStr = `${sportName} ${gender} ${age}`.trim();
+    
+    const goldSchool = getFuzzySchoolMatch(row['ทอง']);
+    const silverSchool = getFuzzySchoolMatch(row['เงิน']);
+    const bronzeSchool = getFuzzySchoolMatch(row['ทองแดง']);
+    
+    if (!athSummary[detailStr]) athSummary[detailStr] = { gold: null, silver: null, bronze: null };
+    if (goldSchool) athSummary[detailStr].gold = goldSchool;
+    if (silverSchool) athSummary[detailStr].silver = silverSchool;
+    if (bronzeSchool) athSummary[detailStr].bronze = bronzeSchool;
+  });
+  
+  // เพิ่มหัวข้อ "กรีฑา" ก่อนรายการ
+  Object.keys(athSummary).sort((a, b) => a.localeCompare(b, 'th')).forEach(detail => {
+    const ath = athSummary[detail];
+    const isMale = detail.includes('ชาย');
+    const isFemale = detail.includes('หญิง');
+    const genderIcon = isMale ? '♂' : isFemale ? '♀' : '⚥';
+    
+    rows += `<tr class="bg-purple-50/50">
+      <td class="font-medium text-dark"><div class="flex items-center gap-2"><span style="font-size:20px;">🏃</span><span>${detail} ${genderIcon}</span></div></td>
+      <td class="text-center">${ath.gold ? `<div class="school-cell justify-center">${getSmallLogoHTML(ath.gold)}<span class="font-semibold text-yellow-700 text-xs">${shortTeamName(ath.gold)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
+      <td class="text-center">${ath.silver ? `<div class="school-cell justify-center">${getSmallLogoHTML(ath.silver)}<span class="font-semibold text-gray-600 text-xs">${shortTeamName(ath.silver)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
+      <td class="text-center">${ath.bronze ? `<div class="school-cell justify-center">${getSmallLogoHTML(ath.bronze)}<span class="font-semibold text-orange-700 text-xs">${shortTeamName(ath.bronze)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
+    </tr>`;
+  });
+  
+  if (rows === '') rows = `<tr><td colspan="4" class="text-center py-8 text-gray-400">ยังไม่มีข้อมูล</td></tr>`;
+  tbody.innerHTML = rows;
+  
+  // Trophy Section
+  renderTrophySection();
+}
+
+function renderTrophySection() {
+  const container = document.getElementById('trophyContainer');
+  if (!container) return;
+  
+  let html = '';
+  
+  // Trophy กีฬา
+  if (trophiesData.sports.first || trophiesData.sports.second || trophiesData.sports.third) {
+    html += `<div class="trophy-section">
+      <div class="trophy-title">🏆 ถ้วยรางวัลรวมกีฬา</div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        ${renderTrophyCard(trophiesData.sports.first, 'gold', '🥇', 'ถ้วยอันดับ 1')}
+        ${renderTrophyCard(trophiesData.sports.second, 'silver', '🥈', 'ถ้วยอันดับ 2')}
+        ${renderTrophyCard(trophiesData.sports.third, 'bronze', '🥉', 'ถ้วยอันดับ 3')}
+      </div>
+    </div>`;
+  }
+  
+  // Trophy กีฑา
+  if (trophiesData.athletics.first || trophiesData.athletics.second || trophiesData.athletics.third) {
+    html += `<div class="trophy-section" style="margin-top: 24px;">
+      <div class="trophy-title">🏆 ถ้วยรางวัลรวมกีฑา</div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        ${renderTrophyCard(trophiesData.athletics.first, 'gold', '🥇', 'ถ้วยอันดับ 1')}
+        ${renderTrophyCard(trophiesData.athletics.second, 'silver', '🥈', 'ถ้วยอันดับ 2')}
+        ${renderTrophyCard(trophiesData.athletics.third, 'bronze', '🥉', 'ถ้วยอันดับ 3')}
+      </div>
+    </div>`;
+  }
+  
+  if (!html) html = `<div class="trophy-section"><div class="trophy-title">🏆 ถ้วยรางวัลรวม</div><p class="text-white/60 text-center">รอผลการแข่งขัน</p></div>`;
+  
+  container.innerHTML = html;
+}
+
+function renderTrophyCard(team, type, emoji, label) {
+  if (!team || !team.name) {
+    return `<div class="trophy-card"><div class="trophy-emoji">${emoji}</div><div class="trophy-info"><div class="trophy-name">—</div><div class="trophy-detail">${label}</div></div></div>`;
+  }
+  return `<div class="trophy-card ${type}">
+    <div class="trophy-emoji">${emoji}</div>
+    ${getTrophyLogoHTML(team.name)}
+    <div class="trophy-info">
+      <div class="trophy-name">${shortTeamName(team.name)}</div>
+      <div class="trophy-detail">${label} · 🥇${team.gold} 🥈${team.silver} 🥉${team.bronze}</div>
+    </div>
+  </div>`;
 }
 
 // ================================================================
@@ -1414,8 +1645,8 @@ function renderBracketContent() {
   }
   const semiMatches = knockoutMatches.filter(m => semiMatchNumbers.includes(String(m.no)));
   const finalMatch = finalMatches[0];
-  const champion = finalMatch ? (finalMatch.goldSchool ? findSchoolName(finalMatch.goldSchool) : (finalMatch.status === "finished" ? findSchoolName(resolveTeamName(getWinner(finalMatch), sport)) : null)) : null;
-  const runnerUp = finalMatch ? (finalMatch.silverSchool ? findSchoolName(finalMatch.silverSchool) : (finalMatch.status === "finished" ? findSchoolName(resolveTeamName(getLoser(finalMatch), sport)) : null)) : null;
+  const champion = finalMatch ? (finalMatch.goldSchool ? findSchoolName(finalMatch.goldSchool) : (finalMatch.winnerOverride || finalMatch.status === "finished" ? findSchoolName(resolveTeamName(getWinner(finalMatch), sport)) : null)) : null;
+  const runnerUp = finalMatch ? (finalMatch.silverSchool ? findSchoolName(finalMatch.silverSchool) : (finalMatch.loserOverride || finalMatch.status === "finished" ? findSchoolName(resolveTeamName(getLoser(finalMatch), sport)) : null)) : null;
 
   if (finalMatches.length > 0 || thirdMatches.length > 0 || semiMatches.length > 0 || specialMatches.length > 0) {
     html += `<div class="bracket-flow">`;
@@ -1450,11 +1681,16 @@ function switchTab(tab) {
 }
 
 function renderBracketMatch(m, isThirdPlaceColumn = false) {
-  const hasResult = m.status === "finished" || m.status === "live";
+  const hasResult = m.status === "finished" || m.status === "live" || m.winnerOverride;
   let displayA, displayB, logoA, logoB, realA = "", realB = "";
+  
+  // ✅ ถ้ามี knockout1/knockout2 → ใช้แทน teamA/teamB
+  const teamA = m.knockout1 || m.teamA;
+  const teamB = m.knockout2 || m.teamB;
+  
   if (hasResult) {
-    realA = resolveTeamName(m.teamA, m.sport);
-    realB = resolveTeamName(m.teamB, m.sport);
+    realA = resolveTeamName(teamA, m.sport);
+    realB = resolveTeamName(teamB, m.sport);
     const aIsPlaceholder = isPlaceholder(realA);
     const bIsPlaceholder = isPlaceholder(realB);
     displayA = aIsPlaceholder ? realA : shortTeamName(realA);
@@ -1462,16 +1698,16 @@ function renderBracketMatch(m, isThirdPlaceColumn = false) {
     logoA = aIsPlaceholder ? '' : getLogoHTML(realA, "md");
     logoB = bIsPlaceholder ? '' : getLogoHTML(realB, "md");
   } else {
-    displayA = m.teamA; displayB = m.teamB; logoA = ''; logoB = '';
+    displayA = teamA; displayB = teamB; logoA = ''; logoB = '';
   }
   const isLive = m.status === "live";
   const isFinished = m.status === "finished";
   const isUpcoming = m.status === "upcoming";
-  const scoreA = isUpcoming ? "-" : m.scoreA;
-  const scoreB = isUpcoming ? "-" : m.scoreB;
+  const scoreA = isUpcoming && !m.winnerOverride ? "-" : m.scoreA;
+  const scoreB = isUpcoming && !m.winnerOverride ? "-" : m.scoreB;
   const winner = getWinner(m);
-  const aWon = winner && winner === m.teamA;
-  const bWon = winner && winner === m.teamB;
+  const aWon = winner && (winner === teamA || winner === m.teamA);
+  const bWon = winner && (winner === teamB || winner === m.teamB);
   const aIsPlaceholder = !hasResult || isPlaceholder(displayA);
   const bIsPlaceholder = !hasResult || isPlaceholder(displayB);
   if (isThirdPlaceColumn && hasResult && aWon && logoA && !isPlaceholder(realA)) logoA = getLogoHTML(realA, "md", "third-place");
@@ -1479,7 +1715,7 @@ function renderBracketMatch(m, isThirdPlaceColumn = false) {
   return `<div class="bracket-match">
       <div class="bracket-team ${aWon ? 'team-winner' : (isFinished && bWon ? 'team-loser' : '')}">${logoA}<span class="bracket-team-name ${aIsPlaceholder ? 'placeholder' : ''}">${displayA}</span><span class="bracket-team-score">${scoreA}</span>${aWon ? '<span>🏆</span>' : ''}</div>
       <div class="bracket-team ${bWon ? 'team-winner' : (isFinished && aWon ? 'team-loser' : '')}">${logoB}<span class="bracket-team-name ${bIsPlaceholder ? 'placeholder' : ''}">${displayB}</span><span class="bracket-team-score">${scoreB}</span>${bWon ? '<span>🏆</span>' : ''}</div>
-      <div class="bracket-time">📅 ${m.date} · ${m.time}${isLive ? '<span class="live-badge bg-accent text-white ml-2">LIVE</span>' : isFinished ? '<span class="text-green-400 ml-2">✅ จบ</span>' : '<span class="text-white/40 ml-2">⏳ รอแข่ง</span>'}</div>
+      <div class="bracket-time">📅 ${m.date} · ${m.time}${isLive ? '<span class="live-badge bg-accent text-white ml-2">LIVE</span>' : isFinished ? '<span class="text-green-400 ml-2">✅ จบ</span>' : m.winnerOverride ? '<span class="text-yellow-400 ml-2">⚡ Override</span>' : '<span class="text-white/40 ml-2">⏳ รอแข่ง</span>'}</div>
     </div>`;
 }
 
@@ -1523,6 +1759,7 @@ async function fetchAllData() {
     }
     renderMedalTally();
     if (document.getElementById('page-school-medal-summary').classList.contains('active')) renderSchoolSummaryGrid();
+    if (document.getElementById('page-sports-table').classList.contains('active')) renderSportsMedalTable();
     updateTicker();
     updateLastUpdate();
     if (scoreOK && athleticsOK) { setConnectionStatus("ok", "เชื่อมต่อแล้ว"); document.getElementById('fallbackWarning').classList.add('hidden'); }
@@ -1536,13 +1773,21 @@ async function fetchAllData() {
   } finally { isFetching = false; }
 }
 
+// ✅ อัปเดต: อ่านคอลัมน์เพิ่ม (L, M, Q, R)
 function convertAPItoMatches(rows) {
   const matches = [];
   rows.forEach(obj => {
     const no = String(obj.no || obj['no'] || '').trim();
-    const teamA = String(obj.teamA || obj['teama'] || obj['teamA'] || '').trim();
-    const teamB = String(obj.teamB || obj['teamb'] || obj['teamB'] || '').trim();
+    let teamA = String(obj.teamA || obj['teama'] || obj['teamA'] || '').trim();
+    let teamB = String(obj.teamB || obj['teamb'] || obj['teamB'] || '').trim();
     if (!no || !teamA) return;
+    
+    // ✅ knockout1/knockout2 → override teamA/teamB
+    const knockout1 = String(obj['knockout1'] || '').trim();
+    const knockout2 = String(obj['knockout2'] || '').trim();
+    if (knockout1) teamA = knockout1;
+    if (knockout2) teamB = knockout2;
+    
     matches.push({
       no: no,
       date: String(obj.date || '').trim(),
@@ -1555,16 +1800,21 @@ function convertAPItoMatches(rows) {
       scoreB: String(obj.scoreB !== undefined && obj.scoreB !== '' ? obj.scoreB : '0').trim(),
       status: String(obj.status || 'upcoming').toLowerCase().trim(),
       referee: String(obj.referee || '').trim(),
+      // ✅ Fields ใหม่
+      winnerOverride: String(obj['ชนะ'] || '').trim(),
+      loserOverride: String(obj['แพ้'] || '').trim(),
       goldSchool: String(obj['ทอง'] || '').trim(),
       silverSchool: String(obj['เงิน'] || '').trim(),
-      bronzeSchool: String(obj['ทองแดง'] || '').trim()
+      bronzeSchool: String(obj['ทองแดง'] || '').trim(),
+      knockout1: knockout1,
+      knockout2: knockout2
     });
   });
   return matches;
 }
 
 // ================================================================
-// TICKER (v19 - Text Compare)
+// TICKER
 // ================================================================
 function buildTickerContent() {
   const bySport = {};
@@ -1572,28 +1822,31 @@ function buildTickerContent() {
   const items = [];
   Object.keys(bySport).sort().forEach(sport => {
     const sportMatches = bySport[sport];
-    if (!sportMatches.some(m => m.status === "finished")) return;
-    const finalMatch = sportMatches.find(m => (m.group || "").trim().toUpperCase().includes("ชิงที่ 1") || (m.group || "").trim().toUpperCase().includes("ชิงชนะเลิศ"));
+    const finalMatch = sportMatches.find(m => { const g = (m.group || "").trim().toUpperCase(); return g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ"); });
     const thirdMatch = sportMatches.find(m => (m.group || "").trim().toUpperCase().includes("ชิงที่ 3"));
     if (!finalMatch) return;
+    
+    const hasData = finalMatch.goldSchool || finalMatch.winnerOverride || finalMatch.status === "finished";
+    if (!hasData) return;
+    
     const sportIconFile = getSportIcon(sport);
     const sportIconHTML = sportIconFile ? `<img src="${sportIconFile}" class="ticker-sport-icon" onerror="this.style.display='none';">` : `<span style="font-size:20px;">🏆</span>`;
     const parts = [];
     
-    let goldName = finalMatch.goldSchool ? findSchoolName(finalMatch.goldSchool) : (finalMatch.status === "finished" ? findSchoolName(resolveTeamName(getWinner(finalMatch), sport)) : null);
+    let goldName = finalMatch.goldSchool ? findSchoolName(finalMatch.goldSchool) : (finalMatch.winnerOverride || finalMatch.status === "finished" ? findSchoolName(resolveTeamName(getWinner(finalMatch), sport)) : null);
     if (goldName && !isPlaceholder(goldName)) {
       const wLogo = getLogoPath(goldName);
       const wLogoHTML = wLogo ? `<img src="${wLogo}" class="ticker-school-logo" onerror="this.style.display='none';">` : '';
       parts.push(`<span class="ticker-medal">🥇</span>${wLogoHTML}<span class="ticker-school-name">${shortTeamName(goldName)}</span>`);
     }
-    let silverName = finalMatch.silverSchool ? findSchoolName(finalMatch.silverSchool) : (finalMatch.status === "finished" ? findSchoolName(resolveTeamName(getLoser(finalMatch), sport)) : null);
+    let silverName = finalMatch.silverSchool ? findSchoolName(finalMatch.silverSchool) : (finalMatch.loserOverride || finalMatch.status === "finished" ? findSchoolName(resolveTeamName(getLoser(finalMatch), sport)) : null);
     if (silverName && !isPlaceholder(silverName)) {
       const lLogo = getLogoPath(silverName);
       const lLogoHTML = lLogo ? `<img src="${lLogo}" class="ticker-school-logo" onerror="this.style.display='none';">` : '';
       parts.push(`<span class="ticker-medal">🥈</span>${lLogoHTML}<span class="ticker-school-name">${shortTeamName(silverName)}</span>`);
     }
     if (thirdMatch) {
-      let bronzeName = thirdMatch.bronzeSchool ? findSchoolName(thirdMatch.bronzeSchool) : (thirdMatch.status === "finished" ? findSchoolName(resolveTeamName(getWinner(thirdMatch), sport)) : null);
+      let bronzeName = thirdMatch.bronzeSchool ? findSchoolName(thirdMatch.bronzeSchool) : (thirdMatch.winnerOverride || thirdMatch.status === "finished" ? findSchoolName(resolveTeamName(getWinner(thirdMatch), sport)) : null);
       if (bronzeName && !isPlaceholder(bronzeName)) {
         const tLogo = getLogoPath(bronzeName);
         const tLogoHTML = tLogo ? `<img src="${tLogo}" class="ticker-school-logo" onerror="this.style.display='none';">` : '';
@@ -1625,23 +1878,14 @@ function updateTicker() {
   const ticker = document.getElementById("scoreTicker");
   const content = document.getElementById("scoreTickerContent");
   if (!ticker || !content) return;
-  
   const html = buildTickerContent();
   if (!html || !html.trim()) { ticker.classList.add("hidden-ticker"); return; }
-  
-  // ✅ v19: เทียบข้อความ (ไม่รวม HTML) เพื่อไม่ reset animation โดยไม่จำเป็น
   const stripHtml = (s) => s.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
   const newText = stripHtml(html);
   const oldText = stripHtml(lastTickerHTML);
-  
-  if (newText === oldText && lastTickerHTML !== '') {
-    ticker.classList.remove("hidden-ticker");
-    return;
-  }
-  
+  if (newText === oldText && lastTickerHTML !== '') { ticker.classList.remove("hidden-ticker"); return; }
   lastTickerHTML = html;
   content.innerHTML = html + ` <span class="ticker-sep">★</span> `;
-  
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       const contentWidth = content.scrollWidth;
@@ -1653,7 +1897,6 @@ function updateTicker() {
       content.style.animation = `marquee ${duration}s linear infinite`;
     });
   });
-  
   ticker.classList.remove("hidden-ticker");
 }
 
@@ -1698,6 +1941,11 @@ function showPage(page) {
     navbar.classList.remove('bg-transparent');
     renderSchoolSummaryGrid();
     if (ticker) ticker.classList.add('hidden-ticker');
+  } else if (page === 'sports-table') {
+    navbar.classList.add('glass-dark', 'shadow-lg');
+    navbar.classList.remove('bg-transparent');
+    renderSportsMedalTable();
+    if (ticker) ticker.classList.add('hidden-ticker');
   } else {
     if (ticker) ticker.classList.add('hidden-ticker');
     if (window.scrollY <= 20) {
@@ -1732,7 +1980,7 @@ function closeMobileMenu() { document.getElementById('mobileMenu').classList.add
 
 window.addEventListener('scroll', () => { 
   const navbar = document.getElementById('navbar'); 
-  if (document.getElementById('page-bracket').classList.contains('active') || document.getElementById('page-school-medal-summary').classList.contains('active')) return; 
+  if (document.getElementById('page-bracket').classList.contains('active') || document.getElementById('page-school-medal-summary').classList.contains('active') || document.getElementById('page-sports-table').classList.contains('active')) return; 
   if (window.scrollY > 20) { 
     navbar.classList.add('glass-dark', 'shadow-lg'); 
     navbar.classList.remove('bg-transparent'); 
@@ -1762,7 +2010,7 @@ function initSlideshow() {
 }
 
 // ================================================================
-// ✅ INIT (v19 - Auto-Refresh ทำงานทันที)
+// INIT
 // ================================================================
 document.addEventListener("DOMContentLoaded", () => {
   initSlideshow();
@@ -1774,22 +2022,15 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCommittees();
   updateTickerVisibility();
   
-  // ✅ โหลดครั้งแรก
   fetchAllData();
   
-  // ✅ เริ่ม Auto-Refresh ทันที (ไม่ต้องรอเข้าหน้า Bracket)
-  setInterval(() => {
-    fetchAllData();
-  }, CONFIG.REFRESH_INTERVAL);
+  setInterval(() => { fetchAllData(); }, CONFIG.REFRESH_INTERVAL);
   
-  // ✅ Auto-refresh เมื่อกลับเข้า Tab
   document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) {
-      fetchAllData();
-    }
+    if (!document.hidden) fetchAllData();
   });
   
-  console.log("✅ Doitao Sports 2026 - v19 (Auto-Refresh Fixed + Ticker Stable + Direct Medal Entry)");
+  console.log("✅ Doitao Sports 2026 - v20 (L/M Override + Q/R Knockout + Trophies + Sports Table)");
 });
 </script>
 
