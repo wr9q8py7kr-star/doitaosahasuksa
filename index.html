@@ -600,9 +600,9 @@
 // CONFIG
 // ================================================================
 const CONFIG = {
-  // ✅ ใช้ Proxy codetabs (Rate Limit 5 ครั้ง/วินาที)
-  SCORE_SHEET_URL: "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent("https://docs.google.com/spreadsheets/d/e/2PACX-1vTWb9ZjnqXGwVDlJ3zc5QfeNIcOLlWFoHgmBLrxDOLeYtzeNV1T63bWw79-WLdqGiriB8mjSNI8erSP/pub?gid=0&single=true&output=csv"),
-  ATHLETICS_CSV_URL: "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent("https://docs.google.com/spreadsheets/d/e/2PACX-1vTWb9ZjnqXGwVDlJ3zc5QfeNIcOLlWFoHgmBLrxDOLeYtzeNV1T63bWw79-WLdqGiriB8mjSNI8erSP/pub?gid=1685634183&single=true&output=csv"),
+  // ✅ ใช้ URL ตรงๆ ของ Google Sheets (ไม่ต้องผ่าน Proxy)
+  SCORE_SHEET_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWb9ZjnqXGwVDlJ3zc5QfeNIcOLlWFoHgmBLrxDOLeYtzeNV1T63bWw79-WLdqGiriB8mjSNI8erSP/pub?gid=0&single=true&output=csv",
+  ATHLETICS_CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWb9ZjnqXGwVDlJ3zc5QfeNIcOLlWFoHgmBLrxDOLeYtzeNV1T63bWw79-WLdqGiriB8mjSNI8erSP/pub?gid=1685634183&single=true&output=csv",
   REFRESH_INTERVAL: 3000, // ✅ 3 วินาที
   SLIDE_INTERVAL: 4500,
 };
@@ -1299,7 +1299,7 @@ function resolveTeamName(placeholder, sport, depth = 0) {
   return placeholder;
 }
 
-// ✅ ฟังก์ชันใหม่: ดึงข้อมูลทั้ง 2 ระบบพร้อมกัน
+// ✅ ฟังก์ชันใหม่: ดึงข้อมูลทั้ง 2 ระบบพร้อมกันโดยตรง (ไม่ใช้ Proxy)
 async function fetchAllData() {
   const scoreUrl = CONFIG.SCORE_SHEET_URL;
   const athleticsUrl = CONFIG.ATHLETICS_CSV_URL;
@@ -1313,10 +1313,11 @@ async function fetchAllData() {
     setConnectionStatus("loading", "กำลังโหลด...");
     document.getElementById('fallbackWarning').classList.add('hidden');
     
-    // ✅ ใช้ Promise.all ดึงข้อมูลทั้ง 2 ชีตพร้อมกัน
+    // ✅ ใช้ Promise.all ดึงข้อมูลทั้ง 2 ชีตพร้อมกันโดยตรง
+    const fetchOptions = { cache: "no-store", method: 'GET', mode: 'cors' };
     const [resBracket, resAth] = await Promise.all([
-      fetch(scoreUrl + "&t=" + Date.now(), { cache: "no-store" }),
-      fetch(athleticsUrl + "&t=" + Date.now(), { cache: "no-store" })
+      fetch(scoreUrl + "&t=" + Date.now(), fetchOptions),
+      fetch(athleticsUrl + "&t=" + Date.now(), fetchOptions)
     ]);
 
     if (!resBracket.ok) throw new Error(`Score HTTP ${resBracket.status}`);
@@ -1999,7 +2000,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   fetchAllData();
   
-  console.log("✅ Doitao Sports 2026 - v14 (3s refresh + codetabs proxy)");
+  console.log("✅ Doitao Sports 2026 - v15 (Direct Fetch + 3s refresh)");
 });
 </script>
 
