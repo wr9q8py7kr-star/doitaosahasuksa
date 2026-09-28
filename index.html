@@ -564,11 +564,10 @@
 
 <script>
 // ================================================================
-// CONFIG
+// CONFIG (v27 - ไม่มี OTHER_CSV_URL แล้ว)
 // ================================================================
 const CONFIG = {
   API_URL: "https://script.google.com/macros/s/AKfycbzP0vPVRSmWOd5VaUrOSCl8kMrKqqFoS-9v7WLZTWiQ5ECWEu1Y1T2I54SKF58o1jPy/exec",
-  OTHER_CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWb9ZjnqXGwVDlJ3zc5QfeNIcOLlWFoHgmBLrxDOLeYtzeNV1T63bWw79-WLdqGiriB8mjSNI8erSP/pub?gid=1231329496&single=true&output=csv",
   REFRESH_INTERVAL: 2000,
   SLIDE_INTERVAL: 4500,
 };
@@ -1057,7 +1056,6 @@ function calculateMedals() {
       medals[school].bronze += athleticsMedals[school].bronze;
     }
   });
-  
   const athTotal = (a) => (a.gold + a.silver + a.bronze);
   const athSorted = Object.values(athleticsMedals)
     .filter(a => athTotal(a) > 0)
@@ -1069,7 +1067,6 @@ function calculateMedals() {
       return a.name.localeCompare(b.name, 'th');
     });
   trophiesData.athletics.first = athSorted[0] || null;
-  
   const sortFn = (a, b) => {
     if (b.gold !== a.gold) return b.gold - a.gold;
     if (b.silver !== a.silver) return b.silver - a.silver;
@@ -1100,24 +1097,22 @@ function processAthleticsData(data) {
   });
 }
 
-// ================================================================
-// ✅ v26: PROCESS OTHER DATA (with BOM fix)
-// ================================================================
+// ✅ v27: process other data (from API)
 function processOtherData(rows) {
   otherData = {
     parade: { large: {first:null,second:null,third:null}, small: {first:null,second:null,third:null} },
     cheering: { large: {first:null,second:null,third:null}, small: {first:null,second:null,third:null} }
   };
   
+  if (!rows || !Array.isArray(rows)) return;
+  
   rows.forEach((row, idx) => {
-    // รองรับทั้ง "รายการแข่งขัน" และ variant อื่น
     const title = String(row['รายการแข่งขัน'] || row['รายการ'] || row['ชื่อรายการ'] || '').trim();
     const gold = String(row['ทอง'] || row['เหรียญทอง'] || '').trim();
     const silver = String(row['เงิน'] || row['เหรียญเงิน'] || '').trim();
     const bronze = String(row['ทองแดง'] || row['เหรียญทองแดง'] || '').trim();
     
     console.log(`[Other] Row ${idx}: title="${title}", gold="${gold}", silver="${silver}", bronze="${bronze}"`);
-    
     if (!title) return;
     
     const first = gold ? getFuzzySchoolMatch(gold) : null;
@@ -1128,8 +1123,6 @@ function processOtherData(rows) {
     const isLarge = title.includes('80 คนขึ้นไป') || title.includes('80 คน ขึ้นไป');
     const isParade = title.includes('ขบวนพาเหรด') || title.includes('พาเหรด');
     const isCheering = title.includes('กองเชียร์') || title.includes('เชียร์');
-    
-    console.log(`[Other]   → isParade=${isParade}, isCheering=${isCheering}, isLarge=${isLarge}, isSmall=${isSmall}`);
     
     if (isParade) {
       if (isLarge) otherData.parade.large = { first, second, third };
@@ -1450,17 +1443,13 @@ function renderBracketContent() {
   if (!selectedSport) { container.innerHTML = `<div class="text-center py-20 text-white/50">เลือกประเภทกีฬา</div>`; return; }
   currentSportMatches = allMatches.filter(m => m.sport === selectedSport);
   if (currentSportMatches.length === 0) { container.innerHTML = `<div class="text-center py-20 text-white/50"><div class="text-6xl mb-4">⏳</div><p>ยังไม่มีข้อมูลสำหรับ ${selectedSport}</p></div>`; return; }
-  
   const sport = selectedSport;
   const noGroup = isNoGroupStage(sport);
   if (noGroup) currentTab = 'knockout';
-  
   const groupMatches = noGroup ? [] : currentSportMatches.filter(m => isGroupStage(m.group));
   const knockoutMatches = currentSportMatches.filter(m => !isGroupStage(m.group) && (m.group || "").trim() !== "" && (m.group || "").trim() !== "-");
-  
   const sportIconFile = getSportIcon(sport);
   const sportIconHTML = sportIconFile ? `<img src="${sportIconFile}" alt="${sport}" class="sport-title-icon" onerror="this.style.display='none';">` : `<div class="logo-ring lg winner"><div class="logo-fallback">🏆</div></div>`;
-  
   let html = `<div class="glass-dark rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 mb-4 sm:mb-6">
     <div class="flex items-center gap-3 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-white/10">
       ${sportIconHTML}
@@ -1469,14 +1458,12 @@ function renderBracketContent() {
         <p class="text-white/60 text-xs sm:text-sm">ผังการแข่งขัน · ${currentSportMatches.length} คู่</p>
       </div>
     </div>`;
-  
   if (!noGroup) {
     html += `<div class="grid grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6 pb-3 sm:pb-4">
       <button onclick="switchTab('group')" class="px-3 sm:px-6 py-3 sm:py-4 rounded-xl font-heading font-bold transition text-sm sm:text-base ${currentTab === 'group' ? 'btn-tab-active' : 'btn-tab-inactive'}" id="tab-group">📊 รอบแบ่งกลุ่ม</button>
       <button onclick="switchTab('knockout')" class="px-3 sm:px-6 py-3 sm:py-4 rounded-xl font-heading font-bold transition text-sm sm:text-base ${currentTab === 'knockout' ? 'btn-tab-active' : 'btn-tab-inactive'}" id="tab-knockout">🏆 รอบ Knockout</button>
     </div>`;
   }
-  
   if (!noGroup) {
     html += `<div id="content-group" class="tab-content ${currentTab === 'group' ? '' : 'hidden'}">`;
     const sportKey = normalizeKey(sport);
@@ -1494,7 +1481,6 @@ function renderBracketContent() {
     }
     html += `</div>`;
   }
-  
   html += `<div id="content-knockout" class="tab-content ${noGroup || currentTab === 'knockout' ? '' : 'hidden'}">`;
   const finalMatches = knockoutMatches.filter(m => { const g = (m.group || "").trim().toUpperCase(); return (g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ")); });
   const thirdMatches = knockoutMatches.filter(m => (m.group || "").trim().toUpperCase().includes("ชิงที่ 3"));
@@ -1510,7 +1496,6 @@ function renderBracketContent() {
   const finalMatch = finalMatches[0];
   const champion = finalMatch ? (finalMatch.goldSchool ? findSchoolName(finalMatch.goldSchool) : (finalMatch.winnerOverride || finalMatch.status === "finished" ? findSchoolName(resolveTeamName(getWinner(finalMatch), sport)) : null)) : null;
   const runnerUp = finalMatch ? (finalMatch.silverSchool ? findSchoolName(finalMatch.silverSchool) : (finalMatch.loserOverride || finalMatch.status === "finished" ? findSchoolName(resolveTeamName(getLoser(finalMatch), sport)) : null)) : null;
-  
   if (finalMatches.length > 0 || thirdMatches.length > 0 || semiMatches.length > 0 || specialMatches.length > 0) {
     html += `<div class="bracket-flow">`;
     if (semiMatches.length > 0) html += `<div class="bracket-column"><h3 class="bracket-column-title">รอบรองชนะเลิศ</h3><div class="bracket-column-body">${semiMatches.map(m => renderBracketMatch(m)).join("")}</div></div>`;
@@ -1579,35 +1564,8 @@ function renderBracketMatch(m, isThirdPlaceColumn = false) {
 }
 
 // ================================================================
-// ✅ v26: FETCH OTHER DATA (with BOM removal)
+// FETCH DATA (v27 - อ่าน other จาก API โดยตรง)
 // ================================================================
-async function fetchOtherData() {
-  try {
-    const res = await fetch(CONFIG.OTHER_CSV_URL + "&t=" + Date.now(), { cache: 'no-store' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    let csv = await res.text();
-    
-    // ✅ ลบ BOM ออกจากต้นไฟล์ (สำคัญมาก!)
-    csv = csv.replace(/^\uFEFF/, '');
-    
-    console.log('[Other] ✅ CSV loaded, length:', csv.length);
-    console.log('[Other] First 300 chars:', csv.substring(0, 300));
-    
-    const parsed = Papa.parse(csv, {
-      header: true,
-      skipEmptyLines: true,
-      transformHeader: h => h.replace(/^\uFEFF/, '').trim()
-    });
-    
-    console.log('[Other] Headers detected:', parsed.meta.fields);
-    console.log('[Other] Rows parsed:', parsed.data.length);
-    
-    processOtherData(parsed.data);
-  } catch (err) {
-    console.error('[Other] ❌ Fetch error:', err);
-  }
-}
-
 async function fetchAllData() {
   if (isFetching) return;
   isFetching = true;
@@ -1642,8 +1600,14 @@ async function fetchAllData() {
         athleticsOK = true;
       } catch (e) { console.warn('[Athletics] Parse error:', e); }
     }
-    await fetchOtherData();
-    
+    // ✅ อ่าน other จาก API โดยตรง
+    if (json.other && Array.isArray(json.other)) {
+      console.log('[Other] ✅ Got', json.other.length, 'rows from API');
+      console.log('[Other] Sample:', json.other[0]);
+      processOtherData(json.other);
+    } else {
+      console.warn('[Other] ⚠️ No other data in API response');
+    }
     renderMedalTally();
     if (document.getElementById('page-school-medal-summary').classList.contains('active')) renderSchoolSummaryGrid();
     if (document.getElementById('page-sports-table').classList.contains('active')) renderSportsMedalTable();
@@ -1858,7 +1822,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAllData();
   setInterval(() => { fetchAllData(); }, CONFIG.REFRESH_INTERVAL);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) fetchAllData(); });
-  console.log("✅ Doitao Sports 2026 - v26 (BOM Fix for Sheet Other)");
+  console.log("✅ Doitao Sports 2026 - v27 (Other from API)");
 });
 </script>
 
