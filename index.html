@@ -596,6 +596,18 @@ function sortSportsByOrder(sportsArray) {
 }
 
 // ================================================================
+// ✅ HELPER: Regex ค้นหารอบชิง (ยืดหยุ่น)
+// ================================================================
+function isFinalRound(groupStr) {
+  const g = String(groupStr || "").trim().toUpperCase().replace(/\s+/g, '');
+  return /ชิงที่1|ชิงชนะเลิศ|ชิงที่1-2|ไฟนอล|FINAL/.test(g);
+}
+function isThirdPlaceRound(groupStr) {
+  const g = String(groupStr || "").trim().toUpperCase().replace(/\s+/g, '');
+  return /ชิงที่3|ชิงที่3-4|ชิงอันดับ3|THIRD/.test(g);
+}
+
+// ================================================================
 // STATE
 // ================================================================
 let isFetching = false;
@@ -1027,8 +1039,9 @@ function calculateMedals() {
   allMatches.forEach(m => { if (!bySport[m.sport]) bySport[m.sport] = []; bySport[m.sport].push(m); });
   Object.keys(bySport).forEach(sport => {
     const sportMatches = bySport[sport];
-    const finalMatch = sportMatches.find(m => { const g = (m.group || "").trim().toUpperCase(); return g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ"); });
-    const thirdMatch = sportMatches.find(m => (m.group || "").trim().toUpperCase().includes("ชิงที่ 3"));
+    // ✅ ใช้ Regex helper
+    const finalMatch = sportMatches.find(m => isFinalRound(m.group));
+    const thirdMatch = sportMatches.find(m => isThirdPlaceRound(m.group));
     if (finalMatch) {
       let goldSchool = null;
       if (finalMatch.goldSchool) goldSchool = findSchoolName(finalMatch.goldSchool);
@@ -1043,6 +1056,10 @@ function calculateMedals() {
       let bronzeSchool = null;
       if (thirdMatch.bronzeSchool) bronzeSchool = findSchoolName(thirdMatch.bronzeSchool);
       else if (thirdMatch.winnerOverride || thirdMatch.status === "finished") bronzeSchool = findSchoolName(resolveTeamName(getWinner(thirdMatch), sport));
+      if (bronzeSchool && medals[bronzeSchool]) medals[bronzeSchool].bronze++;
+    } else if (finalMatch && finalMatch.bronzeSchool) {
+      // ✅ Fallback: ถ้าไม่มีรอบชิงที่ 3 แต่มี bronzeSchool ในรอบชิงชนะเลิศ
+      const bronzeSchool = findSchoolName(finalMatch.bronzeSchool);
       if (bronzeSchool && medals[bronzeSchool]) medals[bronzeSchool].bronze++;
     }
     sportMatches.forEach(m => {
@@ -1103,8 +1120,6 @@ function processAthleticsData(data) {
 
 // ================================================================
 // ✅ PROCESS TROPHY ROWS (ขบวนพาเหรด + กองเชียร์)
-// อ่านจาก sheet "score" แถว 185-188 ตามที่ผู้ใช้อธิบาย
-// ห้ามนำไปรวมกับตารางเหรียญโดยเด็ดขาด
 // ================================================================
 function processTrophyRows(rows) {
   trophiesOther = {
@@ -1114,7 +1129,6 @@ function processTrophyRows(rows) {
   if (!rows || !Array.isArray(rows)) return;
 
   rows.forEach((row, idx) => {
-    // รวมทุก field ของ row เพื่อค้นหา keyword
     let allText = '';
     try {
       allText = Object.keys(row).map(k => {
@@ -1124,7 +1138,6 @@ function processTrophyRows(rows) {
       }).join(' ');
     } catch(e) { return; }
 
-    // ต้องมีคำว่า พาเหรด หรือ กองเชียร์
     const hasParade = allText.includes('พาเหรด') || allText.includes('ขบวน');
     const hasCheering = allText.includes('กองเชียร์') || allText.includes('เชียร์');
     if (!hasParade && !hasCheering) return;
@@ -1132,9 +1145,8 @@ function processTrophyRows(rows) {
     let category = null;
     if (hasParade && !hasCheering) category = 'parade';
     else if (hasCheering && !hasParade) category = 'cheering';
-    else if (hasParade && hasCheering) category = 'parade'; // กรณีมีทั้งคู่ ให้ถือเป็นพาเหรด (ไม่น่าเกิดขึ้น)
+    else if (hasParade && hasCheering) category = 'parade';
 
-    // ตรวจขนาด
     let size = null;
     if (allText.includes('น้อยกว่า 80') || allText.includes('น้อยกว่า80') || allText.includes('น้อยกว่า ๘๐')) size = 'small';
     else if (allText.includes('80 คนขึ้นไป') || allText.includes('80คนขึ้นไป') || allText.includes('๘๐ คนขึ้นไป')) size = 'large';
@@ -1269,8 +1281,8 @@ function showSchoolSummary(schoolName) {
   allMatches.forEach(m => { if (!bySport[m.sport]) bySport[m.sport] = []; bySport[m.sport].push(m); });
   Object.keys(bySport).forEach(sport => {
     const sportMatches = bySport[sport];
-    const finalMatch = sportMatches.find(m => { const g = (m.group || "").trim().toUpperCase(); return g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ"); });
-    const thirdMatch = sportMatches.find(m => (m.group || "").trim().toUpperCase().includes("ชิงที่ 3"));
+    const finalMatch = sportMatches.find(m => isFinalRound(m.group));
+    const thirdMatch = sportMatches.find(m => isThirdPlaceRound(m.group));
     if (finalMatch) {
       let wSchool = null, lSchool = null;
       if (finalMatch.goldSchool) wSchool = findSchoolName(finalMatch.goldSchool);
@@ -1284,6 +1296,9 @@ function showSchoolSummary(schoolName) {
       let bSchool = null;
       if (thirdMatch.bronzeSchool) bSchool = findSchoolName(thirdMatch.bronzeSchool);
       else if (thirdMatch.winnerOverride || thirdMatch.status === "finished") bSchool = findSchoolName(resolveTeamName(getWinner(thirdMatch), sport));
+      if (bSchool === schoolName) { sportBronze++; sportDetails.push({ sport, medal: 'bronze' }); }
+    } else if (finalMatch && finalMatch.bronzeSchool) {
+      const bSchool = findSchoolName(finalMatch.bronzeSchool);
       if (bSchool === schoolName) { sportBronze++; sportDetails.push({ sport, medal: 'bronze' }); }
     }
   });
@@ -1349,8 +1364,9 @@ function renderSportsMedalTable() {
   const sortedSports = sortSportsByOrder(Object.keys(bySport));
   sortedSports.forEach(sport => {
     const sportMatches = bySport[sport];
-    const finalMatch = sportMatches.find(m => { const g = (m.group || "").trim().toUpperCase(); return g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ"); });
-    const thirdMatch = sportMatches.find(m => (m.group || "").trim().toUpperCase().includes("ชิงที่ 3"));
+    // ✅ ใช้ Regex helper
+    const finalMatch = sportMatches.find(m => isFinalRound(m.group));
+    const thirdMatch = sportMatches.find(m => isThirdPlaceRound(m.group));
     let goldSchool = null, silverSchool = null, bronzeSchool = null;
     if (finalMatch) {
       if (finalMatch.goldSchool) goldSchool = findSchoolName(finalMatch.goldSchool);
@@ -1361,6 +1377,10 @@ function renderSportsMedalTable() {
     if (thirdMatch) {
       if (thirdMatch.bronzeSchool) bronzeSchool = findSchoolName(thirdMatch.bronzeSchool);
       else if (thirdMatch.winnerOverride || thirdMatch.status === "finished") bronzeSchool = findSchoolName(resolveTeamName(getWinner(thirdMatch), sport));
+    }
+    // ✅ Fallback: ถ้าไม่มี thirdMatch หรือไม่มี bronzeSchool ให้ใช้จาก finalMatch.bronzeSchool
+    if (!bronzeSchool && finalMatch && finalMatch.bronzeSchool) {
+      bronzeSchool = findSchoolName(finalMatch.bronzeSchool);
     }
     const sportIconFile = getSportIcon(sport);
     const iconHTML = sportIconFile ? `<img src="${sportIconFile}" class="w-10 h-10 object-contain flex-shrink-0" onerror="this.style.display='none';">` : '';
@@ -1388,16 +1408,12 @@ function renderSportsMedalTable() {
 
 // ================================================================
 // ✅ RENDER TROPHY SECTION
-// แสดงเฉพาะ: ถ้วยรางวัลรวมกีฑา อันดับ 1 + ขบวนพาเหรด + กองเชียร์
-// ไม่มี "ถ้วยรางวัลรวมกีฬา" (ตามที่ผู้ใช้ขอให้ลบ)
-// ไม่นับรวมเข้าเหรียญ ทอง เงิน ทองแดง
 // ================================================================
 function renderTrophySection() {
   const container = document.getElementById('trophyContainer');
   if (!container) return;
   let html = '';
 
-  // 1) ถ้วยรางวัลรวมกีฑา (เฉพาะอันดับ 1) - ไม่นับรวมเป็นเหรียญ
   html += `<div class="trophy-section">
     <div class="trophy-title">🏆 ถ้วยรางวัลรวมกีฑา อันดับที่ 1</div>
     <div class="grid grid-cols-1 gap-4">
@@ -1405,7 +1421,6 @@ function renderTrophySection() {
     </div>
   </div>`;
 
-  // 2) รางวัลขบวนพาเหรด โรงเรียนขนาด 80 คนขึ้นไป
   html += `<div class="trophy-section">
     <div class="trophy-title">🎭 รางวัลขบวนพาเหรด โรงเรียนขนาด 80 คนขึ้นไป</div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -1415,7 +1430,6 @@ function renderTrophySection() {
     </div>
   </div>`;
 
-  // 3) รางวัลขบวนพาเหรด โรงเรียนขนาดน้อยกว่า 80 คน
   html += `<div class="trophy-section">
     <div class="trophy-title">🎭 รางวัลขบวนพาเหรด โรงเรียนขนาดน้อยกว่า 80 คน</div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -1425,7 +1439,6 @@ function renderTrophySection() {
     </div>
   </div>`;
 
-  // 4) รางวัลกองเชียร์ โรงเรียนขนาด 80 คนขึ้นไป
   html += `<div class="trophy-section">
     <div class="trophy-title">📣 รางวัลกองเชียร์ โรงเรียนขนาด 80 คนขึ้นไป</div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -1435,7 +1448,6 @@ function renderTrophySection() {
     </div>
   </div>`;
 
-  // 5) รางวัลกองเชียร์ โรงเรียนขนาดน้อยกว่า 80 คน
   html += `<div class="trophy-section">
     <div class="trophy-title">📣 รางวัลกองเชียร์ โรงเรียนขนาดน้อยกว่า 80 คน</div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -1517,8 +1529,9 @@ function renderBracketContent() {
     html += `</div>`;
   }
   html += `<div id="content-knockout" class="tab-content ${noGroup || currentTab === 'knockout' ? '' : 'hidden'}">`;
-  const finalMatches = knockoutMatches.filter(m => { const g = (m.group || "").trim().toUpperCase(); return (g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ")); });
-  const thirdMatches = knockoutMatches.filter(m => (m.group || "").trim().toUpperCase().includes("ชิงที่ 3"));
+  // ✅ ใช้ Regex helper
+  const finalMatches = knockoutMatches.filter(m => isFinalRound(m.group));
+  const thirdMatches = knockoutMatches.filter(m => isThirdPlaceRound(m.group));
   const specialMatches = knockoutMatches.filter(m => (m.group || "").includes("พิเศษ"));
   let semiMatchNumbers = [];
   if (finalMatches[0]) {
@@ -1566,7 +1579,6 @@ function switchTab(tab) {
   if (ck) ck.classList.toggle('hidden', tab !== 'knockout');
 }
 
-// ✅ แสดงคะแนนเฉพาะเมื่อมีการกรอกใน sheet เท่านั้น (ไม่โชว์ 0 ถ้าไม่ได้กรอก)
 function renderBracketMatch(m, isThirdPlaceColumn = false) {
   const hasResult = m.status === "finished" || m.status === "live" || m.winnerOverride;
   let displayA, displayB, logoA, logoB, realA = "", realB = "";
@@ -1586,17 +1598,13 @@ function renderBracketMatch(m, isThirdPlaceColumn = false) {
   }
   const isLive = m.status === "live";
   const isFinished = m.status === "finished";
-  const isUpcoming = m.status === "upcoming";
   const winner = getWinner(m);
   const aWon = winner && (winner === teamA || winner === m.teamA);
   const bWon = winner && (winner === teamB || winner === m.teamB);
-
-  // ✅ โชว์คะแนนเฉพาะที่มีการกรอกจริง (ไม่เป็น null / '' / undefined)
   const hasScoreA = m.scoreA !== null && m.scoreA !== undefined && String(m.scoreA).trim() !== '';
   const hasScoreB = m.scoreB !== null && m.scoreB !== undefined && String(m.scoreB).trim() !== '';
   const scoreA = hasScoreA ? m.scoreA : "-";
   const scoreB = hasScoreB ? m.scoreB : "-";
-
   const aIsPlaceholder = !hasResult || isPlaceholder(displayA);
   const bIsPlaceholder = !hasResult || isPlaceholder(displayB);
   if (isThirdPlaceColumn && hasResult && aWon && logoA && !isPlaceholder(realA)) logoA = getLogoHTML(realA, "md", "third-place");
@@ -1629,7 +1637,6 @@ async function fetchAllData() {
           scoreOK = true;
         }
       } catch (e) { console.warn('[Bracket] Parse error:', e); }
-      // ✅ ประมวลผลถ้วยรางวัลพิเศษ (ขบวนพาเหรด + กองเชียร์) จาก sheet score โดยตรง
       try {
         processTrophyRows(json.score);
       } catch (e) { console.warn('[Trophy] Parse error:', e); }
@@ -1661,7 +1668,6 @@ async function fetchAllData() {
   } finally { isFetching = false; }
 }
 
-// ✅ แปลง scoreA/scoreB เป็น null ถ้าไม่ได้กรอก เพื่อไม่ให้แสดง 0
 function convertAPItoMatches(rows) {
   const matches = [];
   rows.forEach(obj => {
@@ -1702,8 +1708,9 @@ function buildTickerContent() {
   const items = [];
   sortSportsByOrder(Object.keys(bySport)).forEach(sport => {
     const sportMatches = bySport[sport];
-    const finalMatch = sportMatches.find(m => { const g = (m.group || "").trim().toUpperCase(); return g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ"); });
-    const thirdMatch = sportMatches.find(m => (m.group || "").trim().toUpperCase().includes("ชิงที่ 3"));
+    // ✅ ใช้ Regex helper
+    const finalMatch = sportMatches.find(m => isFinalRound(m.group));
+    const thirdMatch = sportMatches.find(m => isThirdPlaceRound(m.group));
     if (!finalMatch) return;
     const hasData = finalMatch.goldSchool || finalMatch.winnerOverride || finalMatch.status === "finished";
     if (!hasData) return;
@@ -1724,6 +1731,13 @@ function buildTickerContent() {
     }
     if (thirdMatch) {
       let bronzeName = thirdMatch.bronzeSchool ? findSchoolName(thirdMatch.bronzeSchool) : (thirdMatch.winnerOverride || thirdMatch.status === "finished" ? findSchoolName(resolveTeamName(getWinner(thirdMatch), sport)) : null);
+      if (bronzeName && !isPlaceholder(bronzeName)) {
+        const tLogo = getLogoPath(bronzeName);
+        const tLogoHTML = tLogo ? `<img src="${tLogo}" class="ticker-school-logo" onerror="this.style.display='none';">` : '';
+        parts.push(`<span class="ticker-medal">🥉</span>${tLogoHTML}<span class="ticker-school-name">${shortTeamName(bronzeName)}</span>`);
+      }
+    } else if (finalMatch && finalMatch.bronzeSchool) {
+      const bronzeName = findSchoolName(finalMatch.bronzeSchool);
       if (bronzeName && !isPlaceholder(bronzeName)) {
         const tLogo = getLogoPath(bronzeName);
         const tLogoHTML = tLogo ? `<img src="${tLogo}" class="ticker-school-logo" onerror="this.style.display='none';">` : '';
@@ -1862,7 +1876,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAllData();
   setInterval(() => { fetchAllData(); }, CONFIG.REFRESH_INTERVAL);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) fetchAllData(); });
-  console.log("✅ Doitao Sports 2026 - v28 (Trophies from score sheet, no merge with medals)");
+  console.log("✅ Doitao Sports 2026 - v29 (Regex fix for 3rd place + Fallback)");
 });
 </script>
 
