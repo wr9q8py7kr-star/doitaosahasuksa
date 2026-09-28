@@ -564,7 +564,7 @@
 
 <script>
 // ================================================================
-// CONFIG (v27 - ไม่มี OTHER_CSV_URL แล้ว)
+// CONFIG
 // ================================================================
 const CONFIG = {
   API_URL: "https://script.google.com/macros/s/AKfycbzP0vPVRSmWOd5VaUrOSCl8kMrKqqFoS-9v7WLZTWiQ5ECWEu1Y1T2I54SKF58o1jPy/exec",
@@ -610,8 +610,10 @@ let allMatches = [];
 let selectedSport = "";
 let athleticsData = [];
 let athleticsMedals = {};
-let otherData = {
-  parade: { large: {first:null,second:null,third:null}, small: {first:null,second:null,third:null} },
+
+// ✅ ตัวแปรเก็บถ้วยรางวัลพิเศษ (ห้ามนำไปรวมกับเหรียญ)
+let trophiesOther = {
+  parade:   { large: {first:null,second:null,third:null}, small: {first:null,second:null,third:null} },
   cheering: { large: {first:null,second:null,third:null}, small: {first:null,second:null,third:null} }
 };
 
@@ -846,10 +848,11 @@ const SCHOOL_ALIASES = {
 };
 
 function getFuzzySchoolMatch(input) {
-  if (!input || input.trim() === '') return null;
-  let cleaned = input.trim().replace(/^โรงเรียน/, '').replace(/^บ้าน/, '').trim();
+  if (!input || String(input).trim() === '') return null;
+  const inputStr = String(input).trim();
+  let cleaned = inputStr.replace(/^โรงเรียน/, '').replace(/^บ้าน/, '').trim();
   if (cleaned === '') return null;
-  if (SCHOOL_ALIASES[input.trim()]) return SCHOOL_ALIASES[input.trim()];
+  if (SCHOOL_ALIASES[inputStr]) return SCHOOL_ALIASES[inputStr];
   if (SCHOOL_ALIASES[cleaned]) return SCHOOL_ALIASES[cleaned];
   if (SCHOOL_ALIASES["บ้าน" + cleaned]) return SCHOOL_ALIASES["บ้าน" + cleaned];
   let bestMatch = null, bestScore = Infinity;
@@ -1013,7 +1016,7 @@ function getLoser(m) {
 }
 
 // ================================================================
-// CALCULATE MEDALS
+// CALCULATE MEDALS (ไม่รวมถ้วยรางวัล)
 // ================================================================
 let trophiesData = { athletics: { first: null } };
 
@@ -1066,6 +1069,7 @@ function calculateMedals() {
       if (b.bronze !== a.bronze) return b.bronze - a.bronze;
       return a.name.localeCompare(b.name, 'th');
     });
+  // ✅ ถ้วยรางวัลรวมกีฑา เก็บไว้สำหรับแสดงผลเท่านั้น ไม่นับเป็นเหรียญทอง
   trophiesData.athletics.first = athSorted[0] || null;
   const sortFn = (a, b) => {
     if (b.gold !== a.gold) return b.gold - a.gold;
@@ -1097,43 +1101,63 @@ function processAthleticsData(data) {
   });
 }
 
-// ✅ v27: process other data (from API)
-function processOtherData(rows) {
-  otherData = {
-    parade: { large: {first:null,second:null,third:null}, small: {first:null,second:null,third:null} },
+// ================================================================
+// ✅ PROCESS TROPHY ROWS (ขบวนพาเหรด + กองเชียร์)
+// อ่านจาก sheet "score" แถว 185-188 ตามที่ผู้ใช้อธิบาย
+// ห้ามนำไปรวมกับตารางเหรียญโดยเด็ดขาด
+// ================================================================
+function processTrophyRows(rows) {
+  trophiesOther = {
+    parade:   { large: {first:null,second:null,third:null}, small: {first:null,second:null,third:null} },
     cheering: { large: {first:null,second:null,third:null}, small: {first:null,second:null,third:null} }
   };
-  
   if (!rows || !Array.isArray(rows)) return;
-  
+
   rows.forEach((row, idx) => {
-    const title = String(row['รายการแข่งขัน'] || row['รายการ'] || row['ชื่อรายการ'] || '').trim();
-    const gold = String(row['ทอง'] || row['เหรียญทอง'] || '').trim();
-    const silver = String(row['เงิน'] || row['เหรียญเงิน'] || '').trim();
-    const bronze = String(row['ทองแดง'] || row['เหรียญทองแดง'] || '').trim();
-    
-    console.log(`[Other] Row ${idx}: title="${title}", gold="${gold}", silver="${silver}", bronze="${bronze}"`);
-    if (!title) return;
-    
-    const first = gold ? getFuzzySchoolMatch(gold) : null;
-    const second = silver ? getFuzzySchoolMatch(silver) : null;
-    const third = bronze ? getFuzzySchoolMatch(bronze) : null;
-    
-    const isSmall = title.includes('น้อยกว่า');
-    const isLarge = title.includes('80 คนขึ้นไป') || title.includes('80 คน ขึ้นไป');
-    const isParade = title.includes('ขบวนพาเหรด') || title.includes('พาเหรด');
-    const isCheering = title.includes('กองเชียร์') || title.includes('เชียร์');
-    
-    if (isParade) {
-      if (isLarge) otherData.parade.large = { first, second, third };
-      else if (isSmall) otherData.parade.small = { first, second, third };
-    } else if (isCheering) {
-      if (isLarge) otherData.cheering.large = { first, second, third };
-      else if (isSmall) otherData.cheering.small = { first, second, third };
+    // รวมทุก field ของ row เพื่อค้นหา keyword
+    let allText = '';
+    try {
+      allText = Object.keys(row).map(k => {
+        const v = row[k];
+        if (v === null || v === undefined) return '';
+        return String(v);
+      }).join(' ');
+    } catch(e) { return; }
+
+    // ต้องมีคำว่า พาเหรด หรือ กองเชียร์
+    const hasParade = allText.includes('พาเหรด') || allText.includes('ขบวน');
+    const hasCheering = allText.includes('กองเชียร์') || allText.includes('เชียร์');
+    if (!hasParade && !hasCheering) return;
+
+    let category = null;
+    if (hasParade && !hasCheering) category = 'parade';
+    else if (hasCheering && !hasParade) category = 'cheering';
+    else if (hasParade && hasCheering) category = 'parade'; // กรณีมีทั้งคู่ ให้ถือเป็นพาเหรด (ไม่น่าเกิดขึ้น)
+
+    // ตรวจขนาด
+    let size = null;
+    if (allText.includes('น้อยกว่า 80') || allText.includes('น้อยกว่า80') || allText.includes('น้อยกว่า ๘๐')) size = 'small';
+    else if (allText.includes('80 คนขึ้นไป') || allText.includes('80คนขึ้นไป') || allText.includes('๘๐ คนขึ้นไป')) size = 'large';
+
+    if (!category || !size) {
+      console.log(`[Trophy] Row ${idx} skipped (cat=${category}, size=${size})`);
+      return;
     }
+
+    const goldRaw = row['ทอง'] !== undefined ? row['ทอง'] : (row['N'] !== undefined ? row['N'] : '');
+    const silverRaw = row['เงิน'] !== undefined ? row['เงิน'] : (row['O'] !== undefined ? row['O'] : '');
+    const bronzeRaw = row['ทองแดง'] !== undefined ? row['ทองแดง'] : (row['P'] !== undefined ? row['P'] : '');
+
+    const gold = goldRaw ? getFuzzySchoolMatch(String(goldRaw)) : null;
+    const silver = silverRaw ? getFuzzySchoolMatch(String(silverRaw)) : null;
+    const bronze = bronzeRaw ? getFuzzySchoolMatch(String(bronzeRaw)) : null;
+
+    if (gold)   trophiesOther[category][size].first  = { name: gold };
+    if (silver) trophiesOther[category][size].second = { name: silver };
+    if (bronze) trophiesOther[category][size].third  = { name: bronze };
+
+    console.log(`[Trophy] ${category}/${size} => 1:${gold || '-'} 2:${silver || '-'} 3:${bronze || '-'}`);
   });
-  
-  console.log('[Other] ✅ Final otherData:', JSON.stringify(otherData, null, 2));
 }
 
 // ================================================================
@@ -1362,54 +1386,65 @@ function renderSportsMedalTable() {
   renderTrophySection();
 }
 
+// ================================================================
+// ✅ RENDER TROPHY SECTION
+// แสดงเฉพาะ: ถ้วยรางวัลรวมกีฑา อันดับ 1 + ขบวนพาเหรด + กองเชียร์
+// ไม่มี "ถ้วยรางวัลรวมกีฬา" (ตามที่ผู้ใช้ขอให้ลบ)
+// ไม่นับรวมเข้าเหรียญ ทอง เงิน ทองแดง
+// ================================================================
 function renderTrophySection() {
   const container = document.getElementById('trophyContainer');
   if (!container) return;
   let html = '';
-  
+
+  // 1) ถ้วยรางวัลรวมกีฑา (เฉพาะอันดับ 1) - ไม่นับรวมเป็นเหรียญ
   html += `<div class="trophy-section">
-    <div class="trophy-title">🏆 ถ้วยรางวัลรวมกีฑา</div>
+    <div class="trophy-title">🏆 ถ้วยรางวัลรวมกีฑา อันดับที่ 1</div>
     <div class="grid grid-cols-1 gap-4">
       ${renderTrophyCard(trophiesData.athletics.first, 'gold', '🥇', 'ถ้วยอันดับ 1')}
     </div>
   </div>`;
-  
+
+  // 2) รางวัลขบวนพาเหรด โรงเรียนขนาด 80 คนขึ้นไป
   html += `<div class="trophy-section">
     <div class="trophy-title">🎭 รางวัลขบวนพาเหรด โรงเรียนขนาด 80 คนขึ้นไป</div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      ${renderTrophyCard(otherData.parade.large.first, 'gold', '🥇', 'อันดับ 1')}
-      ${renderTrophyCard(otherData.parade.large.second, 'silver', '🥈', 'อันดับ 2')}
-      ${renderTrophyCard(otherData.parade.large.third, 'bronze', '🥉', 'อันดับ 3')}
+      ${renderTrophyCard(trophiesOther.parade.large.first, 'gold', '🥇', 'อันดับ 1')}
+      ${renderTrophyCard(trophiesOther.parade.large.second, 'silver', '🥈', 'อันดับ 2')}
+      ${renderTrophyCard(trophiesOther.parade.large.third, 'bronze', '🥉', 'อันดับ 3')}
     </div>
   </div>`;
-  
+
+  // 3) รางวัลขบวนพาเหรด โรงเรียนขนาดน้อยกว่า 80 คน
   html += `<div class="trophy-section">
     <div class="trophy-title">🎭 รางวัลขบวนพาเหรด โรงเรียนขนาดน้อยกว่า 80 คน</div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      ${renderTrophyCard(otherData.parade.small.first, 'gold', '🥇', 'อันดับ 1')}
-      ${renderTrophyCard(otherData.parade.small.second, 'silver', '🥈', 'อันดับ 2')}
-      ${renderTrophyCard(otherData.parade.small.third, 'bronze', '🥉', 'อันดับ 3')}
+      ${renderTrophyCard(trophiesOther.parade.small.first, 'gold', '🥇', 'อันดับ 1')}
+      ${renderTrophyCard(trophiesOther.parade.small.second, 'silver', '🥈', 'อันดับ 2')}
+      ${renderTrophyCard(trophiesOther.parade.small.third, 'bronze', '🥉', 'อันดับ 3')}
     </div>
   </div>`;
-  
+
+  // 4) รางวัลกองเชียร์ โรงเรียนขนาด 80 คนขึ้นไป
   html += `<div class="trophy-section">
     <div class="trophy-title">📣 รางวัลกองเชียร์ โรงเรียนขนาด 80 คนขึ้นไป</div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      ${renderTrophyCard(otherData.cheering.large.first, 'gold', '🥇', 'อันดับ 1')}
-      ${renderTrophyCard(otherData.cheering.large.second, 'silver', '🥈', 'อันดับ 2')}
-      ${renderTrophyCard(otherData.cheering.large.third, 'bronze', '🥉', 'อันดับ 3')}
+      ${renderTrophyCard(trophiesOther.cheering.large.first, 'gold', '🥇', 'อันดับ 1')}
+      ${renderTrophyCard(trophiesOther.cheering.large.second, 'silver', '🥈', 'อันดับ 2')}
+      ${renderTrophyCard(trophiesOther.cheering.large.third, 'bronze', '🥉', 'อันดับ 3')}
     </div>
   </div>`;
-  
+
+  // 5) รางวัลกองเชียร์ โรงเรียนขนาดน้อยกว่า 80 คน
   html += `<div class="trophy-section">
     <div class="trophy-title">📣 รางวัลกองเชียร์ โรงเรียนขนาดน้อยกว่า 80 คน</div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      ${renderTrophyCard(otherData.cheering.small.first, 'gold', '🥇', 'อันดับ 1')}
-      ${renderTrophyCard(otherData.cheering.small.second, 'silver', '🥈', 'อันดับ 2')}
-      ${renderTrophyCard(otherData.cheering.small.third, 'bronze', '🥉', 'อันดับ 3')}
+      ${renderTrophyCard(trophiesOther.cheering.small.first, 'gold', '🥇', 'อันดับ 1')}
+      ${renderTrophyCard(trophiesOther.cheering.small.second, 'silver', '🥈', 'อันดับ 2')}
+      ${renderTrophyCard(trophiesOther.cheering.small.third, 'bronze', '🥉', 'อันดับ 3')}
     </div>
   </div>`;
-  
+
   container.innerHTML = html;
 }
 
@@ -1531,6 +1566,7 @@ function switchTab(tab) {
   if (ck) ck.classList.toggle('hidden', tab !== 'knockout');
 }
 
+// ✅ แสดงคะแนนเฉพาะเมื่อมีการกรอกใน sheet เท่านั้น (ไม่โชว์ 0 ถ้าไม่ได้กรอก)
 function renderBracketMatch(m, isThirdPlaceColumn = false) {
   const hasResult = m.status === "finished" || m.status === "live" || m.winnerOverride;
   let displayA, displayB, logoA, logoB, realA = "", realB = "";
@@ -1551,11 +1587,16 @@ function renderBracketMatch(m, isThirdPlaceColumn = false) {
   const isLive = m.status === "live";
   const isFinished = m.status === "finished";
   const isUpcoming = m.status === "upcoming";
-  const scoreA = isUpcoming && !m.winnerOverride ? "-" : m.scoreA;
-  const scoreB = isUpcoming && !m.winnerOverride ? "-" : m.scoreB;
   const winner = getWinner(m);
   const aWon = winner && (winner === teamA || winner === m.teamA);
   const bWon = winner && (winner === teamB || winner === m.teamB);
+
+  // ✅ โชว์คะแนนเฉพาะที่มีการกรอกจริง (ไม่เป็น null / '' / undefined)
+  const hasScoreA = m.scoreA !== null && m.scoreA !== undefined && String(m.scoreA).trim() !== '';
+  const hasScoreB = m.scoreB !== null && m.scoreB !== undefined && String(m.scoreB).trim() !== '';
+  const scoreA = hasScoreA ? m.scoreA : "-";
+  const scoreB = hasScoreB ? m.scoreB : "-";
+
   const aIsPlaceholder = !hasResult || isPlaceholder(displayA);
   const bIsPlaceholder = !hasResult || isPlaceholder(displayB);
   if (isThirdPlaceColumn && hasResult && aWon && logoA && !isPlaceholder(realA)) logoA = getLogoHTML(realA, "md", "third-place");
@@ -1564,7 +1605,7 @@ function renderBracketMatch(m, isThirdPlaceColumn = false) {
 }
 
 // ================================================================
-// FETCH DATA (v27 - อ่าน other จาก API โดยตรง)
+// FETCH DATA
 // ================================================================
 async function fetchAllData() {
   if (isFetching) return;
@@ -1588,6 +1629,10 @@ async function fetchAllData() {
           scoreOK = true;
         }
       } catch (e) { console.warn('[Bracket] Parse error:', e); }
+      // ✅ ประมวลผลถ้วยรางวัลพิเศษ (ขบวนพาเหรด + กองเชียร์) จาก sheet score โดยตรง
+      try {
+        processTrophyRows(json.score);
+      } catch (e) { console.warn('[Trophy] Parse error:', e); }
     }
     if (json.athletics && Array.isArray(json.athletics)) {
       try {
@@ -1599,14 +1644,6 @@ async function fetchAllData() {
         processAthleticsData(athleticsData);
         athleticsOK = true;
       } catch (e) { console.warn('[Athletics] Parse error:', e); }
-    }
-    // ✅ อ่าน other จาก API โดยตรง
-    if (json.other && Array.isArray(json.other)) {
-      console.log('[Other] ✅ Got', json.other.length, 'rows from API');
-      console.log('[Other] Sample:', json.other[0]);
-      processOtherData(json.other);
-    } else {
-      console.warn('[Other] ⚠️ No other data in API response');
     }
     renderMedalTally();
     if (document.getElementById('page-school-medal-summary').classList.contains('active')) renderSchoolSummaryGrid();
@@ -1624,6 +1661,7 @@ async function fetchAllData() {
   } finally { isFetching = false; }
 }
 
+// ✅ แปลง scoreA/scoreB เป็น null ถ้าไม่ได้กรอก เพื่อไม่ให้แสดง 0
 function convertAPItoMatches(rows) {
   const matches = [];
   rows.forEach(obj => {
@@ -1638,11 +1676,13 @@ function convertAPItoMatches(rows) {
     const knockout2 = String(obj['knockout2'] || '').trim();
     if (knockout1 && isKnockoutRow) teamA = knockout1;
     if (knockout2 && isKnockoutRow) teamB = knockout2;
+    const scoreARaw = obj.scoreA !== undefined && obj.scoreA !== null && String(obj.scoreA).trim() !== '' ? String(obj.scoreA).trim() : null;
+    const scoreBRaw = obj.scoreB !== undefined && obj.scoreB !== null && String(obj.scoreB).trim() !== '' ? String(obj.scoreB).trim() : null;
     matches.push({
       no, date: String(obj.date || '').trim(), time: String(obj.time || '').trim(),
       sport: String(obj.sport || '').trim(), teamA, teamB, group: groupStr,
-      scoreA: String(obj.scoreA !== undefined && obj.scoreA !== '' ? obj.scoreA : '0').trim(),
-      scoreB: String(obj.scoreB !== undefined && obj.scoreB !== '' ? obj.scoreB : '0').trim(),
+      scoreA: scoreARaw,
+      scoreB: scoreBRaw,
       status: String(obj.status || 'upcoming').toLowerCase().trim(),
       referee: String(obj.referee || '').trim(),
       winnerOverride: String(obj['ชนะ'] || '').trim(),
@@ -1822,7 +1862,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAllData();
   setInterval(() => { fetchAllData(); }, CONFIG.REFRESH_INTERVAL);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) fetchAllData(); });
-  console.log("✅ Doitao Sports 2026 - v27 (Other from API)");
+  console.log("✅ Doitao Sports 2026 - v28 (Trophies from score sheet, no merge with medals)");
 });
 </script>
 
