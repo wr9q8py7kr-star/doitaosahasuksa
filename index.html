@@ -59,18 +59,12 @@
   @keyframes pulseBtn { 0%, 100% { box-shadow: 0 0 0 0 rgba(252,211,77,0.7), 0 6px 20px rgba(107,33,168,0.5); } 50% { box-shadow: 0 0 0 10px rgba(252,211,77,0), 0 6px 24px rgba(107,33,168,0.8); } }
   @keyframes shine { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
 
-  /* ✅ v33: Podium float - single continuous animation */
+  /* ✅ v34: Podium float — no blink, no opacity flash */
   @keyframes podiumFloat {
-    0%   { transform: scale(0.7) translateY(0);    opacity: 0; }
-    8%   { transform: scale(1.08) translateY(0);   opacity: 1; }
-    15%  { transform: scale(1) translateY(0);      opacity: 1; }
-    40%  { transform: scale(1) translateY(-7px);   opacity: 1; }
-    65%  { transform: scale(1) translateY(0);      opacity: 1; }
-    90%  { transform: scale(1) translateY(-7px);   opacity: 1; }
-    100% { transform: scale(1) translateY(0);      opacity: 1; }
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-7px); }
   }
   @keyframes crownSpin { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
-  /* ✅ v33: neon glow only for winner LOGO */
   @keyframes neonLogoPulse {
     0%, 100% { box-shadow: 0 0 8px #FCD34D, 0 0 14px rgba(252,211,77,0.5); }
     50% { box-shadow: 0 0 14px #FCD34D, 0 0 26px rgba(252,211,77,0.85); }
@@ -142,17 +136,17 @@
     .athletics-table thead th.col-name { left: 42px; }
   }
 
-  /* ✅ v33: Kahoot-style podium */
+  /* ✅ v34: Kahoot-style podium — bigger logos */
   .podium-kahoot {
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    gap: 6px;
-    padding: 8px 4px 0;
-    min-height: 200px;
+    gap: 8px;
+    padding: 12px 6px 0;
+    min-height: 220px;
     width: 100%;
     margin: 0 auto;
-    max-width: 520px;
+    max-width: 560px;
   }
   .podium-item {
     display: flex;
@@ -160,7 +154,7 @@
     align-items: center;
     flex: 1 1 0;
     min-width: 0;
-    max-width: 140px;
+    max-width: 150px;
     animation: podiumFloat 2.4s ease-in-out infinite;
     backface-visibility: hidden;
     transform: translateZ(0);
@@ -175,21 +169,41 @@
     flex-direction: column;
     align-items: center;
   }
+  /* ✅ v34: Bigger podium logos */
+  .podium-item .logo-ring {
+    width: 66px;
+    height: 66px;
+    min-width: 66px;
+    min-height: 66px;
+    border-width: 3px;
+  }
+  .podium-item .logo-ring .logo-fallback {
+    font-size: 26px;
+  }
+  .podium-item.podium-1 .logo-ring {
+    width: 76px;
+    height: 76px;
+    min-width: 76px;
+    min-height: 76px;
+  }
+  .podium-item.podium-1 .logo-ring .logo-fallback {
+    font-size: 30px;
+  }
   .podium-crown {
-    font-size: 20px;
+    font-size: 22px;
     margin-bottom: -4px;
     animation: crownSpin 1.6s ease-in-out infinite;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
   }
   .podium-emoji {
-    font-size: 16px;
+    font-size: 18px;
     margin-top: 2px;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
   }
   .podium-name {
     font-family: 'Kanit', sans-serif;
     font-weight: 800;
-    font-size: 12px;
+    font-size: 13px;
     color: #FCD34D;
     text-align: center;
     margin: 6px 2px 4px;
@@ -218,19 +232,32 @@
   .step-2 { height: 55px; background: linear-gradient(180deg, #F3F4F6 0%, #D1D5DB 50%, #9CA3AF 100%); color: #374151; }
   .step-3 { height: 42px; background: linear-gradient(180deg, #FBBF24 0%, #D97706 50%, #92400E 100%); color: #FEF3C7; }
   @media (max-width: 640px) {
-    .podium-kahoot { min-height: 170px; gap: 4px; padding: 6px 2px 0; }
+    .podium-kahoot { min-height: 190px; gap: 5px; padding: 8px 2px 0; }
     .podium-step { font-size: 18px; }
     .step-1 { height: 60px; }
     .step-2 { height: 45px; }
     .step-3 { height: 34px; }
-    .podium-name { font-size: 10px; margin: 4px 1px 3px; }
-    .podium-emoji { font-size: 13px; }
-    .podium-crown { font-size: 16px; }
-    .podium-item .logo-ring { width: 36px; height: 36px; min-width: 36px; min-height: 36px; }
-    .podium-item .logo-ring .logo-fallback { font-size: 14px; }
+    .podium-name { font-size: 11px; margin: 4px 1px 3px; }
+    .podium-emoji { font-size: 14px; }
+    .podium-crown { font-size: 18px; }
+    /* ✅ v34: Bigger logos on mobile too */
+    .podium-item .logo-ring {
+      width: 52px;
+      height: 52px;
+      min-width: 52px;
+      min-height: 52px;
+    }
+    .podium-item .logo-ring .logo-fallback { font-size: 20px; }
+    .podium-item.podium-1 .logo-ring {
+      width: 60px;
+      height: 60px;
+      min-width: 60px;
+      min-height: 60px;
+    }
+    .podium-item.podium-1 .logo-ring .logo-fallback { font-size: 24px; }
   }
 
-  /* ✅ v33: Redesigned Finals Table (Battle Row layout) */
+  /* ✅ v34: Finals Table */
   .finals-table-container {
     background: linear-gradient(135deg, rgba(30,27,75,0.95), rgba(76,29,149,0.85));
     border: 2px solid rgba(252,211,77,0.45);
@@ -300,11 +327,10 @@
     text-overflow: ellipsis;
     min-width: 0;
   }
+  /* ✅ v34: Winner name — NO underline */
   .team-name.winner {
     color: #FCD34D;
     font-weight: 900;
-    border-bottom: 2px solid #FCD34D;
-    padding-bottom: 1px;
   }
   .team-name.loser { opacity: 0.55; }
   .team-logo {
@@ -342,16 +368,17 @@
     animation: neonLogoPulse 1.6s ease-in-out infinite;
   }
   .team-logo.loser { opacity: 0.55; }
+  /* ✅ v34: Fixed-width score box */
   .score-box {
     font-family: 'JetBrains Mono', monospace;
     font-weight: 900;
     font-size: 18px;
-    padding: 8px 14px;
+    padding: 8px 0;
     border-radius: 12px;
     background: linear-gradient(135deg, #FCD34D, #F59E0B);
     color: #78350F;
     box-shadow: 0 4px 12px rgba(245,158,11,0.4), inset 0 1px 0 rgba(255,255,255,0.4);
-    min-width: 70px;
+    width: 90px;
     text-align: center;
     letter-spacing: 1px;
     flex-shrink: 0;
@@ -374,7 +401,7 @@
     .team-name { font-size: 11px; }
     .team-logo { width: 26px; height: 26px; }
     .team-logo .fallback { font-size: 10px; }
-    .score-box { min-width: 60px; padding: 6px 10px; font-size: 15px; border-radius: 10px; }
+    .score-box { width: 76px; padding: 6px 0; font-size: 15px; border-radius: 10px; }
     .score-box.empty { font-size: 12px; }
     .finals-table-title { font-size: 13px; padding: 10px 12px; }
     .finals-section-title { font-size: 11px; padding: 6px 12px; letter-spacing: 0.5px; }
@@ -1791,7 +1818,6 @@ function renderKahootPodium(champ, runner, third) {
   </div>`;
 }
 
-// ✅ v33: New Finals Table (Battle Row layout)
 function renderFinalsTable(sport, semiMatches, thirdMatches, finalMatches) {
   const renderBattleRow = (m, isThird = false) => {
     const hasResult = m.status === "finished" || m.status === "live" || m.winnerOverride;
@@ -1944,7 +1970,6 @@ function renderBracketContent() {
       findSchoolName(resolveTeamName(getWinner(thirdPlaceMatch), sport)) : null)
   ) : (finalMatch && finalMatch.bronzeSchool ? findSchoolName(finalMatch.bronzeSchool) : null);
 
-  // Podium on top + Finals table below
   html += `<div style="display:flex;flex-direction:column;gap:14px;">`;
   html += `<div class="glass-dark rounded-2xl p-3 sm:p-4">`;
   if (champion || runnerUp || thirdPlaceWinner) {
@@ -2286,7 +2311,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAllData();
   setInterval(() => { fetchAllData(); }, CONFIG.REFRESH_INTERVAL);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) fetchAllData(); });
-  console.log("✅ Doitao Sports 2026 - v33 (Redesigned Finals Table + Smooth Podium)");
+  console.log("✅ Doitao Sports 2026 - v34 (Smooth Podium + Fixed Score Box + Bigger Logos)");
 });
 </script>
 
