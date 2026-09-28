@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700;900&family=Sarabun:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 <script>
   tailwind.config = {
     darkMode: 'class',
@@ -86,27 +87,11 @@
   .page-view { display: none; }
   .page-view.active { display: block; animation: fadeIn 0.4s ease-in-out; }
 
-  /* ========== NAV SCROLL (Horizontal Mobile Nav) ========== */
-  .nav-scroll { 
-    display: flex; 
-    gap: 6px; 
-    overflow-x: auto; 
-    padding: 8px 12px; 
-    -webkit-overflow-scrolling: touch; 
-    scroll-snap-type: x proximity;
-    scrollbar-width: none;
-  }
+  .nav-scroll { display: flex; gap: 6px; overflow-x: auto; padding: 8px 12px; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; scrollbar-width: none; }
   .nav-scroll::-webkit-scrollbar { display: none; }
-  .nav-scroll > button { 
-    flex-shrink: 0; 
-    scroll-snap-align: start; 
-    white-space: nowrap;
-    min-height: 40px;
-    font-size: 13px;
-    padding: 8px 14px;
-  }
+  .nav-scroll > button { flex-shrink: 0; scroll-snap-align: start; white-space: nowrap; min-height: 40px; font-size: 13px; padding: 8px 14px; }
+  .nav-scroll > button.active { background: linear-gradient(135deg, #F59E0B 0%, #DC2626 100%); color: white !important; }
 
-  /* ========== LOGO RING ========== */
   .logo-ring { position: relative; width: 44px; height: 44px; min-width: 44px; min-height: 44px; border-radius: 50%; overflow: hidden; border: 2px solid rgba(255,255,255,0.3); background: linear-gradient(135deg, #4C1D95, #6B21A8); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s ease; }
   .logo-ring.lg { width: 56px; height: 56px; min-width: 56px; min-height: 56px; border-width: 3px; }
   .logo-ring img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
@@ -116,35 +101,10 @@
   .logo-ring.runner-up { border-color: #D0D0D0; box-shadow: 0 0 20px rgba(192,192,192,0.6); }
   .logo-ring.third-place { border-color: #E8A33D; box-shadow: 0 0 20px rgba(205,127,50,0.7); }
 
-  .school-card { 
-    background: rgba(255,255,255,0.95); 
-    border-radius: 16px; 
-    padding: 20px 16px; 
-    text-align: center; 
-    box-shadow: 0 4px 20px rgba(107,33,168,0.1); 
-    border: 2px solid rgba(107,33,168,0.1); 
-    transition: all 0.3s ease; 
-    cursor: pointer; 
-    min-height: 220px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-  }
+  .school-card { background: rgba(255,255,255,0.95); border-radius: 16px; padding: 20px 16px; text-align: center; box-shadow: 0 4px 20px rgba(107,33,168,0.1); border: 2px solid rgba(107,33,168,0.1); transition: all 0.3s ease; cursor: pointer; min-height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
   .school-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(107,33,168,0.25); border-color: #FCD34D; }
 
-  .school-logo-large { 
-    position: relative; 
-    width: 80px; 
-    height: 80px; 
-    margin: 0;
-    border-radius: 50%; 
-    overflow: hidden; 
-    border: 3px solid #FCD34D; 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
-    background: linear-gradient(135deg, #4C1D95, #6B21A8); 
-    flex-shrink: 0;
-  }
+  .school-logo-large { position: relative; width: 80px; height: 80px; margin: 0; border-radius: 50%; overflow: hidden; border: 3px solid #FCD34D; box-shadow: 0 4px 12px rgba(0,0,0,0.15); background: linear-gradient(135deg, #4C1D95, #6B21A8); flex-shrink: 0; }
   .school-logo-large .fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
   .school-logo-large img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
 
@@ -206,113 +166,37 @@
 
   .back-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 12px; background: rgba(30, 27, 75, 0.85); backdrop-filter: blur(12px); border: 2px solid rgba(252,211,77,0.4); color: #FCD34D; font-family: 'Kanit', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.2s ease; min-height: 44px; }
   .back-btn:hover { background: rgba(107, 33, 168, 0.9); border-color: #FCD34D; transform: translateX(-3px); box-shadow: 0 4px 20px rgba(252,211,77,0.3); }
-  .back-btn svg { transition: transform 0.2s ease; }
-  .back-btn:hover svg { transform: translateX(-3px); }
+  .back-btn-light { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 10px; background: linear-gradient(135deg, #6B21A8, #4C1D95); color: #FCD34D; font-family: 'Kanit', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.2s ease; border: 2px solid rgba(252,211,77,0.4); min-height: 40px; margin-bottom: 16px; }
+  .back-btn-light:hover { transform: translateX(-3px); box-shadow: 0 4px 16px rgba(107,33,168,0.4); }
 
-  .back-btn-light { 
-    display: inline-flex; 
-    align-items: center; 
-    gap: 8px; 
-    padding: 8px 14px; 
-    border-radius: 10px; 
-    background: linear-gradient(135deg, #6B21A8, #4C1D95); 
-    color: #FCD34D; 
-    font-family: 'Kanit', sans-serif; 
-    font-weight: 700; 
-    font-size: 14px; 
-    cursor: pointer; 
-    transition: all 0.2s ease; 
-    border: 2px solid rgba(252,211,77,0.4);
-    min-height: 40px;
-    margin-bottom: 16px;
-  }
-  .back-btn-light:hover { 
-    transform: translateX(-3px); 
-    box-shadow: 0 4px 16px rgba(107,33,168,0.4); 
-  }
-
-  /* ========== SPORTS TABLE with STICKY HEADER ========== */
-  .sports-table-wrapper {
-    background: white; 
-    border-radius: 16px; 
-    overflow: hidden; 
-    box-shadow: 0 4px 20px rgba(107,33,168,0.1);
-    max-height: 80vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
+  .sports-table-wrapper { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(107,33,168,0.1); max-height: 80vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .sports-table { width: 100%; border-collapse: separate; border-spacing: 0; }
-  .sports-table thead th { 
-    background: linear-gradient(135deg, #6B21A8, #4C1D95); 
-    color: #FCD34D; 
-    font-family: 'Kanit', sans-serif; 
-    padding: 14px 10px; 
-    font-size: 14px; 
-    text-transform: uppercase; 
-    letter-spacing: 0.5px; 
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  }
-  .sports-table tbody td { 
-    padding: 14px 10px; 
-    border-top: 1px solid #F1F5F9; 
-    font-size: 15px; 
-    vertical-align: middle;
-  }
+  .sports-table thead th { background: linear-gradient(135deg, #6B21A8, #4C1D95); color: #FCD34D; font-family: 'Kanit', sans-serif; padding: 14px 10px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .sports-table tbody td { padding: 14px 10px; border-top: 1px solid #F1F5F9; font-size: 15px; vertical-align: middle; }
   .sports-table tbody tr:hover { background: #FAF5FF; }
   .sports-table .school-cell { display: flex; align-items: center; gap: 10px; justify-content: flex-start; }
   .sports-table .school-logo-sm { position: relative; width: 46px; height: 46px; border-radius: 50%; overflow: hidden; border: 3px solid #FCD34D; flex-shrink: 0; background: linear-gradient(135deg, #4C1D95, #6B21A8); box-shadow: 0 3px 10px rgba(107,33,168,0.25); }
   .sports-table .school-logo-sm img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
   .sports-table .school-logo-sm .fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
 
-  /* ========== MOBILE SPORTS TABLE (CARD LAYOUT) ========== */
   @media (max-width: 768px) {
     .sports-table-wrapper { max-height: none; overflow-y: visible; background: transparent; box-shadow: none; }
     .sports-table { display: block; }
     .sports-table thead { display: none; }
     .sports-table tbody { display: block; }
-    .sports-table tbody tr { 
-      display: block; 
-      background: white; 
-      border-radius: 14px; 
-      padding: 14px; 
-      margin-bottom: 12px; 
-      box-shadow: 0 3px 12px rgba(107,33,168,0.08);
-      border: 1px solid #F1F5F9;
-    }
-    .sports-table tbody td { 
-      display: block; 
-      padding: 8px 0; 
-      border: none;
-      border-bottom: 1px solid #F1F5F9;
-    }
+    .sports-table tbody tr { display: block; background: white; border-radius: 14px; padding: 14px; margin-bottom: 12px; box-shadow: 0 3px 12px rgba(107,33,168,0.08); border: 1px solid #F1F5F9; }
+    .sports-table tbody td { display: block; padding: 8px 0; border: none; border-bottom: 1px solid #F1F5F9; }
     .sports-table tbody td:last-child { border-bottom: none; }
-    .sports-table tbody td::before {
-      content: attr(data-label);
-      display: block;
-      font-size: 11px;
-      font-weight: 700;
-      color: #6B21A8;
-      margin-bottom: 6px;
-      font-family: 'Kanit', sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .sports-table tbody td:first-child {
-      border-bottom: 2px solid #F3E8FF;
-      margin-bottom: 8px;
-      padding-bottom: 10px;
-    }
+    .sports-table tbody td::before { content: attr(data-label); display: block; font-size: 11px; font-weight: 700; color: #6B21A8; margin-bottom: 6px; font-family: 'Kanit', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
+    .sports-table tbody td:first-child { border-bottom: 2px solid #F3E8FF; margin-bottom: 8px; padding-bottom: 10px; }
     .sports-table tbody td:first-child::before { display: none; }
     .sports-table .school-cell { justify-content: flex-start; }
     .sports-table .school-logo-sm { width: 40px; height: 40px; border-width: 2px; }
     .sports-table .school-logo-sm .fallback { font-size: 16px; }
   }
 
-  .trophy-section { background: linear-gradient(135deg, #1E1B4B, #4C1D95); border-radius: 20px; padding: 24px; margin-top: 32px; border: 2px solid rgba(252,211,77,0.4); box-shadow: 0 12px 40px rgba(107,33,168,0.3); }
-  .trophy-title { font-family: 'Kanit', sans-serif; font-weight: 900; color: #FCD34D; font-size: 22px; text-align: center; margin-bottom: 20px; }
+  .trophy-section { background: linear-gradient(135deg, #1E1B4B, #4C1D95); border-radius: 20px; padding: 24px; margin-top: 24px; border: 2px solid rgba(252,211,77,0.4); box-shadow: 0 12px 40px rgba(107,33,168,0.3); }
+  .trophy-title { font-family: 'Kanit', sans-serif; font-weight: 900; color: #FCD34D; font-size: 20px; text-align: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid rgba(252,211,77,0.2); }
   .trophy-card { background: rgba(255,255,255,0.05); border-radius: 16px; padding: 16px; border: 2px solid rgba(252,211,77,0.3); display: flex; align-items: center; gap: 12px; margin-bottom: 12px; transition: all 0.3s; }
   .trophy-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(252,211,77,0.3); }
   .trophy-card.gold { background: linear-gradient(135deg, rgba(252,211,77,0.2), rgba(245,158,11,0.1)); border-color: #FCD34D; }
@@ -357,6 +241,8 @@
     .school-logo-large .fallback { font-size: 28px; }
     .school-card { padding: 16px 12px; min-height: 180px; }
     .nav-scroll > button { font-size: 12px; padding: 6px 12px; min-height: 36px; }
+    .trophy-title { font-size: 16px; }
+    .trophy-emoji { font-size: 32px; }
   }
   @media (min-width: 768px) {
     .school-logo-large { width: 90px; height: 90px; }
@@ -366,7 +252,6 @@
 </head>
 <body class="antialiased">
 
-<!-- ========== NAVBAR (Horizontal on both Desktop & Mobile) ========== -->
 <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent no-print">
   <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-14 sm:h-16 md:h-20">
@@ -379,7 +264,6 @@
           <p class="text-secondary text-[10px] sm:text-xs font-mono">กีฬา-กรีฑา 2569</p>
         </div>
       </a>
-      <!-- Desktop Nav -->
       <div class="hidden lg:flex items-center gap-1">
         <button onclick="showPage('home'); scrollToId('home')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">หน้าหลัก</button>
         <button onclick="showPage('home'); scrollToId('medal-tally')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">🏅 สรุปอันดับเหรียญ</button>
@@ -393,7 +277,6 @@
       </div>
     </div>
   </div>
-  <!-- ✅ Mobile Nav - Horizontal Scroll -->
   <div class="lg:hidden glass-dark border-t border-white/10">
     <div class="nav-scroll" id="mobileNavScroll">
       <button onclick="showPage('home'); scrollToId('home')" class="rounded-lg text-white/90 hover:bg-white/10 transition flex items-center gap-1.5">🏠 หน้าหลัก</button>
@@ -409,7 +292,6 @@
   </div>
 </nav>
 
-<!-- ========== PAGE: HOME ========== -->
 <div id="page-home" class="page-view active">
   <section id="home" class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
     <div class="bg-slideshow" id="bgSlideshow">
@@ -554,7 +436,6 @@
   </footer>
 </div>
 
-<!-- ========== PAGE: SPORTS TABLE ========== -->
 <div id="page-sports-table" class="page-view bg-gray-50 min-h-screen pt-32 lg:pt-24 pb-12">
   <section class="max-w-6xl mx-auto px-3 sm:px-4">
     <button class="back-btn-light" onclick="showPage('home')" title="ย้อนกลับหน้าหลัก">
@@ -587,7 +468,6 @@
   </section>
 </div>
 
-<!-- ========== PAGE: SCHOOL MEDAL SUMMARY ========== -->
 <div id="page-school-medal-summary" class="page-view bg-gray-50 min-h-screen pt-32 lg:pt-24 pb-12">
   <section class="max-w-7xl mx-auto px-3 sm:px-4">
     <button class="back-btn-light" onclick="showPage('home')" title="ย้อนกลับหน้าหลัก">
@@ -605,7 +485,6 @@
   </section>
 </div>
 
-<!-- ========== MODAL: SCHOOL DETAIL ========== -->
 <div id="schoolDetailModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col animate-slide-up">
     <div class="p-4 sm:p-5 bg-gradient-to-r from-primary-800 to-primary-600 text-white flex justify-between items-center">
@@ -636,7 +515,6 @@
   </div>
 </div>
 
-<!-- ========== PAGE: BRACKET ========== -->
 <div id="page-bracket" class="page-view bracket-bg text-white">
   <section class="max-w-7xl mx-auto px-3 sm:px-4 pt-32 lg:pt-40 pb-4 sm:pb-8">
     <div id="fallbackWarning" class="hidden mb-4 sm:mb-6 p-3 sm:p-4 rounded-xl bg-orange-500/20 border border-orange-500/50 text-orange-200 text-xs sm:text-sm flex items-center gap-3">
@@ -690,13 +568,14 @@
 // ================================================================
 const CONFIG = {
   API_URL: "https://script.google.com/macros/s/AKfycbzP0vPVRSmWOd5VaUrOSCl8kMrKqqFoS-9v7WLZTWiQ5ECWEu1Y1T2I54SKF58o1jPy/exec",
+  OTHER_CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTWb9ZjnqXGwVDlJ3zc5QfeNIcOLlWFoHgmBLrxDOLeYtzeNV1T63bWw79-WLdqGiriB8mjSNI8erSP/pub?gid=1231329496&single=true&output=csv",
   REFRESH_INTERVAL: 2000,
   SLIDE_INTERVAL: 4500,
 };
 
-// ================================================================
-// MASTER ORDER
-// ================================================================
+// ✅ Sports without group stage
+const NO_GROUP_STAGE_SPORTS = ["ฟุตบอลหญิง", "วอลเลย์บอลชาย"];
+
 const SPORTS_ORDER = [
   "ฟุตบอลระดับอนุบาล", "ฟุตบอลชาย", "ฟุตบอลหญิง",
   "แชร์บอลหญิง ป.1-3", "แชร์บอลชาย ป.1-3",
@@ -733,7 +612,7 @@ let allMatches = [];
 let selectedSport = "";
 let athleticsData = [];
 let athleticsMedals = {};
-let trophiesData = { sports: { first: null, second: null, third: null }, athletics: { first: null, second: null, third: null } };
+let otherData = { parade: { large: {first:null,second:null,third:null}, small: {first:null,second:null,third:null} }, cheering: { large: {first:null,second:null,third:null}, small: {first:null,second:null,third:null} } };
 
 // ================================================================
 // DATA
@@ -853,18 +732,9 @@ const DATA = {
 // UTILITY
 // ================================================================
 function normalizeKey(s) { return (s || "").replace(/[\s\u00A0\u200B\.]+/g, '').trim().toLowerCase(); }
-function shortTeamName(name) { 
-  if (!name) return ""; 
-  return String(name).replace("โรงเรียน", "").replace("ชุมชนบ้าน", "ชุมชน").trim(); 
-}
-function isPlaceholder(text) {
-  if (!text) return true;
-  return /^(ที่\s*[0-9๑๒๓๔๕๖๗๘๙]|ผู้ชนะ|ผู้แพ้|ผู้พัสดุ|ผู้แคชู่|ผู้แพ|มัธยม|VIP|รอง|knockout)/.test(String(text).trim());
-}
+function shortTeamName(name) { if (!name) return ""; return String(name).replace("โรงเรียน", "").replace("ชุมชนบ้าน", "ชุมชน").trim(); }
+function isPlaceholder(text) { if (!text) return true; return /^(ที่\s*[0-9๑๒๓๔๕๖๗๘๙]|ผู้ชนะ|ผู้แพ้|ผู้พัสดุ|ผู้แคชู่|ผู้แพ|มัธยม|VIP|รอง|knockout)/.test(String(text).trim()); }
 
-// ================================================================
-// SPORT ICONS
-// ================================================================
 const SPORT_ICONS = {
   "ฟุตบอลระดับอนุบาล": "menfootball.jpg", "ฟุตบอลชาย": "menfootball.jpg", "ฟุตบอลหญิง": "womenfootball.jpg",
   "แชร์บอลหญิง ป.1-3": "womenchairball.jpg", "แชร์บอลชาย ป.1-3": "menchairball.jpg",
@@ -877,22 +747,15 @@ function getSportIcon(sportName) {
   if (!sportName) return null;
   const key = sportName.trim();
   if (SPORT_ICONS[key]) return SPORT_ICONS[key];
-  for (const k in SPORT_ICONS) {
-    if (key.includes(k) || k.includes(key)) return SPORT_ICONS[k];
-  }
+  for (const k in SPORT_ICONS) { if (key.includes(k) || k.includes(key)) return SPORT_ICONS[k]; }
   return null;
 }
 
-// ================================================================
-// LOGO MAPPING
-// ================================================================
 const LOGO_MAP = {
-  "โรงเรียนบ้านโปง": "banpong.jpg", "โรงเรียนบ้านแม่ตูบ": "maetoop.jpg",
-  "โรงเรียนบ้านเกาะหลวง": "kohluang.jpg", "โรงเรียนบ้านโปงทุ่ง": "pongtoong.jpg",
-  "โรงเรียนบ้านงิ้วสูง": "kiwsoong.jpg", "โรงเรียนบ้านแม่บวน": "maebuan.jpg",
-  "โรงเรียนบ้านไร่": "banrai.jpg", "โรงเรียนบ้านฉิมพลี": "shimplee.jpg",
-  "โรงเรียนชุมชนบ้านดอยเต่า": "choomchon.jpg", "โรงเรียนบ้านถิ่นสำราญ": "tinsamran.jpg",
-  "โรงเรียนบ้านผาจุก": "phajook.jpg", "โรงเรียนบ้านสันติสุข": "santisuk.jpg",
+  "โรงเรียนบ้านโปง": "banpong.jpg", "โรงเรียนบ้านแม่ตูบ": "maetoop.jpg", "โรงเรียนบ้านเกาะหลวง": "kohluang.jpg",
+  "โรงเรียนบ้านโปงทุ่ง": "pongtoong.jpg", "โรงเรียนบ้านงิ้วสูง": "kiwsoong.jpg", "โรงเรียนบ้านแม่บวน": "maebuan.jpg",
+  "โรงเรียนบ้านไร่": "banrai.jpg", "โรงเรียนบ้านฉิมพลี": "shimplee.jpg", "โรงเรียนชุมชนบ้านดอยเต่า": "choomchon.jpg",
+  "โรงเรียนบ้านถิ่นสำราญ": "tinsamran.jpg", "โรงเรียนบ้านผาจุก": "phajook.jpg", "โรงเรียนบ้านสันติสุข": "santisuk.jpg",
   "ดอยเต่าสหศึกษา": "saha.jpg",
   "บ้านโปง": "banpong.jpg", "บ้านแม่ตูบ": "maetoop.jpg", "บ้านเกาะหลวง": "kohluang.jpg",
   "บ้านโปงทุ่ง": "pongtoong.jpg", "บ้านงิ้วสูง": "kiwsoong.jpg", "บ้านแม่บวน": "maebuan.jpg",
@@ -909,19 +772,15 @@ function getLogoPath(teamName) {
   const normalized = clean.replace(/^โรงเรียน/, '').trim();
   if (LOGO_MAP[normalized]) return LOGO_MAP[normalized];
   if (LOGO_MAP["บ้าน" + normalized]) return LOGO_MAP["บ้าน" + normalized];
-  for (const key of LOGO_KEYS_SORTED) {
-    if (clean.includes(key)) return LOGO_MAP[key];
-  }
+  for (const key of LOGO_KEYS_SORTED) { if (clean.includes(key)) return LOGO_MAP[key]; }
   return null;
 }
-
 function getSchoolInitial(teamName) {
   if (!teamName) return "?";
   const clean = String(teamName).replace(/^โรงเรียน/, '').replace(/^บ้าน/, '').trim();
   if (!clean) return "?";
   return clean.charAt(0);
 }
-
 function getLogoHTML(teamName, size = "md", extraClass = "") {
   const path = getLogoPath(teamName);
   const sizeClass = size === "lg" ? "lg" : "";
@@ -930,7 +789,6 @@ function getLogoHTML(teamName, size = "md", extraClass = "") {
   if (path) return `<div class="logo-ring ${sizeClass} ${extraClass}">${fallback}<img src="${path}" alt="${teamName}" loading="lazy" onload="this.previousElementSibling.style.display='none';" onerror="this.style.display='none';"></div>`;
   return `<div class="logo-ring ${sizeClass} ${extraClass}">${fallback}</div>`;
 }
-
 function getSmallLogoHTML(teamName) {
   const path = getLogoPath(teamName);
   const initial = getSchoolInitial(teamName);
@@ -938,7 +796,6 @@ function getSmallLogoHTML(teamName) {
   if (path) return `<div class="school-logo-sm">${fallback}<img src="${path}" onload="this.previousElementSibling.style.display='none';" onerror="this.style.display='none';"></div>`;
   return `<div class="school-logo-sm">${fallback}</div>`;
 }
-
 function getTrophyLogoHTML(teamName) {
   const path = getLogoPath(teamName);
   const initial = getSchoolInitial(teamName);
@@ -946,7 +803,6 @@ function getTrophyLogoHTML(teamName) {
   if (path) return `<div class="trophy-logo">${fallback}<img src="${path}" onload="this.previousElementSibling.style.display='none';" onerror="this.style.display='none';"></div>`;
   return `<div class="trophy-logo">${fallback}</div>`;
 }
-
 function getLargeLogoHTML(teamName) {
   const path = getLogoPath(teamName);
   const initial = getSchoolInitial(teamName);
@@ -954,7 +810,6 @@ function getLargeLogoHTML(teamName) {
   if (path) return `<div class="school-logo-large">${fallback}<img src="${path}" alt="${teamName}" onload="this.previousElementSibling.style.display='none';" onerror="this.style.display='none';"></div>`;
   return `<div class="school-logo-large">${fallback}</div>`;
 }
-
 function getMedalLogoHTML(teamName) {
   const path = getLogoPath(teamName);
   const initial = getSchoolInitial(teamName);
@@ -970,12 +825,10 @@ function levenshteinDistance(a, b) {
   const matrix = [];
   for (let i = 0; i <= b.length; i++) matrix[i] = [i];
   for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
-  for (let i = 1; i <= b.length; i++) {
-    for (let j = 1; j <= a.length; j++) {
-      if (b.charAt(i - 1) === a.charAt(j - 1)) matrix[i][j] = matrix[i - 1][j - 1];
-      else matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1));
-    }
-  }
+  for (let i = 1; i <= b.length; i++) { for (let j = 1; j <= a.length; j++) {
+    if (b.charAt(i - 1) === a.charAt(j - 1)) matrix[i][j] = matrix[i - 1][j - 1];
+    else matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1));
+  }}
   return matrix[b.length][a.length];
 }
 
@@ -983,8 +836,7 @@ const SCHOOL_ALIASES = {
   "บ้านแม่นูน": "โรงเรียนบ้านแม่บวน", "บ้านแม่บวบ": "โรงเรียนบ้านแม่บวน", "แม่นว": "โรงเรียนบ้านแม่บวน",
   "บ้านไป": "โรงเรียนบ้านโปง", "บ้านโป่ง": "โรงเรียนบ้านโปง", "ไปทุ่ง": "โรงเรียนบ้านโปงทุ่ง",
   "โป่งทุ่ง": "โรงเรียนบ้านโปงทุ่ง", "รั้งสูง": "โรงเรียนบ้านงิ้วสูง", "วิงสูง": "โรงเรียนบ้านงิ้วสูง",
-  "งั้วสูง": "โรงเรียนบ้านงิ้วสูง", "จิ้งสูง": "โรงเรียนบ้านงิ้วสูง",
-  "บ้านกาะหลวง": "โรงเรียนบ้านเกาะหลวง",
+  "งั้วสูง": "โรงเรียนบ้านงิ้วสูง", "จิ้งสูง": "โรงเรียนบ้านงิ้วสูง", "บ้านกาะหลวง": "โรงเรียนบ้านเกาะหลวง",
   "อินสําราญ": "โรงเรียนบ้านถิ่นสำราญ", "ถิ่นสําราญ": "โรงเรียนบ้านถิ่นสำราญ",
   "ชุมชลอดตับ": "โรงเรียนชุมชนบ้านดอยเต่า", "ชุมชนลอดตับ": "โรงเรียนชุมชนบ้านดอยเต่า",
   "ชุมชนดอยด่า": "โรงเรียนชุมชนบ้านดอยเต่า", "ชุมชนดอยต่า": "โรงเรียนชุมชนบ้านดอยเต่า",
@@ -999,8 +851,7 @@ function getFuzzySchoolMatch(input) {
   if (SCHOOL_ALIASES[input.trim()]) return SCHOOL_ALIASES[input.trim()];
   if (SCHOOL_ALIASES[cleaned]) return SCHOOL_ALIASES[cleaned];
   if (SCHOOL_ALIASES["บ้าน" + cleaned]) return SCHOOL_ALIASES["บ้าน" + cleaned];
-  let bestMatch = null;
-  let bestScore = Infinity;
+  let bestMatch = null, bestScore = Infinity;
   DATA.schools.forEach(s => {
     let sShort = s.name.replace("โรงเรียน", "").replace("บ้าน", "").trim();
     if (cleaned === sShort || cleaned === s.name) { bestMatch = s.name; bestScore = 0; return; }
@@ -1018,7 +869,7 @@ function resolveTeamName(placeholder, sport, depth = 0) {
   const sportKey = normalizeKey(sport);
   const groupMatch = clean.match(/ที่\s*([1-9]|[1-9][0-9]|[๑๒๓๔๕๖๗๘๙])\s*สาย\s*([A-Za-z])/i);
   if (groupMatch) {
-    const thaiMap = { '๑':1, '๒':2, '๓':3, '๔':4, '๕':5, '๖':6, '๗':7, '๘':8, '๙':9 };
+    const thaiMap = { '๑':1,'๒':2,'๓':3,'๔':4,'๕':5,'๖':6,'๗':7,'๘':8,'๙':9 };
     const rank = thaiMap[groupMatch[1]] || parseInt(groupMatch[1], 10);
     const groupLetter = groupMatch[2].toUpperCase();
     const standings = groupStandings[sportKey];
@@ -1026,7 +877,7 @@ function resolveTeamName(placeholder, sport, depth = 0) {
   }
   const rrMatch = clean.match(/^ที่\s*([1-9]|[1-9][0-9]|[๑๒๓๔๕๖๗๘๙])$/);
   if (rrMatch) {
-    const thaiMap = { '๑':1, '๒':2, '๓':3, '๔':4, '๕':5, '๖':6, '๗':7, '๘':8, '๙':9 };
+    const thaiMap = { '๑':1,'๒':2,'๓':3,'๔':4,'๕':5,'๖':6,'๗':7,'๘':8,'๙':9 };
     const rank = thaiMap[rrMatch[1]] || parseInt(rrMatch[1], 10);
     const standings = groupStandings[sportKey];
     if (standings) {
@@ -1089,9 +940,7 @@ function processTournamentData(matches) {
     if (!groupStandings[sport][g]) groupStandings[sport][g] = {};
     [m.teamA, m.teamB].forEach(t => {
       if (t && t !== "-" && !isPlaceholder(t)) {
-        if (!groupStandings[sport][g][t]) {
-          groupStandings[sport][g][t] = { name: t, played: 0, win: 0, draw: 0, loss: 0, gf: 0, ga: 0, gd: 0, pts: 0 };
-        }
+        if (!groupStandings[sport][g][t]) groupStandings[sport][g][t] = { name: t, played: 0, win: 0, draw: 0, loss: 0, gf: 0, ga: 0, gd: 0, pts: 0 };
       }
     });
     if (m.status === "finished" && !isNaN(+m.scoreA) && !isNaN(+m.scoreB)) {
@@ -1162,11 +1011,14 @@ function getLoser(m) {
   return null;
 }
 
+// ================================================================
+// ✅ CALCULATE MEDALS (v25 - athletics trophy NOT added to medals)
+// ================================================================
+let trophiesData = { athletics: { first: null } };
+
 function calculateMedals() {
   const medals = {};
   DATA.schools.forEach(s => medals[s.name] = { name: s.name, gold: 0, silver: 0, bronze: 0 });
-  const sportsMedalsOnly = {};
-  DATA.schools.forEach(s => sportsMedalsOnly[s.name] = { name: s.name, gold: 0, silver: 0, bronze: 0 });
   const bySport = {};
   allMatches.forEach(m => {
     if (!bySport[m.sport]) bySport[m.sport] = [];
@@ -1180,39 +1032,26 @@ function calculateMedals() {
       let goldSchool = null;
       if (finalMatch.goldSchool) goldSchool = findSchoolName(finalMatch.goldSchool);
       else if (finalMatch.winnerOverride || finalMatch.status === "finished") goldSchool = findSchoolName(resolveTeamName(getWinner(finalMatch), sport));
-      if (goldSchool && medals[goldSchool]) { medals[goldSchool].gold++; sportsMedalsOnly[goldSchool].gold++; }
+      if (goldSchool && medals[goldSchool]) medals[goldSchool].gold++;
       let silverSchool = null;
       if (finalMatch.silverSchool) silverSchool = findSchoolName(finalMatch.silverSchool);
       else if (finalMatch.loserOverride || finalMatch.status === "finished") silverSchool = findSchoolName(resolveTeamName(getLoser(finalMatch), sport));
-      if (silverSchool && medals[silverSchool]) { medals[silverSchool].silver++; sportsMedalsOnly[silverSchool].silver++; }
+      if (silverSchool && medals[silverSchool]) medals[silverSchool].silver++;
     }
     if (thirdMatch) {
       let bronzeSchool = null;
       if (thirdMatch.bronzeSchool) bronzeSchool = findSchoolName(thirdMatch.bronzeSchool);
       else if (thirdMatch.winnerOverride || thirdMatch.status === "finished") bronzeSchool = findSchoolName(resolveTeamName(getWinner(thirdMatch), sport));
-      if (bronzeSchool && medals[bronzeSchool]) { medals[bronzeSchool].bronze++; sportsMedalsOnly[bronzeSchool].bronze++; }
+      if (bronzeSchool && medals[bronzeSchool]) medals[bronzeSchool].bronze++;
     }
     sportMatches.forEach(m => {
       if (m === finalMatch || m === thirdMatch) return;
-      if (m.goldSchool) { const s = findSchoolName(m.goldSchool); if (s && medals[s]) { medals[s].gold++; sportsMedalsOnly[s].gold++; } }
-      if (m.silverSchool) { const s = findSchoolName(m.silverSchool); if (s && medals[s]) { medals[s].silver++; sportsMedalsOnly[s].silver++; } }
-      if (m.bronzeSchool) { const s = findSchoolName(m.bronzeSchool); if (s && medals[s]) { medals[s].bronze++; sportsMedalsOnly[s].bronze++; } }
+      if (m.goldSchool) { const s = findSchoolName(m.goldSchool); if (s && medals[s]) medals[s].gold++; }
+      if (m.silverSchool) { const s = findSchoolName(m.silverSchool); if (s && medals[s]) medals[s].silver++; }
+      if (m.bronzeSchool) { const s = findSchoolName(m.bronzeSchool); if (s && medals[s]) medals[s].bronze++; }
     });
   });
-  const sortFn = (a, b) => {
-    if (b.gold !== a.gold) return b.gold - a.gold;
-    if (b.silver !== a.silver) return b.silver - a.silver;
-    if (b.bronze !== a.bronze) return b.bronze - a.bronze;
-    return a.name.localeCompare(b.name, 'th');
-  };
-  const sportsRanked = Object.values(sportsMedalsOnly).filter(s => (s.gold + s.silver + s.bronze) > 0).sort(sortFn);
-  const athRanked = Object.values(athleticsMedals).filter(a => (a.gold + a.silver + a.bronze) > 0).map(a => ({ name: a.name || '', gold: a.gold || 0, silver: a.silver || 0, bronze: a.bronze || 0 })).sort(sortFn);
-  trophiesData = {
-    sports: { first: sportsRanked[0] || null, second: sportsRanked[1] || null, third: sportsRanked[2] || null },
-    athletics: { first: athRanked[0] || null, second: athRanked[1] || null, third: athRanked[2] || null }
-  };
-  if (trophiesData.sports.first && trophiesData.sports.first.name && medals[trophiesData.sports.first.name]) medals[trophiesData.sports.first.name].gold++;
-  if (trophiesData.athletics.first && trophiesData.athletics.first.name && medals[trophiesData.athletics.first.name]) medals[trophiesData.athletics.first.name].gold++;
+  // Merge athletics medals
   Object.keys(athleticsMedals).forEach(school => {
     if (medals[school]) {
       medals[school].gold += athleticsMedals[school].gold;
@@ -1220,6 +1059,26 @@ function calculateMedals() {
       medals[school].bronze += athleticsMedals[school].bronze;
     }
   });
+  
+  // ✅ Auto-calculate athletics trophy (1st only) - NOT added to medals
+  const athTotal = (a) => (a.gold + a.silver + a.bronze);
+  const athSorted = Object.values(athleticsMedals)
+    .filter(a => athTotal(a) > 0)
+    .sort((a, b) => {
+      if (athTotal(b) !== athTotal(a)) return athTotal(b) - athTotal(a);
+      if (b.gold !== a.gold) return b.gold - a.gold;
+      if (b.silver !== a.silver) return b.silver - a.silver;
+      if (b.bronze !== a.bronze) return b.bronze - a.bronze;
+      return a.name.localeCompare(b.name, 'th');
+    });
+  trophiesData.athletics.first = athSorted[0] || null;
+  
+  const sortFn = (a, b) => {
+    if (b.gold !== a.gold) return b.gold - a.gold;
+    if (b.silver !== a.silver) return b.silver - a.silver;
+    if (b.bronze !== a.bronze) return b.bronze - a.bronze;
+    return a.name.localeCompare(b.name, 'th');
+  };
   return Object.values(medals).sort(sortFn);
 }
 
@@ -1241,6 +1100,35 @@ function processAthleticsData(data) {
     if (goldSchool && athleticsMedals[goldSchool]) { athleticsMedals[goldSchool].gold++; athleticsMedals[goldSchool].details.push({ sport: detailStr, medal: 'gold' }); }
     if (silverSchool && athleticsMedals[silverSchool]) { athleticsMedals[silverSchool].silver++; athleticsMedals[silverSchool].details.push({ sport: detailStr, medal: 'silver' }); }
     if (bronzeSchool && athleticsMedals[bronzeSchool]) { athleticsMedals[bronzeSchool].bronze++; athleticsMedals[bronzeSchool].details.push({ sport: detailStr, medal: 'bronze' }); }
+  });
+}
+
+// ✅ Process "other" sheet
+function processOtherData(rows) {
+  otherData = {
+    parade: { large: {first:null,second:null,third:null}, small: {first:null,second:null,third:null} },
+    cheering: { large: {first:null,second:null,third:null}, small: {first:null,second:null,third:null} }
+  };
+  rows.forEach(row => {
+    const title = String(row['รายการแข่งขัน'] || '').trim();
+    const gold = String(row['ทอง'] || '').trim();
+    const silver = String(row['เงิน'] || '').trim();
+    const bronze = String(row['ทองแดง'] || '').trim();
+    if (!title) return;
+    const first = gold ? getFuzzySchoolMatch(gold) : null;
+    const second = silver ? getFuzzySchoolMatch(silver) : null;
+    const third = bronze ? getFuzzySchoolMatch(bronze) : null;
+    const isSmall = title.includes('น้อยกว่า');
+    const isLarge = title.includes('80 คนขึ้นไป');
+    const isParade = title.includes('ขบวนพาเหรด');
+    const isCheering = title.includes('กองเชียร์');
+    if (isParade) {
+      if (isLarge) otherData.parade.large = { first, second, third };
+      else if (isSmall) otherData.parade.small = { first, second, third };
+    } else if (isCheering) {
+      if (isLarge) otherData.cheering.large = { first, second, third };
+      else if (isSmall) otherData.cheering.small = { first, second, third };
+    }
   });
 }
 
@@ -1271,47 +1159,22 @@ function renderStats() {
     </div>`).join(""); 
   animateCounters(); 
 }
-
 function animateCounters() { 
-  const observer = new IntersectionObserver(entries => { 
-    entries.forEach(entry => { 
-      if (!entry.isIntersecting) return; 
-      entry.target.querySelectorAll(".counter").forEach(counter => { 
-        const target = +counter.getAttribute("data-target"); 
-        const step = target / 90; 
-        let current = 0; 
-        const tick = () => { 
-          current += step; 
-          if (current < target) { counter.textContent = Math.floor(current); requestAnimationFrame(tick); } 
-          else counter.textContent = target; 
-        }; 
-        tick(); 
-      }); 
-      observer.unobserve(entry.target); 
-    }); 
-  }, { threshold: 0.4 }); 
+  const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if (!entry.isIntersecting) return; entry.target.querySelectorAll(".counter").forEach(counter => { const target = +counter.getAttribute("data-target"); const step = target / 90; let current = 0; const tick = () => { current += step; if (current < target) { counter.textContent = Math.floor(current); requestAnimationFrame(tick); } else counter.textContent = target; }; tick(); }); observer.unobserve(entry.target); }); }, { threshold: 0.4 }); 
   document.querySelectorAll(".stat-card").forEach(el => observer.observe(el)); 
 }
 
 function renderSports() { 
   document.getElementById("sportsGrid").innerHTML = DATA.sports.map(s => {
     const iconFile = getSportIcon(s.name);
-    const iconHTML = iconFile 
-      ? `<img src="${iconFile}" alt="${s.name}" class="sport-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><span style="display:none; font-size:40px;">${s.icon}</span>`
-      : `<span style="font-size:40px;">${s.icon}</span>`;
+    const iconHTML = iconFile ? `<img src="${iconFile}" alt="${s.name}" class="sport-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><span style="display:none; font-size:40px;">${s.icon}</span>` : `<span style="font-size:40px;">${s.icon}</span>`;
     return `<div class="group bg-white rounded-2xl p-4 sm:p-6 shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-primary-100 cursor-pointer" onclick="openSportBracket('${s.name}')"><div class="flex items-start justify-between mb-3 sm:mb-4"><div class="group-hover:scale-110 transition-transform">${iconHTML}</div><span class="text-[10px] sm:text-xs px-2 py-1 rounded-full bg-primary-100 text-primary-800 font-medium">${s.category}</span></div><h3 class="font-heading font-bold text-sm sm:text-base text-dark mb-1 sm:mb-2 leading-tight">${s.name}</h3><div class="flex items-center gap-1 text-xs sm:text-sm text-gray-500"><span>${s.gender !== "-" ? s.gender : "รวม"}</span><span>•</span><span>${s.level}</span></div><div class="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-primary-50 flex items-center justify-between"><span class="text-[10px] sm:text-xs text-gray-500">ดูผลการแข่งขัน</span><span class="text-primary-600 font-bold text-xs sm:text-sm group-hover:translate-x-1 transition">ดู →</span></div></div>`;
   }).join(""); 
 }
 
 function openSportBracket(sportName) {
   showPage('bracket');
-  setTimeout(() => {
-    if (allMatches.length > 0) {
-      selectedSport = sportName;
-      renderSportTabs();
-      renderBracketContent();
-    }
-  }, 500);
+  setTimeout(() => { if (allMatches.length > 0) { selectedSport = sportName; renderSportTabs(); renderBracketContent(); } }, 500);
 }
 
 function renderSchoolsShowcase() {
@@ -1319,25 +1182,15 @@ function renderSchoolsShowcase() {
   if (!grid) return;
   grid.innerHTML = DATA.schools.map(s => {
     const logoHTML = getLargeLogoHTML(s.name);
-    return `<div class="school-card" onclick="showSchoolSummary('${s.name}')" title="${s.name}">
-      ${logoHTML}
-      <p class="font-heading font-bold text-xs sm:text-sm text-dark leading-tight mt-3">${shortTeamName(s.name)}</p>
-      <p class="text-[10px] text-gray-500 mt-1 hidden sm:block">${s.director}</p>
-    </div>`;
+    return `<div class="school-card" onclick="showSchoolSummary('${s.name}')" title="${s.name}">${logoHTML}<p class="font-heading font-bold text-xs sm:text-sm text-dark leading-tight mt-3">${shortTeamName(s.name)}</p><p class="text-[10px] text-gray-500 mt-1 hidden sm:block">${s.director}</p></div>`;
   }).join("");
 }
 
 function renderAthletics() { 
   const ages = ["อ", "8", "10", "12", "15"]; 
   document.getElementById("athleticsTable").innerHTML = DATA.athletics.map(e => { 
-    const mCells = ages.map(a => { 
-      const has = e.male.includes(a); 
-      return `<td class="px-2 py-2 text-center border-l border-white/20 ${has ? "text-secondary font-bold text-base sm:text-lg" : "text-white/20"}">${has ? "✓" : "-"}</td>`; 
-    }).join(""); 
-    const fCells = ages.map(a => { 
-      const has = e.female.includes(a); 
-      return `<td class="px-2 py-2 text-center border-l border-white/20 ${has ? "text-secondary font-bold text-base sm:text-lg" : "text-white/20"}">${has ? "✓" : "-"}</td>`; 
-    }).join(""); 
+    const mCells = ages.map(a => `<td class="px-2 py-2 text-center border-l border-white/20 ${e.male.includes(a) ? "text-secondary font-bold text-base sm:text-lg" : "text-white/20"}">${e.male.includes(a) ? "✓" : "-"}</td>`).join(""); 
+    const fCells = ages.map(a => `<td class="px-2 py-2 text-center border-l border-white/20 ${e.female.includes(a) ? "text-secondary font-bold text-base sm:text-lg" : "text-white/20"}">${e.female.includes(a) ? "✓" : "-"}</td>`).join(""); 
     return `<tr><td class="px-2 sm:px-3 py-2 font-mono">${e.no}</td><td class="px-2 sm:px-3 py-2 font-medium whitespace-nowrap">${e.name}</td>${mCells}${fCells}</tr>`; 
   }).join(""); 
   document.getElementById("ageTable").innerHTML = DATA.ageReference.map(a => `<tr><td class="px-3 py-2">${a.age}</td><td class="px-3 py-2 font-mono">${a.year}</td></tr>`).join(""); 
@@ -1366,16 +1219,7 @@ function renderSchoolSummaryGrid() {
     const logoHTML = getLargeLogoHTML(s.name);
     const m = schoolMedalMap[s.name] || { gold: 0, silver: 0, bronze: 0 };
     const total = m.gold + m.silver + m.bronze;
-    return `<div class="bg-white rounded-2xl shadow-md p-4 text-center cursor-pointer hover:-translate-y-1 transition border border-gray-100" onclick="showSchoolSummary('${s.name}')">
-      <div style="display:flex;justify-content:center;">${logoHTML}</div>
-      <h3 class="font-heading font-bold text-sm text-dark mb-2" style="margin-top:14px;">${shortTeamName(s.name)}</h3>
-      <div class="flex justify-center gap-1 text-xs mb-2">
-        <span class="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full font-bold">🥇 ${m.gold}</span>
-        <span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-bold">🥈 ${m.silver}</span>
-        <span class="bg-orange-100 text-orange-800 px-2 py-0.5 rounded-full font-bold">🥉 ${m.bronze}</span>
-      </div>
-      <p class="text-[10px] text-gray-500">รวม ${total} เหรียญ</p>
-    </div>`;
+    return `<div class="bg-white rounded-2xl shadow-md p-4 text-center cursor-pointer hover:-translate-y-1 transition border border-gray-100" onclick="showSchoolSummary('${s.name}')"><div style="display:flex;justify-content:center;">${logoHTML}</div><h3 class="font-heading font-bold text-sm text-dark mb-2" style="margin-top:14px;">${shortTeamName(s.name)}</h3><div class="flex justify-center gap-1 text-xs mb-2"><span class="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full font-bold">🥇 ${m.gold}</span><span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-bold">🥈 ${m.silver}</span><span class="bg-orange-100 text-orange-800 px-2 py-0.5 rounded-full font-bold">🥉 ${m.bronze}</span></div><p class="text-[10px] text-gray-500">รวม ${total} เหรียญ</p></div>`;
   }).join("");
 }
 
@@ -1386,23 +1230,15 @@ function showSchoolSummary(schoolName) {
   const summaryCards = document.getElementById('modalMedalSummaryCards');
   const detailsBody = document.getElementById('modalMedalDetailsBody');
   title.textContent = shortTeamName(schoolName);
-  
   const logoPath = getLogoPath(schoolName);
   const initial = getSchoolInitial(schoolName);
-  if (logoPath) {
-    logoContainer.innerHTML = `<span style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:18px;color:white;font-weight:900;font-family:'Kanit',sans-serif;z-index:1;">${initial}</span><img src="${logoPath}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:2;" onload="this.previousElementSibling.style.display='none';" onerror="this.style.display='none';">`;
-  } else {
-    logoContainer.innerHTML = `<span style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:18px;color:white;font-weight:900;font-family:'Kanit',sans-serif;">${initial}</span>`;
-  }
-  
+  if (logoPath) logoContainer.innerHTML = `<span style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:18px;color:white;font-weight:900;font-family:'Kanit',sans-serif;z-index:1;">${initial}</span><img src="${logoPath}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:2;" onload="this.previousElementSibling.style.display='none';" onerror="this.style.display='none';">`;
+  else logoContainer.innerHTML = `<span style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:18px;color:white;font-weight:900;font-family:'Kanit',sans-serif;">${initial}</span>`;
   const athData = athleticsMedals[schoolName] || { gold: 0, silver: 0, bronze: 0, details: [] };
   const sportDetails = [];
   let sportGold = 0, sportSilver = 0, sportBronze = 0;
   const bySport = {};
-  allMatches.forEach(m => {
-    if (!bySport[m.sport]) bySport[m.sport] = [];
-    bySport[m.sport].push(m);
-  });
+  allMatches.forEach(m => { if (!bySport[m.sport]) bySport[m.sport] = []; bySport[m.sport].push(m); });
   Object.keys(bySport).forEach(sport => {
     const sportMatches = bySport[sport];
     const finalMatch = sportMatches.find(m => { const g = (m.group || "").trim().toUpperCase(); return g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ"); });
@@ -1426,33 +1262,19 @@ function showSchoolSummary(schoolName) {
   const totalGold = athData.gold + sportGold;
   const totalSilver = athData.silver + sportSilver;
   const totalBronze = athData.bronze + sportBronze;
-  summaryCards.innerHTML = `
-    <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-3 text-center"><div class="text-2xl mb-1">🥇</div><div class="font-heading font-black text-2xl text-yellow-600">${totalGold}</div><div class="text-xs text-yellow-700 font-medium">ทอง</div></div>
-    <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 text-center"><div class="text-2xl mb-1">🥈</div><div class="font-heading font-black text-2xl text-gray-600">${totalSilver}</div><div class="text-xs text-gray-700 font-medium">เงิน</div></div>
-    <div class="bg-orange-50 border border-orange-200 rounded-xl p-3 text-center"><div class="text-2xl mb-1">🥉</div><div class="font-heading font-black text-2xl text-orange-700">${totalBronze}</div><div class="text-xs text-orange-800 font-medium">ทองแดง</div></div>
-  `;
+  summaryCards.innerHTML = `<div class="bg-yellow-50 border border-yellow-200 rounded-xl p-3 text-center"><div class="text-2xl mb-1">🥇</div><div class="font-heading font-black text-2xl text-yellow-600">${totalGold}</div><div class="text-xs text-yellow-700 font-medium">ทอง</div></div><div class="bg-gray-50 border border-gray-200 rounded-xl p-3 text-center"><div class="text-2xl mb-1">🥈</div><div class="font-heading font-black text-2xl text-gray-600">${totalSilver}</div><div class="text-xs text-gray-700 font-medium">เงิน</div></div><div class="bg-orange-50 border border-orange-200 rounded-xl p-3 text-center"><div class="text-2xl mb-1">🥉</div><div class="font-heading font-black text-2xl text-orange-700">${totalBronze}</div><div class="text-xs text-orange-800 font-medium">ทองแดง</div></div>`;
   let rowsHTML = '';
   if (athData.details.length > 0) {
     rowsHTML += `<tr class="bg-primary-50"><td colspan="4" class="p-2 font-bold text-primary-800 text-xs">🏃 ประเภทกรีฑา</td></tr>`;
     const athGroup = {};
     athData.details.forEach(d => { if (!athGroup[d.sport]) athGroup[d.sport] = { gold: 0, silver: 0, bronze: 0 }; athGroup[d.sport][d.medal]++; });
-    Object.keys(athGroup).forEach(sport => {
-      rowsHTML += `<tr><td class="p-3 text-sm text-gray-700">${sport}</td>
-        <td class="p-3 text-center">${athGroup[sport].gold > 0 ? `<span class="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded font-bold text-xs">${athGroup[sport].gold}</span>` : '-'}</td>
-        <td class="p-3 text-center">${athGroup[sport].silver > 0 ? `<span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-bold text-xs">${athGroup[sport].silver}</span>` : '-'}</td>
-        <td class="p-3 text-center">${athGroup[sport].bronze > 0 ? `<span class="bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold text-xs">${athGroup[sport].bronze}</span>` : '-'}</td></tr>`;
-    });
+    Object.keys(athGroup).forEach(sport => { rowsHTML += `<tr><td class="p-3 text-sm text-gray-700">${sport}</td><td class="p-3 text-center">${athGroup[sport].gold > 0 ? `<span class="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded font-bold text-xs">${athGroup[sport].gold}</span>` : '-'}</td><td class="p-3 text-center">${athGroup[sport].silver > 0 ? `<span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-bold text-xs">${athGroup[sport].silver}</span>` : '-'}</td><td class="p-3 text-center">${athGroup[sport].bronze > 0 ? `<span class="bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold text-xs">${athGroup[sport].bronze}</span>` : '-'}</td></tr>`; });
   }
   if (sportDetails.length > 0) {
     rowsHTML += `<tr class="bg-primary-50"><td colspan="4" class="p-2 font-bold text-primary-800 text-xs">⚽ ประเภทกีฬา</td></tr>`;
     const sportGroup = {};
     sportDetails.forEach(d => { if (!sportGroup[d.sport]) sportGroup[d.sport] = { gold: 0, silver: 0, bronze: 0 }; sportGroup[d.sport][d.medal]++; });
-    Object.keys(sportGroup).forEach(sport => {
-      rowsHTML += `<tr><td class="p-3 text-sm text-gray-700">${sport}</td>
-        <td class="p-3 text-center">${sportGroup[sport].gold > 0 ? `<span class="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded font-bold text-xs">${sportGroup[sport].gold}</span>` : '-'}</td>
-        <td class="p-3 text-center">${sportGroup[sport].silver > 0 ? `<span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-bold text-xs">${sportGroup[sport].silver}</span>` : '-'}</td>
-        <td class="p-3 text-center">${sportGroup[sport].bronze > 0 ? `<span class="bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold text-xs">${sportGroup[sport].bronze}</span>` : '-'}</td></tr>`;
-    });
+    Object.keys(sportGroup).forEach(sport => { rowsHTML += `<tr><td class="p-3 text-sm text-gray-700">${sport}</td><td class="p-3 text-center">${sportGroup[sport].gold > 0 ? `<span class="bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded font-bold text-xs">${sportGroup[sport].gold}</span>` : '-'}</td><td class="p-3 text-center">${sportGroup[sport].silver > 0 ? `<span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-bold text-xs">${sportGroup[sport].silver}</span>` : '-'}</td><td class="p-3 text-center">${sportGroup[sport].bronze > 0 ? `<span class="bg-orange-100 text-orange-800 px-2 py-0.5 rounded font-bold text-xs">${sportGroup[sport].bronze}</span>` : '-'}</td></tr>`; });
   }
   if (rowsHTML === '') rowsHTML = `<tr><td colspan="4" class="p-8 text-center text-gray-400">ยังไม่มีผลการแข่งขัน</td></tr>`;
   detailsBody.innerHTML = rowsHTML;
@@ -1471,8 +1293,7 @@ function renderMedalTally() {
   if (!tbody) return;
   const medals = calculateMedals();
   const totalMedals = medals.reduce((sum, m) => sum + m.gold + m.silver + m.bronze, 0);
-  let displayRank = 1;
-  let prevMedal = null;
+  let displayRank = 1, prevMedal = null;
   tbody.innerHTML = medals.map((m, idx) => {
     const medalKey = `${m.gold}-${m.silver}-${m.bronze}`;
     if (prevMedal !== null && medalKey !== prevMedal) displayRank = idx + 1;
@@ -1485,31 +1306,17 @@ function renderMedalTally() {
     const logoHTML = getMedalLogoHTML(m.name);
     const medalEmoji = actualRank === 1 ? '🥇' : actualRank === 2 ? '🥈' : actualRank === 3 ? '🥉' : '';
     const rankDisplay = hasMedal ? (medalEmoji || actualRank) : '—';
-    return `<div class="medal-row ${rowClass}">
-      <div class="medal-rank ${rankClass}">${rankDisplay}</div>
-      <div class="medal-school">${logoHTML}<span class="medal-school-name">${shortTeamName(m.name)}</span></div>
-      <div class="medal-count gold">${m.gold || '0'}</div>
-      <div class="medal-count silver">${m.silver || '0'}</div>
-      <div class="medal-count bronze">${m.bronze || '0'}</div>
-      <div class="text-center"><span class="medal-count total">${total}</span></div>
-    </div>`;
+    return `<div class="medal-row ${rowClass}"><div class="medal-rank ${rankClass}">${rankDisplay}</div><div class="medal-school">${logoHTML}<span class="medal-school-name">${shortTeamName(m.name)}</span></div><div class="medal-count gold">${m.gold || '0'}</div><div class="medal-count silver">${m.silver || '0'}</div><div class="medal-count bronze">${m.bronze || '0'}</div><div class="text-center"><span class="medal-count total">${total}</span></div></div>`;
   }).join("");
-  if (timeEl) {
-    const now = new Date();
-    timeEl.textContent = `อัปเดตล่าสุด: ${now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}${totalMedals === 0 ? ' · รอผลการแข่งขัน' : ''}`;
-  }
+  if (timeEl) { const now = new Date(); timeEl.textContent = `อัปเดตล่าสุด: ${now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}${totalMedals === 0 ? ' · รอผลการแข่งขัน' : ''}`; }
 }
 
-// ✅ Render Sports Medal Table (with data-label for mobile card layout)
 function renderSportsMedalTable() {
   const tbody = document.getElementById("sportsMedalTableBody");
   if (!tbody) return;
   calculateMedals();
   const bySport = {};
-  allMatches.forEach(m => {
-    if (!bySport[m.sport]) bySport[m.sport] = [];
-    bySport[m.sport].push(m);
-  });
+  allMatches.forEach(m => { if (!bySport[m.sport]) bySport[m.sport] = []; bySport[m.sport].push(m); });
   let rows = '';
   const sortedSports = sortSportsByOrder(Object.keys(bySport));
   sortedSports.forEach(sport => {
@@ -1529,73 +1336,82 @@ function renderSportsMedalTable() {
     }
     const sportIconFile = getSportIcon(sport);
     const iconHTML = sportIconFile ? `<img src="${sportIconFile}" class="w-10 h-10 object-contain flex-shrink-0" onerror="this.style.display='none';">` : '';
-    rows += `<tr>
-      <td class="font-medium text-dark" data-label="รายการ" style="font-size:17px;"><div class="flex items-center gap-3">${iconHTML}<span style="font-family:'Kanit',sans-serif;font-weight:700;">${sport}</span></div></td>
-      <td class="text-center" data-label="🥇 ทอง">${goldSchool ? `<div class="school-cell">${getSmallLogoHTML(goldSchool)}<span class="font-semibold text-yellow-700" style="font-size:15px;">${shortTeamName(goldSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
-      <td class="text-center" data-label="🥈 เงิน">${silverSchool ? `<div class="school-cell">${getSmallLogoHTML(silverSchool)}<span class="font-semibold text-gray-600" style="font-size:15px;">${shortTeamName(silverSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
-      <td class="text-center" data-label="🥉 ทองแดง">${bronzeSchool ? `<div class="school-cell">${getSmallLogoHTML(bronzeSchool)}<span class="font-semibold text-orange-700" style="font-size:15px;">${shortTeamName(bronzeSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
-    </tr>`;
+    rows += `<tr><td class="font-medium text-dark" data-label="รายการ" style="font-size:17px;"><div class="flex items-center gap-3">${iconHTML}<span style="font-family:'Kanit',sans-serif;font-weight:700;">${sport}</span></div></td><td class="text-center" data-label="🥇 ทอง">${goldSchool ? `<div class="school-cell">${getSmallLogoHTML(goldSchool)}<span class="font-semibold text-yellow-700" style="font-size:15px;">${shortTeamName(goldSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td><td class="text-center" data-label="🥈 เงิน">${silverSchool ? `<div class="school-cell">${getSmallLogoHTML(silverSchool)}<span class="font-semibold text-gray-600" style="font-size:15px;">${shortTeamName(silverSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td><td class="text-center" data-label="🥉 ทองแดง">${bronzeSchool ? `<div class="school-cell">${getSmallLogoHTML(bronzeSchool)}<span class="font-semibold text-orange-700" style="font-size:15px;">${shortTeamName(bronzeSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td></tr>`;
   });
-  
   const athMap = {};
   athleticsData.forEach(row => {
     const id = String(row['รายการที่'] || '').trim();
-    if (!id) return;
-    if (athMap[id]) return;
+    if (!id || athMap[id]) return;
     const sportName = row['ประเภทการแข่งขัน'] || '';
     const gender = row['เพศ'] || '';
     const age = row['ระดับอายุ'] || '';
-    athMap[id] = {
-      id: id,
-      detail: `${sportName} ${gender} ${age}`.trim(),
-      gold: getFuzzySchoolMatch(row['ทอง']),
-      silver: getFuzzySchoolMatch(row['เงิน']),
-      bronze: getFuzzySchoolMatch(row['ทองแดง'])
-    };
+    athMap[id] = { id, detail: `${sportName} ${gender} ${age}`.trim(), gold: getFuzzySchoolMatch(row['ทอง']), silver: getFuzzySchoolMatch(row['เงิน']), bronze: getFuzzySchoolMatch(row['ทองแดง']) };
   });
-  
   ATHLETICS_ORDER.forEach(id => {
     if (!athMap[id]) return;
     const ath = athMap[id];
     const genderIcon = ath.detail.includes('ชาย') ? '♂' : ath.detail.includes('หญิง') ? '♀' : '';
-    rows += `<tr class="bg-purple-50/50">
-      <td class="font-medium text-dark" data-label="รายการ" style="font-size:17px;"><div class="flex items-center gap-3"><span style="font-size:22px;">🏃</span><span style="font-family:'Kanit',sans-serif;font-weight:700;">${id} ${ath.detail} ${genderIcon}</span></div></td>
-      <td class="text-center" data-label="🥇 ทอง">${ath.gold ? `<div class="school-cell">${getSmallLogoHTML(ath.gold)}<span class="font-semibold text-yellow-700" style="font-size:15px;">${shortTeamName(ath.gold)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
-      <td class="text-center" data-label="🥈 เงิน">${ath.silver ? `<div class="school-cell">${getSmallLogoHTML(ath.silver)}<span class="font-semibold text-gray-600" style="font-size:15px;">${shortTeamName(ath.silver)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
-      <td class="text-center" data-label="🥉 ทองแดง">${ath.bronze ? `<div class="school-cell">${getSmallLogoHTML(ath.bronze)}<span class="font-semibold text-orange-700" style="font-size:15px;">${shortTeamName(ath.bronze)}</span></div>` : '<span class="text-gray-300">—</span>'}</td>
-    </tr>`;
+    rows += `<tr class="bg-purple-50/50"><td class="font-medium text-dark" data-label="รายการ" style="font-size:17px;"><div class="flex items-center gap-3"><span style="font-size:22px;">🏃</span><span style="font-family:'Kanit',sans-serif;font-weight:700;">${id} ${ath.detail} ${genderIcon}</span></div></td><td class="text-center" data-label="🥇 ทอง">${ath.gold ? `<div class="school-cell">${getSmallLogoHTML(ath.gold)}<span class="font-semibold text-yellow-700" style="font-size:15px;">${shortTeamName(ath.gold)}</span></div>` : '<span class="text-gray-300">—</span>'}</td><td class="text-center" data-label="🥈 เงิน">${ath.silver ? `<div class="school-cell">${getSmallLogoHTML(ath.silver)}<span class="font-semibold text-gray-600" style="font-size:15px;">${shortTeamName(ath.silver)}</span></div>` : '<span class="text-gray-300">—</span>'}</td><td class="text-center" data-label="🥉 ทองแดง">${ath.bronze ? `<div class="school-cell">${getSmallLogoHTML(ath.bronze)}<span class="font-semibold text-orange-700" style="font-size:15px;">${shortTeamName(ath.bronze)}</span></div>` : '<span class="text-gray-300">—</span>'}</td></tr>`;
   });
-  
   if (rows === '') rows = `<tr><td colspan="4" class="text-center py-8 text-gray-400">ยังไม่มีข้อมูล</td></tr>`;
   tbody.innerHTML = rows;
   renderTrophySection();
 }
 
+// ✅ v25: New trophy section (no sports trophy, only athletics 1st + parade + cheering)
 function renderTrophySection() {
   const container = document.getElementById('trophyContainer');
   if (!container) return;
   let html = '';
-  if (trophiesData.sports.first || trophiesData.sports.second || trophiesData.sports.third) {
-    html += `<div class="trophy-section">
-      <div class="trophy-title">🏆 ถ้วยรางวัลรวมกีฬา</div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        ${renderTrophyCard(trophiesData.sports.first, 'gold', '🥇', 'ถ้วยอันดับ 1')}
-        ${renderTrophyCard(trophiesData.sports.second, 'silver', '🥈', 'ถ้วยอันดับ 2')}
-        ${renderTrophyCard(trophiesData.sports.third, 'bronze', '🥉', 'ถ้วยอันดับ 3')}
-      </div>
-    </div>`;
-  }
-  if (trophiesData.athletics.first || trophiesData.athletics.second || trophiesData.athletics.third) {
-    html += `<div class="trophy-section" style="margin-top: 24px;">
-      <div class="trophy-title">🏆 ถ้วยรางวัลรวมกีฑา</div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        ${renderTrophyCard(trophiesData.athletics.first, 'gold', '🥇', 'ถ้วยอันดับ 1')}
-        ${renderTrophyCard(trophiesData.athletics.second, 'silver', '🥈', 'ถ้วยอันดับ 2')}
-        ${renderTrophyCard(trophiesData.athletics.third, 'bronze', '🥉', 'ถ้วยอันดับ 3')}
-      </div>
-    </div>`;
-  }
-  if (!html) html = `<div class="trophy-section"><div class="trophy-title">🏆 ถ้วยรางวัลรวม</div><p class="text-white/60 text-center">รอผลการแข่งขัน</p></div>`;
+  
+  // 1. ถ้วยรางวัลรวมกีฑา (แสดงแค่ 1st)
+  html += `<div class="trophy-section">
+    <div class="trophy-title">🏆 ถ้วยรางวัลรวมกีฑา</div>
+    <div class="grid grid-cols-1 gap-4">
+      ${renderTrophyCard(trophiesData.athletics.first, 'gold', '🥇', 'ถ้วยอันดับ 1')}
+    </div>
+  </div>`;
+  
+  // 2. รางวัลขบวนพาเหรด โรงเรียนขนาด 80 คนขึ้นไป
+  html += `<div class="trophy-section">
+    <div class="trophy-title">🎭 รางวัลขบวนพาเหรด โรงเรียนขนาด 80 คนขึ้นไป</div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      ${renderTrophyCard(otherData.parade.large.first, 'gold', '🥇', 'อันดับ 1')}
+      ${renderTrophyCard(otherData.parade.large.second, 'silver', '🥈', 'อันดับ 2')}
+      ${renderTrophyCard(otherData.parade.large.third, 'bronze', '🥉', 'อันดับ 3')}
+    </div>
+  </div>`;
+  
+  // 3. รางวัลขบวนพาเหรด โรงเรียนขนาดน้อยกว่า 80 คน
+  html += `<div class="trophy-section">
+    <div class="trophy-title">🎭 รางวัลขบวนพาเหรด โรงเรียนขนาดน้อยกว่า 80 คน</div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      ${renderTrophyCard(otherData.parade.small.first, 'gold', '🥇', 'อันดับ 1')}
+      ${renderTrophyCard(otherData.parade.small.second, 'silver', '🥈', 'อันดับ 2')}
+      ${renderTrophyCard(otherData.parade.small.third, 'bronze', '🥉', 'อันดับ 3')}
+    </div>
+  </div>`;
+  
+  // 4. รางวัลกองเชียร์ โรงเรียนขนาด 80 คนขึ้นไป
+  html += `<div class="trophy-section">
+    <div class="trophy-title">📣 รางวัลกองเชียร์ โรงเรียนขนาด 80 คนขึ้นไป</div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      ${renderTrophyCard(otherData.cheering.large.first, 'gold', '🥇', 'อันดับ 1')}
+      ${renderTrophyCard(otherData.cheering.large.second, 'silver', '🥈', 'อันดับ 2')}
+      ${renderTrophyCard(otherData.cheering.large.third, 'bronze', '🥉', 'อันดับ 3')}
+    </div>
+  </div>`;
+  
+  // 5. รางวัลกองเชียร์ โรงเรียนขนาดน้อยกว่า 80 คน
+  html += `<div class="trophy-section">
+    <div class="trophy-title">📣 รางวัลกองเชียร์ โรงเรียนขนาดน้อยกว่า 80 คน</div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      ${renderTrophyCard(otherData.cheering.small.first, 'gold', '🥇', 'อันดับ 1')}
+      ${renderTrophyCard(otherData.cheering.small.second, 'silver', '🥈', 'อันดับ 2')}
+      ${renderTrophyCard(otherData.cheering.small.third, 'bronze', '🥉', 'อันดับ 3')}
+    </div>
+  </div>`;
+  
   container.innerHTML = html;
 }
 
@@ -1603,14 +1419,7 @@ function renderTrophyCard(team, type, emoji, label) {
   if (!team || !team.name) {
     return `<div class="trophy-card"><div class="trophy-emoji">${emoji}</div><div class="trophy-info"><div class="trophy-name">—</div><div class="trophy-detail">${label}</div></div></div>`;
   }
-  return `<div class="trophy-card ${type}">
-    <div class="trophy-emoji">${emoji}</div>
-    ${getTrophyLogoHTML(team.name)}
-    <div class="trophy-info">
-      <div class="trophy-name">${shortTeamName(team.name)}</div>
-      <div class="trophy-detail">${label} · 🥇${team.gold} 🥈${team.silver} 🥉${team.bronze}</div>
-    </div>
-  </div>`;
+  return `<div class="trophy-card ${type}"><div class="trophy-emoji">${emoji}</div>${getTrophyLogoHTML(team.name)}<div class="trophy-info"><div class="trophy-name">${shortTeamName(team.name)}</div><div class="trophy-detail">${label}</div></div></div>`;
 }
 
 function renderSportTabs() {
@@ -1627,55 +1436,67 @@ function renderSportTabs() {
 }
 function selectSport(sport) { selectedSport = sport; renderSportTabs(); renderBracketContent(); }
 
+// ✅ v25: Hide group stage for specific sports
+function isNoGroupStage(sport) {
+  return NO_GROUP_STAGE_SPORTS.some(s => sport === s);
+}
+
 function renderBracketContent() {
   const container = document.getElementById("bracketContent");
   if (!selectedSport) { container.innerHTML = `<div class="text-center py-20 text-white/50">เลือกประเภทกีฬา</div>`; return; }
   currentSportMatches = allMatches.filter(m => m.sport === selectedSport);
   if (currentSportMatches.length === 0) { container.innerHTML = `<div class="text-center py-20 text-white/50"><div class="text-6xl mb-4">⏳</div><p>ยังไม่มีข้อมูลสำหรับ ${selectedSport}</p></div>`; return; }
+  
   const sport = selectedSport;
-  const groupMatches = currentSportMatches.filter(m => isGroupStage(m.group));
+  const noGroup = isNoGroupStage(sport);
+  
+  // Force knockout for no-group sports
+  if (noGroup) currentTab = 'knockout';
+  
+  const groupMatches = noGroup ? [] : currentSportMatches.filter(m => isGroupStage(m.group));
   const knockoutMatches = currentSportMatches.filter(m => !isGroupStage(m.group) && (m.group || "").trim() !== "" && (m.group || "").trim() !== "-");
+  
   const sportIconFile = getSportIcon(sport);
   const sportIconHTML = sportIconFile ? `<img src="${sportIconFile}" alt="${sport}" class="sport-title-icon" onerror="this.style.display='none';">` : `<div class="logo-ring lg winner"><div class="logo-fallback">🏆</div></div>`;
+  
   let html = `<div class="glass-dark rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 mb-4 sm:mb-6">
-      <div class="flex items-center gap-3 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-white/10">
-        ${sportIconHTML}
-        <div class="min-w-0 flex-1">
-          <h2 class="font-heading font-black text-lg sm:text-2xl md:text-3xl text-transparent bg-gradient-to-r from-secondary via-yellow-300 to-secondary bg-clip-text leading-tight">${selectedSport}</h2>
-          <p class="text-white/60 text-xs sm:text-sm">ผังการแข่งขัน · ${currentSportMatches.length} คู่</p>
-        </div>
+    <div class="flex items-center gap-3 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-white/10">
+      ${sportIconHTML}
+      <div class="min-w-0 flex-1">
+        <h2 class="font-heading font-black text-lg sm:text-2xl md:text-3xl text-transparent bg-gradient-to-r from-secondary via-yellow-300 to-secondary bg-clip-text leading-tight">${selectedSport}</h2>
+        <p class="text-white/60 text-xs sm:text-sm">ผังการแข่งขัน · ${currentSportMatches.length} คู่</p>
       </div>
-      <div class="grid grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6 pb-3 sm:pb-4">
-        <button onclick="switchTab('group')" class="px-3 sm:px-6 py-3 sm:py-4 rounded-xl font-heading font-bold transition text-sm sm:text-base ${currentTab === 'group' ? 'btn-tab-active' : 'btn-tab-inactive'}" id="tab-group">📊 รอบแบ่งกลุ่ม</button>
-        <button onclick="switchTab('knockout')" class="px-3 sm:px-6 py-3 sm:py-4 rounded-xl font-heading font-bold transition text-sm sm:text-base ${currentTab === 'knockout' ? 'btn-tab-active' : 'btn-tab-inactive'}" id="tab-knockout">🏆 รอบ Knockout</button>
-      </div>`;
-  html += `<div id="content-group" class="tab-content ${currentTab === 'group' ? '' : 'hidden'}">`;
-  const sportKey = normalizeKey(sport);
-  const standingsForSport = groupStandings[sportKey];
-  if (groupMatches.length > 0 && standingsForSport) {
-    const groups = standingsForSport;
-    html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-4">`;
-    Object.keys(groups).sort().forEach(g => {
-      const groupLabel = g === "RR" ? "จัดอันดับรวม" : `สาย ${g}`;
-      html += `<div class="group-table">
-        <div class="px-3 sm:px-4 py-3 bg-gradient-to-r from-primary-800 to-primary-900 border-b border-yellow-500/30"><h4 class="font-heading font-bold text-secondary text-base sm:text-lg">${groupLabel}</h4></div>
-        <div class="overflow-x-auto"><table class="w-full min-w-[480px]">
-          <thead><tr><th class="text-left px-2 sm:px-3 py-2 text-xs sm:text-sm">ทีม</th><th class="text-center px-2 py-2 text-xs sm:text-sm">แข่ง</th><th class="text-center px-2 py-2 text-xs sm:text-sm">ชนะ</th><th class="text-center px-2 py-2 text-xs sm:text-sm">เสมอ</th><th class="text-center px-2 py-2 text-xs sm:text-sm">แพ้</th><th class="text-center px-2 py-2 text-xs sm:text-sm">ได้</th><th class="text-center px-2 py-2 text-xs sm:text-sm">เสีย</th><th class="text-center px-2 py-2 text-xs sm:text-sm">แต้ม</th></tr></thead>
-          <tbody>
-            ${groups[g].map((t, idx) => `<tr class="${idx < 2 ? 'qualified' : ''}">
-              <td class="px-2 sm:px-3 py-2"><div class="flex items-center gap-2">${getLogoHTML(t.name, "md")}<span class="font-semibold text-xs sm:text-sm">${shortTeamName(t.name)}</span>${idx < 2 ? '<span class="text-yellow-400 text-xs ml-1">★</span>' : ''}</div></td>
-              <td class="text-center font-mono text-xs sm:text-sm">${t.played}</td><td class="text-center font-mono text-xs sm:text-sm text-green-400">${t.win}</td><td class="text-center font-mono text-xs sm:text-sm text-yellow-400">${t.draw}</td><td class="text-center font-mono text-xs sm:text-sm text-red-400">${t.loss}</td><td class="text-center font-mono text-xs sm:text-sm">${t.gf}</td><td class="text-center font-mono text-xs sm:text-sm">${t.ga}</td><td class="text-center font-mono font-bold text-secondary text-xs sm:text-sm">${t.pts}</td>
-            </tr>`).join("")}
-          </tbody>
-        </table></div>
-      </div>`;
-    });
-    html += `</div>`;
-  } else {
-    html += `<div class="text-center py-16 sm:py-20 text-white/50"><div class="text-5xl sm:text-6xl mb-4">⏳</div><p class="text-sm sm:text-base">ยังไม่มีข้อมูลการแข่งขันรอบแบ่งกลุ่ม</p></div>`;
+    </div>`;
+  
+  // Only show tab switcher if NOT no-group sport
+  if (!noGroup) {
+    html += `<div class="grid grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6 pb-3 sm:pb-4">
+      <button onclick="switchTab('group')" class="px-3 sm:px-6 py-3 sm:py-4 rounded-xl font-heading font-bold transition text-sm sm:text-base ${currentTab === 'group' ? 'btn-tab-active' : 'btn-tab-inactive'}" id="tab-group">📊 รอบแบ่งกลุ่ม</button>
+      <button onclick="switchTab('knockout')" class="px-3 sm:px-6 py-3 sm:py-4 rounded-xl font-heading font-bold transition text-sm sm:text-base ${currentTab === 'knockout' ? 'btn-tab-active' : 'btn-tab-inactive'}" id="tab-knockout">🏆 รอบ Knockout</button>
+    </div>`;
   }
-  html += `</div>`;
-  html += `<div id="content-knockout" class="tab-content ${currentTab === 'knockout' ? '' : 'hidden'}">`;
+  
+  // Group content (only if not no-group)
+  if (!noGroup) {
+    html += `<div id="content-group" class="tab-content ${currentTab === 'group' ? '' : 'hidden'}">`;
+    const sportKey = normalizeKey(sport);
+    const standingsForSport = groupStandings[sportKey];
+    if (groupMatches.length > 0 && standingsForSport) {
+      const groups = standingsForSport;
+      html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-4">`;
+      Object.keys(groups).sort().forEach(g => {
+        const groupLabel = g === "RR" ? "จัดอันดับรวม" : `สาย ${g}`;
+        html += `<div class="group-table"><div class="px-3 sm:px-4 py-3 bg-gradient-to-r from-primary-800 to-primary-900 border-b border-yellow-500/30"><h4 class="font-heading font-bold text-secondary text-base sm:text-lg">${groupLabel}</h4></div><div class="overflow-x-auto"><table class="w-full min-w-[480px]"><thead><tr><th class="text-left px-2 sm:px-3 py-2 text-xs sm:text-sm">ทีม</th><th class="text-center px-2 py-2 text-xs sm:text-sm">แข่ง</th><th class="text-center px-2 py-2 text-xs sm:text-sm">ชนะ</th><th class="text-center px-2 py-2 text-xs sm:text-sm">เสมอ</th><th class="text-center px-2 py-2 text-xs sm:text-sm">แพ้</th><th class="text-center px-2 py-2 text-xs sm:text-sm">ได้</th><th class="text-center px-2 py-2 text-xs sm:text-sm">เสีย</th><th class="text-center px-2 py-2 text-xs sm:text-sm">แต้ม</th></tr></thead><tbody>${groups[g].map((t, idx) => `<tr class="${idx < 2 ? 'qualified' : ''}"><td class="px-2 sm:px-3 py-2"><div class="flex items-center gap-2">${getLogoHTML(t.name, "md")}<span class="font-semibold text-xs sm:text-sm">${shortTeamName(t.name)}</span>${idx < 2 ? '<span class="text-yellow-400 text-xs ml-1">★</span>' : ''}</div></td><td class="text-center font-mono text-xs sm:text-sm">${t.played}</td><td class="text-center font-mono text-xs sm:text-sm text-green-400">${t.win}</td><td class="text-center font-mono text-xs sm:text-sm text-yellow-400">${t.draw}</td><td class="text-center font-mono text-xs sm:text-sm text-red-400">${t.loss}</td><td class="text-center font-mono text-xs sm:text-sm">${t.gf}</td><td class="text-center font-mono text-xs sm:text-sm">${t.ga}</td><td class="text-center font-mono font-bold text-secondary text-xs sm:text-sm">${t.pts}</td></tr>`).join("")}</tbody></table></div></div>`;
+      });
+      html += `</div>`;
+    } else {
+      html += `<div class="text-center py-16 sm:py-20 text-white/50"><div class="text-5xl sm:text-6xl mb-4">⏳</div><p class="text-sm sm:text-base">ยังไม่มีข้อมูลการแข่งขันรอบแบ่งกลุ่ม</p></div>`;
+    }
+    html += `</div>`;
+  }
+  
+  // Knockout content
+  html += `<div id="content-knockout" class="tab-content ${noGroup || currentTab === 'knockout' ? '' : 'hidden'}">`;
   const finalMatches = knockoutMatches.filter(m => { const g = (m.group || "").trim().toUpperCase(); return (g.includes("ชิงที่ 1") || g.includes("ชิงชนะเลิศ")); });
   const thirdMatches = knockoutMatches.filter(m => (m.group || "").trim().toUpperCase().includes("ชิงที่ 3"));
   const specialMatches = knockoutMatches.filter(m => (m.group || "").includes("พิเศษ"));
@@ -1690,6 +1511,7 @@ function renderBracketContent() {
   const finalMatch = finalMatches[0];
   const champion = finalMatch ? (finalMatch.goldSchool ? findSchoolName(finalMatch.goldSchool) : (finalMatch.winnerOverride || finalMatch.status === "finished" ? findSchoolName(resolveTeamName(getWinner(finalMatch), sport)) : null)) : null;
   const runnerUp = finalMatch ? (finalMatch.silverSchool ? findSchoolName(finalMatch.silverSchool) : (finalMatch.loserOverride || finalMatch.status === "finished" ? findSchoolName(resolveTeamName(getLoser(finalMatch), sport)) : null)) : null;
+  
   if (finalMatches.length > 0 || thirdMatches.length > 0 || semiMatches.length > 0 || specialMatches.length > 0) {
     html += `<div class="bracket-flow">`;
     if (semiMatches.length > 0) html += `<div class="bracket-column"><h3 class="bracket-column-title">รอบรองชนะเลิศ</h3><div class="bracket-column-body">${semiMatches.map(m => renderBracketMatch(m)).join("")}</div></div>`;
@@ -1713,13 +1535,17 @@ function renderBracketContent() {
 }
 
 function switchTab(tab) {
+  // Prevent switching to group for no-group sports
+  if (isNoGroupStage(selectedSport) && tab === 'group') return;
   currentTab = tab;
   const tabGroup = document.getElementById('tab-group');
   const tabKnockout = document.getElementById('tab-knockout');
   if (tabGroup) tabGroup.className = `px-3 sm:px-6 py-3 sm:py-4 rounded-xl font-heading font-bold transition text-sm sm:text-base ${tab === 'group' ? 'btn-tab-active' : 'btn-tab-inactive'}`;
   if (tabKnockout) tabKnockout.className = `px-3 sm:px-6 py-3 sm:py-4 rounded-xl font-heading font-bold transition text-sm sm:text-base ${tab === 'knockout' ? 'btn-tab-active' : 'btn-tab-inactive'}`;
-  document.getElementById('content-group').classList.toggle('hidden', tab !== 'group');
-  document.getElementById('content-knockout').classList.toggle('hidden', tab !== 'knockout');
+  const cg = document.getElementById('content-group');
+  const ck = document.getElementById('content-knockout');
+  if (cg) cg.classList.toggle('hidden', tab !== 'group');
+  if (ck) ck.classList.toggle('hidden', tab !== 'knockout');
 }
 
 function renderBracketMatch(m, isThirdPlaceColumn = false) {
@@ -1751,11 +1577,19 @@ function renderBracketMatch(m, isThirdPlaceColumn = false) {
   const bIsPlaceholder = !hasResult || isPlaceholder(displayB);
   if (isThirdPlaceColumn && hasResult && aWon && logoA && !isPlaceholder(realA)) logoA = getLogoHTML(realA, "md", "third-place");
   if (isThirdPlaceColumn && hasResult && bWon && logoB && !isPlaceholder(realB)) logoB = getLogoHTML(realB, "md", "third-place");
-  return `<div class="bracket-match">
-      <div class="bracket-team ${aWon ? 'team-winner' : (isFinished && bWon ? 'team-loser' : '')}">${logoA}<span class="bracket-team-name ${aIsPlaceholder ? 'placeholder' : ''}">${displayA}</span><span class="bracket-team-score">${scoreA}</span>${aWon ? '<span>🏆</span>' : ''}</div>
-      <div class="bracket-team ${bWon ? 'team-winner' : (isFinished && aWon ? 'team-loser' : '')}">${logoB}<span class="bracket-team-name ${bIsPlaceholder ? 'placeholder' : ''}">${displayB}</span><span class="bracket-team-score">${scoreB}</span>${bWon ? '<span>🏆</span>' : ''}</div>
-      <div class="bracket-time">📅 ${m.date} · ${m.time}${isLive ? '<span class="live-badge bg-accent text-white ml-2">LIVE</span>' : isFinished ? '<span class="text-green-400 ml-2">✅ จบ</span>' : m.winnerOverride ? '<span class="text-yellow-400 ml-2">⚡ Override</span>' : '<span class="text-white/40 ml-2">⏳ รอแข่ง</span>'}</div>
-    </div>`;
+  return `<div class="bracket-match"><div class="bracket-team ${aWon ? 'team-winner' : (isFinished && bWon ? 'team-loser' : '')}">${logoA}<span class="bracket-team-name ${aIsPlaceholder ? 'placeholder' : ''}">${displayA}</span><span class="bracket-team-score">${scoreA}</span>${aWon ? '<span>🏆</span>' : ''}</div><div class="bracket-team ${bWon ? 'team-winner' : (isFinished && aWon ? 'team-loser' : '')}">${logoB}<span class="bracket-team-name ${bIsPlaceholder ? 'placeholder' : ''}">${displayB}</span><span class="bracket-team-score">${scoreB}</span>${bWon ? '<span>🏆</span>' : ''}</div><div class="bracket-time">📅 ${m.date} · ${m.time}${isLive ? '<span class="live-badge bg-accent text-white ml-2">LIVE</span>' : isFinished ? '<span class="text-green-400 ml-2">✅ จบ</span>' : m.winnerOverride ? '<span class="text-yellow-400 ml-2">⚡ Override</span>' : '<span class="text-white/40 ml-2">⏳ รอแข่ง</span>'}</div></div>`;
+}
+
+async function fetchOtherData() {
+  try {
+    const res = await fetch(CONFIG.OTHER_CSV_URL + "&t=" + Date.now(), { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const csv = await res.text();
+    const parsed = Papa.parse(csv, { header: true, skipEmptyLines: true, transformHeader: h => h.trim() });
+    processOtherData(parsed.data);
+  } catch (err) {
+    console.warn('[Other] Fetch error:', err);
+  }
 }
 
 async function fetchAllData() {
@@ -1792,6 +1626,9 @@ async function fetchAllData() {
         athleticsOK = true;
       } catch (e) { console.warn('[Athletics] Parse error:', e); }
     }
+    // Fetch other data
+    await fetchOtherData();
+    
     renderMedalTally();
     if (document.getElementById('page-school-medal-summary').classList.contains('active')) renderSchoolSummaryGrid();
     if (document.getElementById('page-sports-table').classList.contains('active')) renderSportsMedalTable();
@@ -1823,13 +1660,8 @@ function convertAPItoMatches(rows) {
     if (knockout1 && isKnockoutRow) teamA = knockout1;
     if (knockout2 && isKnockoutRow) teamB = knockout2;
     matches.push({
-      no: no,
-      date: String(obj.date || '').trim(),
-      time: String(obj.time || '').trim(),
-      sport: String(obj.sport || '').trim(),
-      teamA: teamA,
-      teamB: teamB,
-      group: groupStr,
+      no, date: String(obj.date || '').trim(), time: String(obj.time || '').trim(),
+      sport: String(obj.sport || '').trim(), teamA, teamB, group: groupStr,
       scoreA: String(obj.scoreA !== undefined && obj.scoreA !== '' ? obj.scoreA : '0').trim(),
       scoreB: String(obj.scoreB !== undefined && obj.scoreB !== '' ? obj.scoreB : '0').trim(),
       status: String(obj.status || 'upcoming').toLowerCase().trim(),
@@ -1839,8 +1671,7 @@ function convertAPItoMatches(rows) {
       goldSchool: String(obj['ทอง'] || '').trim(),
       silverSchool: String(obj['เงิน'] || '').trim(),
       bronzeSchool: String(obj['ทองแดง'] || '').trim(),
-      knockout1: knockout1,
-      knockout2: knockout2
+      knockout1, knockout2
     });
   });
   return matches;
@@ -1912,17 +1743,15 @@ function updateTicker() {
   if (newText === oldText && lastTickerHTML !== '') { ticker.classList.remove("hidden-ticker"); return; }
   lastTickerHTML = html;
   content.innerHTML = html + ` <span class="ticker-sep">★</span> `;
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const contentWidth = content.scrollWidth;
-      const containerWidth = ticker.clientWidth || window.innerWidth;
-      const totalDistance = contentWidth + containerWidth;
-      const duration = Math.max(20, totalDistance / 70);
-      content.style.animation = 'none';
-      void content.offsetHeight;
-      content.style.animation = `marquee ${duration}s linear infinite`;
-    });
-  });
+  requestAnimationFrame(() => { requestAnimationFrame(() => {
+    const contentWidth = content.scrollWidth;
+    const containerWidth = ticker.clientWidth || window.innerWidth;
+    const totalDistance = contentWidth + containerWidth;
+    const duration = Math.max(20, totalDistance / 70);
+    content.style.animation = 'none';
+    void content.offsetHeight;
+    content.style.animation = `marquee ${duration}s linear infinite`;
+  }); });
   ticker.classList.remove("hidden-ticker");
 }
 
@@ -1942,7 +1771,6 @@ function setConnectionStatus(type, text) {
   dot.className = "w-2 h-2 rounded-full " + (colors[type] || "bg-gray-400"); 
   label.textContent = text; 
 }
-
 function updateLastUpdate() { 
   const el = document.getElementById("lastUpdate"); 
   if (el) el.textContent = new Date().toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit", second: "2-digit" }); 
@@ -1979,25 +1807,14 @@ function showPage(page) {
 }
 
 function scrollToId(id) { 
-  setTimeout(() => { 
-    const el = document.getElementById(id); 
-    if (el) { 
-      const top = el.getBoundingClientRect().top + window.pageYOffset - 120; 
-      window.scrollTo({ top, behavior: 'smooth' }); 
-    }
-  }, 100); 
+  setTimeout(() => { const el = document.getElementById(id); if (el) { const top = el.getBoundingClientRect().top + window.pageYOffset - 120; window.scrollTo({ top, behavior: 'smooth' }); } }, 100); 
 }
 
 window.addEventListener('scroll', () => { 
   const navbar = document.getElementById('navbar'); 
   if (document.getElementById('page-bracket').classList.contains('active') || document.getElementById('page-school-medal-summary').classList.contains('active') || document.getElementById('page-sports-table').classList.contains('active')) return; 
-  if (window.scrollY > 20) { 
-    navbar.classList.add('glass-dark', 'shadow-lg'); 
-    navbar.classList.remove('bg-transparent'); 
-  } else { 
-    navbar.classList.remove('glass-dark', 'shadow-lg'); 
-    navbar.classList.add('bg-transparent'); 
-  } 
+  if (window.scrollY > 20) { navbar.classList.add('glass-dark', 'shadow-lg'); navbar.classList.remove('bg-transparent'); } 
+  else { navbar.classList.remove('glass-dark', 'shadow-lg'); navbar.classList.add('bg-transparent'); } 
 });
 
 function initSlideshow() {
@@ -2025,10 +1842,8 @@ document.addEventListener("DOMContentLoaded", () => {
   updateTickerVisibility();
   fetchAllData();
   setInterval(() => { fetchAllData(); }, CONFIG.REFRESH_INTERVAL);
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) fetchAllData();
-  });
-  console.log("✅ Doitao Sports 2026 - v24 (Mobile UX Enhanced)");
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) fetchAllData(); });
+  console.log("✅ Doitao Sports 2026 - v25 (Trophies Restructured + No Group Stage)");
 });
 </script>
 
