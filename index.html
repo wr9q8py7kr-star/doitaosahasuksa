@@ -58,10 +58,18 @@
   @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
   @keyframes pulseBtn { 0%, 100% { box-shadow: 0 0 0 0 rgba(252,211,77,0.7), 0 6px 20px rgba(107,33,168,0.5); } 50% { box-shadow: 0 0 0 10px rgba(252,211,77,0), 0 6px 24px rgba(107,33,168,0.8); } }
   @keyframes shine { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
-  /* ✅ v31: Kahoot podium bob animation */
   @keyframes podiumBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
   @keyframes podiumPop { 0% { transform: scale(0.7); opacity: 0; } 60% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
   @keyframes crownSpin { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
+  /* ✅ v32: Neon glow for winner names */
+  @keyframes neonPulse {
+    0%, 100% { text-shadow: 0 0 6px #FCD34D, 0 0 14px #F59E0B, 0 0 22px rgba(252,211,77,0.55); }
+    50% { text-shadow: 0 0 10px #FCD34D, 0 0 22px #F59E0B, 0 0 38px rgba(252,211,77,0.9); }
+  }
+  @keyframes neonLogoPulse {
+    0%, 100% { box-shadow: 0 0 8px #FCD34D, 0 0 14px rgba(252,211,77,0.5); }
+    50% { box-shadow: 0 0 14px #FCD34D, 0 0 26px rgba(252,211,77,0.85); }
+  }
 
   .animate-fade-in { animation: fadeIn 0.6s ease-in-out; }
   .animate-slide-up { animation: slideUp 0.8s ease-out; }
@@ -92,7 +100,6 @@
   .page-view { display: none; }
   .page-view.active { display: block; animation: fadeIn 0.4s ease-in-out; }
 
-  /* ✅ v31: Announcement marquee bar - faster speed */
   .announcement-bar { background: linear-gradient(90deg, #DC2626, #F59E0B); overflow: hidden; white-space: nowrap; width: 100%; height: 28px; display: flex; align-items: center; border-top: 1px solid rgba(252,211,77,0.4); border-bottom: 1px solid rgba(252,211,77,0.5); }
   .announcement-content { display: inline-block; white-space: nowrap; padding-left: 100%; font-family: 'Kanit', sans-serif; font-size: 13px; font-weight: 700; color: #FFFFFF; letter-spacing: 0.4px; text-shadow: 0 1px 2px rgba(0,0,0,0.3); will-change: transform; }
   .announcement-content .ann-sep { color: #FEF3C7; margin: 0 14px; font-size: 14px; }
@@ -101,14 +108,12 @@
     .announcement-content { font-size: 14px; }
   }
 
-  /* ✅ v30: Mobile Nav Grid */
   .mobile-nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 6px 8px; }
   .mobile-nav-grid > button { display: flex; align-items: center; justify-content: center; gap: 4px; padding: 8px 6px; border-radius: 8px; font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s ease; min-height: 40px; line-height: 1.15; text-align: center; }
   .mobile-nav-grid > button:hover { background: rgba(107,33,168,0.8); border-color: #FCD34D; }
   .mobile-nav-grid > button.live-btn { background: #DC2626; color: white; grid-column: span 3; }
   .mobile-nav-grid > button.live-btn:hover { background: #B91C1C; }
 
-  /* ✅ v31: Athletics table sticky (fixed cross-browser) */
   .athletics-table-wrapper { max-height: 75vh; overflow: auto; position: relative; -webkit-overflow-scrolling: touch; }
   .athletics-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 720px; }
   .athletics-table thead th { background: #4C1D95; color: #FCD34D; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
@@ -132,51 +137,17 @@
     .athletics-table thead th.col-name { left: 42px; }
   }
 
-  /* ✅ v31: Bracket 2x2 Grid (fits screen, no horizontal scroll) */
-  .bracket-2x2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    width: 100%;
-  }
-  .bracket-cell {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    min-width: 0;
-    overflow: hidden;
-  }
-  .bracket-cell-body {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    min-width: 0;
-  }
-  .bracket-empty {
-    text-align: center;
-    padding: 18px 8px;
-    color: rgba(255,255,255,0.4);
-    font-size: 12px;
-    font-style: italic;
-    border: 1px dashed rgba(255,255,255,0.15);
-    border-radius: 10px;
-    background: rgba(0,0,0,0.2);
-  }
-  @media (max-width: 480px) {
-    .bracket-2x2 { gap: 8px; }
-    .bracket-cell { gap: 4px; }
-    .bracket-cell-body { gap: 6px; }
-  }
-
-  /* ✅ v31: Kahoot-style podium */
+  /* ✅ v32: Kahoot-style podium */
   .podium-kahoot {
     display: flex;
     align-items: flex-end;
     justify-content: center;
     gap: 6px;
     padding: 8px 4px 0;
-    min-height: 190px;
+    min-height: 200px;
     width: 100%;
+    margin: 0 auto;
+    max-width: 520px;
   }
   .podium-item {
     display: flex;
@@ -184,7 +155,7 @@
     align-items: center;
     flex: 1 1 0;
     min-width: 0;
-    max-width: 130px;
+    max-width: 140px;
     animation: podiumBob 1.8s ease-in-out infinite;
   }
   .podium-1 { animation-delay: 0s; }
@@ -243,7 +214,7 @@
   .step-2 { height: 55px; background: linear-gradient(180deg, #F3F4F6 0%, #D1D5DB 50%, #9CA3AF 100%); color: #374151; }
   .step-3 { height: 42px; background: linear-gradient(180deg, #FBBF24 0%, #D97706 50%, #92400E 100%); color: #FEF3C7; }
   @media (max-width: 640px) {
-    .podium-kahoot { min-height: 160px; gap: 4px; padding: 6px 2px 0; }
+    .podium-kahoot { min-height: 170px; gap: 4px; padding: 6px 2px 0; }
     .podium-step { font-size: 18px; }
     .step-1 { height: 60px; }
     .step-2 { height: 45px; }
@@ -253,6 +224,166 @@
     .podium-crown { font-size: 16px; }
     .podium-item .logo-ring { width: 36px; height: 36px; min-width: 36px; min-height: 36px; }
     .podium-item .logo-ring .logo-fallback { font-size: 14px; }
+  }
+
+  /* ✅ v32: Consolidated Finals Table */
+  .finals-table-container {
+    background: linear-gradient(135deg, rgba(30,27,75,0.95), rgba(76,29,149,0.85));
+    border: 2px solid rgba(252,211,77,0.45);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(107,33,168,0.4);
+  }
+  .finals-table-title {
+    font-family: 'Kanit', sans-serif;
+    font-weight: 900;
+    font-size: 15px;
+    color: #FCD34D;
+    text-align: center;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #6B21A8, #4C1D95);
+    border-bottom: 2px solid rgba(252,211,77,0.4);
+    text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    letter-spacing: 0.3px;
+  }
+  .finals-table-section-header {
+    font-family: 'Kanit', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    color: #FCD34D;
+    padding: 8px 16px;
+    background: rgba(107,33,168,0.55);
+    border-top: 1px solid rgba(252,211,77,0.25);
+    border-bottom: 1px solid rgba(252,211,77,0.15);
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+  .finals-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    table-layout: fixed;
+  }
+  .finals-table thead { background: rgba(107,33,168,0.35); }
+  .finals-table thead th {
+    font-family: 'Kanit', sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    color: rgba(252,211,77,0.85);
+    text-align: center;
+    padding: 6px 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(252,211,77,0.2);
+  }
+  .finals-table tbody td {
+    padding: 8px 6px;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    vertical-align: middle;
+    overflow: hidden;
+  }
+  .finals-table tbody tr:last-child td { border-bottom: none; }
+  .finals-table tbody tr:hover { background: rgba(252,211,77,0.08); }
+
+  .finals-team {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    width: 100%;
+  }
+  .finals-team-left { justify-content: flex-start; }
+  .finals-team-right { justify-content: flex-end; flex-direction: row-reverse; }
+  .finals-team-name {
+    font-family: 'Kanit', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: #E5E7EB;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    flex: 1;
+  }
+  .finals-team-left .finals-team-name { text-align: left; }
+  .finals-team-right .finals-team-name { text-align: right; }
+  .finals-team-name.winner {
+    color: #FCD34D;
+    font-weight: 900;
+    animation: neonPulse 1.6s ease-in-out infinite;
+  }
+  .finals-team-logo {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid rgba(252,211,77,0.5);
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+    background: linear-gradient(135deg, #4C1D95, #6B21A8);
+    transition: all 0.3s ease;
+  }
+  .finals-team-logo img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 2;
+  }
+  .finals-team-logo .fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 900;
+    font-size: 12px;
+    color: white;
+    z-index: 1;
+  }
+  .finals-team-logo.winner {
+    border-color: #FCD34D;
+    animation: neonLogoPulse 1.6s ease-in-out infinite;
+  }
+  .finals-vs {
+    font-family: 'Kanit', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .finals-score {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 900;
+    font-size: 14px;
+    color: #FCD34D;
+    text-align: center;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  }
+  .finals-score.empty {
+    color: rgba(255,255,255,0.3);
+    text-shadow: none;
+    font-weight: 700;
+  }
+  .finals-empty-row td {
+    text-align: center;
+    color: rgba(255,255,255,0.4);
+    font-style: italic;
+    padding: 14px 8px;
+    font-size: 12px;
+  }
+  @media (max-width: 480px) {
+    .finals-team-name { font-size: 11px; }
+    .finals-team-logo { width: 22px; height: 22px; }
+    .finals-team-logo .fallback { font-size: 10px; }
+    .finals-score { font-size: 12px; }
+    .finals-table-title { font-size: 13px; padding: 10px 12px; }
+    .finals-table-section-header { font-size: 12px; padding: 6px 12px; }
+    .finals-table tbody td { padding: 6px 4px; }
   }
 
   .nav-scroll { display: flex; gap: 6px; overflow-x: auto; padding: 8px 12px; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; scrollbar-width: none; }
@@ -276,7 +407,6 @@
   .school-logo-large .fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
   .school-logo-large img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
 
-  /* ✅ v31: Medal table sticky header */
   .medal-table { background: linear-gradient(135deg, #1E1B4B, #4C1D95); border-radius: 20px; overflow: hidden; box-shadow: 0 12px 40px rgba(107,33,168,0.3); border: 2px solid rgba(252,211,77,0.4); }
   .medal-table-header { background: linear-gradient(135deg, #6B21A8, #4C1D95); padding: 16px 20px; border-bottom: 2px solid rgba(252,211,77,0.4); }
   .medal-table-title { font-family: 'Kanit', sans-serif; font-weight: 900; font-size: 20px; color: #FCD34D; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -514,7 +644,6 @@
           <div class="medal-table-title"><span>🏆</span><span>ตารางเหรียญรางวัล</span><span>🏆</span></div>
           <p class="text-center text-white/60 text-xs mt-1" id="medalUpdateTime">—</p>
         </div>
-        <!-- ✅ v31: Scroll container + sticky header -->
         <div class="medal-table-scroll">
           <div class="medal-row header">
             <div class="text-center">อันดับ</div>
@@ -720,8 +849,8 @@ const CONFIG = {
   API_URL: "https://script.google.com/macros/s/AKfycbzP0vPVRSmWOd5VaUrOSCl8kMrKqqFoS-9v7WLZTWiQ5ECWEu1Y1T2I54SKF58o1jPy/exec",
   REFRESH_INTERVAL: 2000,
   SLIDE_INTERVAL: 4500,
-  TICKER_SPEED: 70,       // px/s (score ticker)
-  ANNOUNCE_SPEED: 100,    // ✅ v31: px/s (announcement - faster than ticker)
+  TICKER_SPEED: 70,
+  ANNOUNCE_SPEED: 100,
 };
 
 const NO_GROUP_STAGE_SPORTS = ["ฟุตบอลหญิง", "วอลเลย์บอลชาย"];
@@ -1364,7 +1493,6 @@ function updateAnnouncementBar() {
     const contentWidth = content.scrollWidth;
     const containerWidth = bar.clientWidth || window.innerWidth;
     const totalDistance = contentWidth + containerWidth;
-    // ✅ v31: faster than ticker
     const duration = Math.max(15, totalDistance / CONFIG.ANNOUNCE_SPEED);
     content.style.animation = 'none';
     void content.offsetHeight;
@@ -1640,7 +1768,6 @@ function renderTrophyCard(team, type, emoji, label) {
   return `<div class="trophy-card ${type}"><div class="trophy-emoji">${emoji}</div>${getTrophyLogoHTML(team.name)}<div class="trophy-info"><div class="trophy-name">${shortTeamName(team.name)}</div><div class="trophy-detail">${label}</div></div></div>`;
 }
 
-// ✅ v31: Kahoot-style podium renderer
 function renderKahootPodium(champ, runner, third) {
   const safeName = (n) => (n && !isPlaceholder(n)) ? shortTeamName(n) : null;
   const cName = safeName(champ), rName = safeName(runner), tName = safeName(third);
@@ -1667,6 +1794,69 @@ function renderKahootPodium(champ, runner, third) {
     ${makeItem(rName, 2, '🥈')}
     ${makeItem(cName, 1, '🥇')}
     ${makeItem(tName, 3, '🥉')}
+  </div>`;
+}
+
+// ✅ v32: Consolidated finals table (Semi | 3rd | Final) in one table
+function renderFinalsTable(sport, semiMatches, thirdMatches, finalMatches) {
+  // Helper: render a single match row
+  const renderMatchRow = (m, isThird = false) => {
+    const hasResult = m.status === "finished" || m.status === "live" || m.winnerOverride;
+    const rawA = m.knockout1 || m.teamA;
+    const rawB = m.knockout2 || m.teamB;
+    let teamAName, teamBName, logoA, logoB;
+    if (hasResult) {
+      const realA = resolveTeamName(rawA, sport);
+      const realB = resolveTeamName(rawB, sport);
+      teamAName = isPlaceholder(realA) ? realA : shortTeamName(realA);
+      teamBName = isPlaceholder(realB) ? realB : shortTeamName(realB);
+      logoA = isPlaceholder(realA) ? null : getLogoPath(realA);
+      logoB = isPlaceholder(realB) ? null : getLogoPath(realB);
+    } else {
+      teamAName = rawA; teamBName = rawB; logoA = null; logoB = null;
+    }
+    const winner = getWinner(m);
+    const aWon = winner && (winner === rawA || winner === m.teamA);
+    const bWon = winner && (winner === rawB || winner === m.teamB);
+    const hasScoreA = m.scoreA !== null && m.scoreA !== undefined && String(m.scoreA).trim() !== '';
+    const hasScoreB = m.scoreB !== null && m.scoreB !== undefined && String(m.scoreB).trim() !== '';
+    const scoreText = (hasScoreA && hasScoreB) ? `${m.scoreA}:${m.scoreB}` : '—';
+    const logoAHtml = logoA
+      ? `<div class="finals-team-logo ${aWon ? 'winner' : ''}"><div class="fallback">${getSchoolInitial(teamAName)}</div><img src="${logoA}" onload="this.previousElementSibling.style.display='none';" onerror="this.style.display='none';"></div>`
+      : `<div class="finals-team-logo"><div class="fallback">?</div></div>`;
+    const logoBHtml = logoB
+      ? `<div class="finals-team-logo ${bWon ? 'winner' : ''}"><div class="fallback">${getSchoolInitial(teamBName)}</div><img src="${logoB}" onload="this.previousElementSibling.style.display='none';" onerror="this.style.display='none';"></div>`
+      : `<div class="finals-team-logo"><div class="fallback">?</div></div>`;
+    return `<tr>
+      <td><div class="finals-team finals-team-left">${logoAHtml}<span class="finals-team-name ${aWon ? 'winner' : ''}" title="${teamAName}">${teamAName}</span></div></td>
+      <td class="finals-vs">vs</td>
+      <td><div class="finals-team finals-team-right"><span class="finals-team-name ${bWon ? 'winner' : ''}" title="${teamBName}">${teamBName}</span>${logoBHtml}</div></td>
+      <td class="finals-score ${scoreText === '—' ? 'empty' : ''}">${scoreText}</td>
+    </tr>`;
+  };
+
+  const emptyRow = `<tr class="finals-empty-row"><td colspan="4">ยังไม่มีข้อมูล</td></tr>`;
+
+  return `<div class="finals-table-container">
+    <div class="finals-table-title">🏆 ตาราง 4 ทีมสุดท้าย · ${sport}</div>
+
+    <div class="finals-table-section-header">📊 รอบรองชนะเลิศ</div>
+    <table class="finals-table">
+      <thead><tr><th style="width:38%">โรงเรียน</th><th style="width:8%"></th><th style="width:38%">โรงเรียน</th><th style="width:16%">ผล</th></tr></thead>
+      <tbody>${semiMatches.length > 0 ? semiMatches.map(m => renderMatchRow(m)).join("") : emptyRow}</tbody>
+    </table>
+
+    <div class="finals-table-section-header">🥉 ชิงที่ 3</div>
+    <table class="finals-table">
+      <thead><tr><th style="width:38%">โรงเรียน</th><th style="width:8%"></th><th style="width:38%">โรงเรียน</th><th style="width:16%">ผล</th></tr></thead>
+      <tbody>${thirdMatches.length > 0 ? thirdMatches.map(m => renderMatchRow(m, true)).join("") : emptyRow}</tbody>
+    </table>
+
+    <div class="finals-table-section-header">🏆 ชิงแชมป์</div>
+    <table class="finals-table">
+      <thead><tr><th style="width:38%">โรงเรียน</th><th style="width:8%"></th><th style="width:38%">โรงเรียน</th><th style="width:16%">ผล</th></tr></thead>
+      <tbody>${finalMatches.length > 0 ? finalMatches.map(m => renderMatchRow(m)).join("") : emptyRow}</tbody>
+    </table>
   </div>`;
 }
 
@@ -1746,7 +1936,6 @@ function renderBracketContent() {
   const finalMatch = finalMatches[0];
   const champion = finalMatch ? (finalMatch.goldSchool ? findSchoolName(finalMatch.goldSchool) : (finalMatch.winnerOverride || finalMatch.status === "finished" ? findSchoolName(resolveTeamName(getWinner(finalMatch), sport)) : null)) : null;
   const runnerUp = finalMatch ? (finalMatch.silverSchool ? findSchoolName(finalMatch.silverSchool) : (finalMatch.loserOverride || finalMatch.status === "finished" ? findSchoolName(resolveTeamName(getLoser(finalMatch), sport)) : null)) : null;
-  // ✅ v31: Get 3rd place winner
   const thirdPlaceMatch = thirdMatches[0];
   const thirdPlaceWinner = thirdPlaceMatch ? (
     thirdPlaceMatch.bronzeSchool ? findSchoolName(thirdPlaceMatch.bronzeSchool) :
@@ -1754,38 +1943,21 @@ function renderBracketContent() {
       findSchoolName(resolveTeamName(getWinner(thirdPlaceMatch), sport)) : null)
   ) : (finalMatch && finalMatch.bronzeSchool ? findSchoolName(finalMatch.bronzeSchool) : null);
 
-  // ✅ v31: Always show 2x2 grid even when data is sparse
-  html += `<div class="bracket-2x2">`;
-
-  // Cell 1: Semi-finals
-  html += `<div class="bracket-cell">
-    <h3 class="bracket-column-title">รอบรองชนะเลิศ</h3>
-    <div class="bracket-cell-body">${semiMatches.length > 0 ? semiMatches.map(m => renderBracketMatch(m)).join("") : '<div class="bracket-empty">ยังไม่มีข้อมูล</div>'}</div>
-  </div>`;
-
-  // Cell 2: Finals
-  html += `<div class="bracket-cell">
-    <h3 class="bracket-column-title">🏆 รอบชิงชนะเลิศ</h3>
-    <div class="bracket-cell-body">${finalMatches.length > 0 ? finalMatches.map(m => renderBracketMatch(m)).join("") : '<div class="bracket-empty">ยังไม่มีข้อมูล</div>'}</div>
-  </div>`;
-
-  // Cell 3: 3rd place match
-  html += `<div class="bracket-cell">
-    <h3 class="bracket-column-title">🥉 ชิงที่ 3</h3>
-    <div class="bracket-cell-body">${thirdMatches.length > 0 ? thirdMatches.map(m => renderBracketMatch(m, true)).join("") : '<div class="bracket-empty">ยังไม่มีข้อมูล</div>'}</div>
-  </div>`;
-
-  // Cell 4: Kahoot Podium
-  html += `<div class="bracket-cell">
-    <h3 class="bracket-column-title">🎖️ แท่นรับรางวัล</h3>
-    <div class="bracket-cell-body">
-      ${(champion || runnerUp || thirdPlaceWinner) ? renderKahootPodium(champion, runnerUp, thirdPlaceWinner) : '<div class="bracket-empty">รอผลการแข่งขัน</div>'}
-    </div>
-  </div>`;
-
+  // ✅ v32: Podium on top, consolidated table below
+  html += `<div style="display:flex;flex-direction:column;gap:14px;">`;
+  // Podium (top)
+  html += `<div class="glass-dark rounded-2xl p-3 sm:p-4">`;
+  if (champion || runnerUp || thirdPlaceWinner) {
+    html += renderKahootPodium(champion, runnerUp, thirdPlaceWinner);
+  } else {
+    html += `<div style="text-align:center;padding:24px;color:rgba(255,255,255,0.4);font-style:italic;">🏆 รอผลการแข่งขันรอบชิงชนะเลิศ</div>`;
+  }
+  html += `</div>`;
+  // Consolidated table (bottom)
+  html += renderFinalsTable(sport, semiMatches, thirdMatches, finalMatches);
   html += `</div>`;
 
-  // Special matches (if any) below the grid
+  // Special matches (if any)
   if (specialMatches.length > 0) {
     html += `<div style="margin-top:14px;">
       <h3 class="bracket-column-title" style="margin-bottom:10px;">⭐ รายการพิเศษ</h3>
@@ -2116,7 +2288,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAllData();
   setInterval(() => { fetchAllData(); }, CONFIG.REFRESH_INTERVAL);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) fetchAllData(); });
-  console.log("✅ Doitao Sports 2026 - v31 (Kahoot Podium + 2x2 Bracket + Sticky Tables)");
+  console.log("✅ Doitao Sports 2026 - v32 (Podium + Consolidated Finals Table + Neon Winner)");
 });
 </script>
 
