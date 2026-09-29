@@ -59,7 +59,7 @@
   @keyframes pulseBtn { 0%, 100% { box-shadow: 0 0 0 0 rgba(252,211,77,0.7), 0 6px 20px rgba(107,33,168,0.5); } 50% { box-shadow: 0 0 0 10px rgba(252,211,77,0), 0 6px 24px rgba(107,33,168,0.8); } }
   @keyframes shine { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
 
-  /* ✅ v34: Podium float — no blink, no opacity flash */
+  /* ✅ v35: Podium float — no blink, no opacity flash */
   @keyframes podiumFloat {
     0%, 100% { transform: translateY(0); }
     50%      { transform: translateY(-7px); }
@@ -923,6 +923,7 @@ let selectedSport = "";
 let athleticsData = [];
 let athleticsMedals = {};
 let announcements = [];
+let lastBracketHash = '';  // ✅ v35: เก็บ hash ของข้อมูล bracket ล่าสุด เพื่อเช็คว่ามีการเปลี่ยนแปลงจริงหรือไม่
 
 let trophiesOther = {
   parade:   { large: {first:null,second:null,third:null}, small: {first:null,second:null,third:null} },
@@ -2058,8 +2059,15 @@ async function fetchAllData() {
         if (matches.length > 0) {
           allMatches = matches;
           processTournamentData(allMatches);
-          renderSportTabs();
-          renderBracketContent();
+          // ✅ v35: เช็ค hash ก่อน re-render — ถ้าข้อมูลไม่เปลี่ยน ให้ข้าม (ไม่กระพริบ)
+          const newHash = allMatches.map(m =>
+            `${m.no}|${m.sport}|${m.teamA}|${m.teamB}|${m.scoreA}|${m.scoreB}|${m.status}|${m.winnerOverride}|${m.loserOverride}|${m.goldSchool}|${m.silverSchool}|${m.bronzeSchool}|${m.group}`
+          ).join('||');
+          if (newHash !== lastBracketHash) {
+            lastBracketHash = newHash;
+            renderSportTabs();
+            renderBracketContent();
+          }
           scoreOK = true;
         }
       } catch (e) { console.warn('[Bracket] Parse error:', e); }
@@ -2311,7 +2319,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAllData();
   setInterval(() => { fetchAllData(); }, CONFIG.REFRESH_INTERVAL);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) fetchAllData(); });
-  console.log("✅ Doitao Sports 2026 - v34 (Smooth Podium + Fixed Score Box + Bigger Logos)");
+  console.log("✅ Doitao Sports 2026 - v35 (No-flicker Podium + Smooth Finals Table)");
 });
 </script>
 
