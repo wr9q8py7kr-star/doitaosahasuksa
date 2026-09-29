@@ -32,12 +32,29 @@
   html, body { overflow-x: hidden; }
   body { font-family: 'Sarabun', sans-serif; background-color: #FAFAF9; color: #1E1B4B; }
   h1, h2, h3, h4, h5 { font-family: 'Kanit', sans-serif; }
-  .bg-slideshow { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; z-index: 0; }
-  .bg-slide { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 1s ease-in-out; transform: scale(1.05); }
+  /* ===== Slideshow (smooth transition, no white flash) ===== */
+  .bg-slideshow {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    overflow: hidden; z-index: 0;
+    background: #1E1B4B;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+  .bg-slide {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background-size: cover; background-position: center;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    transform: scale(1.05) translateZ(0);
+    -webkit-transform: scale(1.05) translateZ(0);
+    will-change: opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
   .bg-slide.active { opacity: 0.75; }
   .bg-slide.slide-purple { background: radial-gradient(at 20% 20%, rgba(107, 33, 168, 0.9) 0px, transparent 50%), radial-gradient(at 80% 30%, rgba(245, 158, 11, 0.4) 0px, transparent 50%), radial-gradient(at 50% 80%, rgba(220, 38, 38, 0.3) 0px, transparent 50%), linear-gradient(135deg, #1E1B4B 0%, #4C1D95 50%, #6B21A8 100%); opacity: 1; }
   .bg-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1; background: radial-gradient(ellipse at center, rgba(30,27,75,0.15) 0%, rgba(30,27,75,0.55) 70%, rgba(10,10,20,0.75) 100%), linear-gradient(180deg, rgba(30,27,75,0.35) 0%, rgba(76,29,149,0.30) 50%, rgba(30,27,75,0.50) 100%); pointer-events: none; }
-  .bg-blur-edges { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 2; backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); pointer-events: none; mask-image: radial-gradient(ellipse at center, transparent 30%, black 90%); -webkit-mask-image: radial-gradient(ellipse at center, transparent 30%, black 90%); }
+  .bg-blur-edges { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 2; backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); pointer-events: none; mask-image: radial-gradient(ellipse at center, transparent 30%, black 90%); -webkit-mask-image: radial-gradient(ellipse at center, transparent 30%, black 90%); transform: translateZ(0); -webkit-transform: translateZ(0); }
   .bracket-bg { background: #0a0a0a; background-image: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%); min-height: 100vh; padding-bottom: 80px; }
   .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); }
   .glass-dark { background: rgba(30, 27, 75, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); }
@@ -108,22 +125,23 @@
     .announcement-content { font-size: 14px; }
   }
 
+  /* ===== Mobile Nav (shrunk to avoid covering hero title) ===== */
   .mobile-nav-top {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 8px 10px;
+    gap: 8px;
+    padding: 4px 6px;
   }
   .mobile-nav-logo {
     position: relative;
-    width: 68px;
-    height: 68px;
-    min-width: 68px;
-    min-height: 68px;
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    min-height: 52px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid rgba(252,211,77,0.7);
-    box-shadow: 0 0 14px rgba(252,211,77,0.5), 0 2px 8px rgba(0,0,0,0.5), inset 0 0 10px rgba(0,0,0,0.35);
+    border: 2px solid rgba(252,211,77,0.7);
+    box-shadow: 0 0 12px rgba(252,211,77,0.5), 0 2px 6px rgba(0,0,0,0.5), inset 0 0 8px rgba(0,0,0,0.35);
     background: linear-gradient(135deg, #4C1D95, #6B21A8);
     display: flex;
     align-items: center;
@@ -146,7 +164,7 @@
     justify-content: center;
     font-family: 'Kanit', sans-serif;
     font-weight: 900;
-    font-size: 26px;
+    font-size: 20px;
     color: #FCD34D;
     z-index: 1;
     text-shadow: 0 2px 4px rgba(0,0,0,0.5);
@@ -155,7 +173,7 @@
     flex: 1;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
+    gap: 3px;
     min-width: 0;
   }
   .mobile-nav-grid > button {
@@ -163,17 +181,17 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 3px;
-    padding: 6px 4px;
-    border-radius: 10px;
-    font-size: 10px;
+    gap: 2px;
+    padding: 4px 3px;
+    border-radius: 8px;
+    font-size: 9px;
     font-weight: 700;
     color: #FCD34D;
     background: linear-gradient(135deg, rgba(107,33,168,0.65), rgba(76,29,149,0.92));
     border: 1.5px solid rgba(252,211,77,0.35);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
     transition: all 0.2s ease;
-    min-height: 44px;
+    min-height: 34px;
     line-height: 1.05;
     text-align: center;
     white-space: nowrap;
@@ -184,7 +202,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 10px;
+    border-radius: 8px;
     background: linear-gradient(135deg, rgba(252,211,77,0.08), transparent 60%);
     pointer-events: none;
   }
@@ -193,12 +211,12 @@
     box-shadow: inset 0 2px 6px rgba(0,0,0,0.45);
   }
   .mobile-nav-grid > button .nav-icon {
-    font-size: 15px;
+    font-size: 12px;
     line-height: 1;
     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
   }
   .mobile-nav-grid > button .nav-label {
-    font-size: 9.5px;
+    font-size: 8px;
     letter-spacing: 0;
     line-height: 1;
     color: rgba(252,211,77,0.98);
@@ -221,8 +239,8 @@
   }
   .mobile-nav-grid > button.live-btn .live-dot {
     display: inline-block;
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: #FFFFFF;
     box-shadow: 0 0 0 0 rgba(255,255,255,0.85);
@@ -233,10 +251,13 @@
     background: linear-gradient(135deg, #EF4444, #B91C1C);
   }
   @media (min-width: 400px) {
-    .mobile-nav-grid > button .nav-label { font-size: 10px; }
-    .mobile-nav-grid > button { min-height: 46px; }
-    .mobile-nav-grid > button .nav-icon { font-size: 16px; }
-    .mobile-nav-logo { width: 72px; height: 72px; min-width: 72px; min-height: 72px; }
+    .mobile-nav-top { padding: 5px 8px; gap: 9px; }
+    .mobile-nav-grid { gap: 4px; }
+    .mobile-nav-grid > button .nav-label { font-size: 9px; }
+    .mobile-nav-grid > button { min-height: 38px; padding: 5px 4px; }
+    .mobile-nav-grid > button .nav-icon { font-size: 14px; }
+    .mobile-nav-logo { width: 58px; height: 58px; min-width: 58px; min-height: 58px; }
+    .mobile-nav-logo .logo-fallback { font-size: 22px; }
   }
 
   .athletics-table-wrapper {
@@ -2397,7 +2418,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAllData();
   setInterval(() => { fetchAllData(); }, CONFIG.REFRESH_INTERVAL);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) fetchAllData(); });
-  console.log("✅ Doitao Sports 2026 - v38 (Removed hero badge)");
+  console.log("✅ Doitao Sports 2026 - v39 (Slim nav + smooth slideshow)");
 });
 </script>
 
