@@ -59,7 +59,6 @@
   @keyframes pulseBtn { 0%, 100% { box-shadow: 0 0 0 0 rgba(252,211,77,0.7), 0 6px 20px rgba(107,33,168,0.5); } 50% { box-shadow: 0 0 0 10px rgba(252,211,77,0), 0 6px 24px rgba(107,33,168,0.8); } }
   @keyframes shine { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
 
-  /* ✅ v35: Podium float — no blink, no opacity flash */
   @keyframes podiumFloat {
     0%, 100% { transform: translateY(0); }
     50%      { transform: translateY(-7px); }
@@ -107,11 +106,89 @@
     .announcement-content { font-size: 14px; }
   }
 
-  .mobile-nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 6px 8px; }
-  .mobile-nav-grid > button { display: flex; align-items: center; justify-content: center; gap: 4px; padding: 8px 6px; border-radius: 8px; font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s ease; min-height: 40px; line-height: 1.15; text-align: center; }
+  /* ✅ v36: Mobile nav — logo + 6 menus in one compact band (3:3 grid) */
+  .mobile-nav-top {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    padding: 6px 8px;
+  }
+  .mobile-nav-logo {
+    position: relative;
+    width: 56px;
+    min-width: 56px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 2px solid rgba(255,255,255,0.3);
+    background: linear-gradient(135deg, #4C1D95, #6B21A8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .mobile-nav-logo img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 2;
+  }
+  .mobile-nav-logo .logo-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    color: white;
+    z-index: 1;
+  }
+  .mobile-nav-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    min-width: 0;
+  }
+  .mobile-nav-grid > button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 5px 3px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: all 0.2s ease;
+    min-height: 38px;
+    line-height: 1.05;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .mobile-nav-grid > button .nav-icon {
+    font-size: 13px;
+    line-height: 1;
+  }
+  .mobile-nav-grid > button .nav-label {
+    font-size: 9.5px;
+    letter-spacing: 0;
+    line-height: 1;
+  }
   .mobile-nav-grid > button:hover { background: rgba(107,33,168,0.8); border-color: #FCD34D; }
-  .mobile-nav-grid > button.live-btn { background: #DC2626; color: white; grid-column: span 3; }
+  .mobile-nav-grid > button.live-btn { background: #DC2626; color: white; }
   .mobile-nav-grid > button.live-btn:hover { background: #B91C1C; }
+  @media (min-width: 400px) {
+    .mobile-nav-grid > button .nav-label { font-size: 10px; }
+    .mobile-nav-grid > button { min-height: 40px; }
+  }
 
   .athletics-table-wrapper { max-height: 75vh; overflow: auto; position: relative; -webkit-overflow-scrolling: touch; }
   .athletics-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 720px; }
@@ -136,7 +213,7 @@
     .athletics-table thead th.col-name { left: 42px; }
   }
 
-  /* ✅ v34: Kahoot-style podium — bigger logos */
+  /* ✅ v36: Kahoot-style podium — bigger logos */
   .podium-kahoot {
     display: flex;
     align-items: flex-end;
@@ -169,7 +246,6 @@
     flex-direction: column;
     align-items: center;
   }
-  /* ✅ v34: Bigger podium logos */
   .podium-item .logo-ring {
     width: 66px;
     height: 66px;
@@ -177,18 +253,14 @@
     min-height: 66px;
     border-width: 3px;
   }
-  .podium-item .logo-ring .logo-fallback {
-    font-size: 26px;
-  }
+  .podium-item .logo-ring .logo-fallback { font-size: 26px; }
   .podium-item.podium-1 .logo-ring {
     width: 76px;
     height: 76px;
     min-width: 76px;
     min-height: 76px;
   }
-  .podium-item.podium-1 .logo-ring .logo-fallback {
-    font-size: 30px;
-  }
+  .podium-item.podium-1 .logo-ring .logo-fallback { font-size: 30px; }
   .podium-crown {
     font-size: 22px;
     margin-bottom: -4px;
@@ -240,7 +312,6 @@
     .podium-name { font-size: 11px; margin: 4px 1px 3px; }
     .podium-emoji { font-size: 14px; }
     .podium-crown { font-size: 18px; }
-    /* ✅ v34: Bigger logos on mobile too */
     .podium-item .logo-ring {
       width: 52px;
       height: 52px;
@@ -257,7 +328,7 @@
     .podium-item.podium-1 .logo-ring .logo-fallback { font-size: 24px; }
   }
 
-  /* ✅ v34: Finals Table */
+  /* ✅ v36: Finals Table */
   .finals-table-container {
     background: linear-gradient(135deg, rgba(30,27,75,0.95), rgba(76,29,149,0.85));
     border: 2px solid rgba(252,211,77,0.45);
@@ -327,7 +398,6 @@
     text-overflow: ellipsis;
     min-width: 0;
   }
-  /* ✅ v34: Winner name — NO underline */
   .team-name.winner {
     color: #FCD34D;
     font-weight: 900;
@@ -368,7 +438,6 @@
     animation: neonLogoPulse 1.6s ease-in-out infinite;
   }
   .team-logo.loser { opacity: 0.55; }
-  /* ✅ v34: Fixed-width score box */
   .score-box {
     font-family: 'JetBrains Mono', monospace;
     font-weight: 900;
@@ -405,6 +474,136 @@
     .score-box.empty { font-size: 12px; }
     .finals-table-title { font-size: 13px; padding: 10px 12px; }
     .finals-section-title { font-size: 11px; padding: 6px 12px; letter-spacing: 0.5px; }
+  }
+
+  /* ✅ v36: Group Table (responsive grid-based) */
+  .group-table {
+    background: linear-gradient(135deg, rgba(30,27,75,0.95), rgba(76,29,149,0.85));
+    border: 2px solid rgba(252,211,77,0.45);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(107,33,168,0.4);
+  }
+  .group-table-title {
+    font-family: 'Kanit', sans-serif;
+    font-weight: 900;
+    font-size: 15px;
+    color: #FCD34D;
+    text-align: center;
+    padding: 10px 14px;
+    background: linear-gradient(135deg, #6B21A8, #4C1D95);
+    border-bottom: 2px solid rgba(252,211,77,0.4);
+    text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    letter-spacing: 0.3px;
+  }
+  .group-table-head, .group-table-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 36px 36px 36px 36px 36px 36px 44px;
+    align-items: center;
+    padding: 8px 10px;
+    gap: 2px;
+  }
+  .group-table-head {
+    background: rgba(107,33,168,0.4);
+    color: #FCD34D;
+    font-family: 'Kanit', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(252,211,77,0.2);
+  }
+  .group-table-row {
+    color: white;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: background 0.2s;
+  }
+  .group-table-row:last-child { border-bottom: none; }
+  .group-table-row:hover { background: rgba(252,211,77,0.08); }
+  .group-table-row.qualified { background: linear-gradient(90deg, rgba(16,185,129,0.18), rgba(16,185,129,0.05)); }
+  .group-table-row.qualified:hover { background: linear-gradient(90deg, rgba(16,185,129,0.28), rgba(16,185,129,0.10)); }
+  .gt-col-stat {
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 12px;
+    color: rgba(255,255,255,0.9);
+  }
+  .gt-col-stat.pts { color: #FCD34D; font-weight: 900; font-size: 14px; }
+  .gt-col-team {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .gt-logo {
+    position: relative;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(252,211,77,0.5);
+    background: linear-gradient(135deg, #4C1D95, #6B21A8);
+    flex-shrink: 0;
+  }
+  .gt-logo img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 2;
+  }
+  .gt-logo .gt-logo-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    color: white;
+    z-index: 1;
+  }
+  .gt-name {
+    font-family: 'Kanit', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .gt-star {
+    color: #FCD34D;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+  @media (max-width: 767px) {
+    .group-table-head, .group-table-row {
+      grid-template-columns: minmax(0, 1fr) 32px 32px 32px 42px;
+      padding: 7px 8px;
+      gap: 1px;
+    }
+    .group-table-head { font-size: 10px; }
+    .group-table-row { font-size: 12px; }
+    .gt-hide-md { display: none !important; }
+    .gt-col-stat { font-size: 11px; }
+    .gt-col-stat.pts { font-size: 13px; }
+    .gt-name { font-size: 11.5px; }
+  }
+  @media (max-width: 479px) {
+    .group-table-head, .group-table-row {
+      grid-template-columns: minmax(0, 1fr) 32px 32px 42px;
+      padding: 6px 8px;
+    }
+    .gt-hide-xs { display: none !important; }
+    .gt-logo { width: 22px; height: 22px; }
+    .gt-logo .gt-logo-fallback { font-size: 10px; }
+    .gt-name { font-size: 11px; }
   }
 
   .nav-scroll { display: flex; gap: 6px; overflow-x: auto; padding: 8px 12px; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; scrollbar-width: none; }
@@ -469,12 +668,6 @@
   .team-winner .bracket-team-name { color: #FCD34D; font-weight: 800; }
   .team-loser { opacity: 0.45; }
   .bracket-column-title { font-family: 'Kanit', sans-serif; font-weight: 700; color: #FCD34D; font-size: 13px; text-align: center; padding: 8px 10px; background: linear-gradient(135deg, rgba(107,33,168,0.6), rgba(107,33,168,0.3)); border-radius: 10px; border: 1px solid rgba(252,211,77,0.3); white-space: nowrap; }
-
-  .group-table { background: rgba(30,27,75,0.6); border: 1px solid rgba(252,211,77,0.3); border-radius: 1rem; overflow: hidden; }
-  .group-table th { background: linear-gradient(180deg, rgba(107,33,168,0.6), rgba(107,33,168,0.3)); color: #FCD34D; font-family: 'Kanit', sans-serif; padding: 8px 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
-  .group-table td { padding: 8px 6px; color: white; font-size: 13px; border-top: 1px solid rgba(255,255,255,0.05); }
-  .group-table tr:hover { background: rgba(252,211,77,0.08); }
-  .group-table tr.qualified { background: rgba(16,185,129,0.15); }
 
   .tabs-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; }
   .tabs-scroll::-webkit-scrollbar { height: 4px; }
@@ -556,7 +749,6 @@
     .school-logo-large { width: 70px; height: 70px; }
     .school-logo-large .fallback { font-size: 28px; }
     .school-card { padding: 16px 12px; min-height: 180px; }
-    .nav-scroll > button { font-size: 12px; padding: 6px 12px; min-height: 36px; }
     .trophy-title { font-size: 16px; }
     .trophy-emoji { font-size: 32px; }
   }
@@ -569,18 +761,19 @@
 <body class="antialiased">
 
 <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent no-print">
-  <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-14 sm:h-16 md:h-20">
+  <!-- Desktop: logo + horizontal menu -->
+  <div class="hidden lg:block max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20">
       <a href="#" onclick="showPage('home'); scrollToId('home'); return false;" class="flex items-center gap-2 flex-shrink-0">
-        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-primary-700 to-secondary flex items-center justify-center overflow-hidden flex-shrink-0 border-2 border-white/30">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary-700 to-secondary flex items-center justify-center overflow-hidden flex-shrink-0 border-2 border-white/30">
           <img src="saha.jpg" alt="saha" class="w-full h-full object-cover" onerror="this.style.display='none';">
         </div>
-        <div class="hidden xs:block">
-          <p class="font-heading font-bold text-white text-xs sm:text-sm md:text-base leading-tight">ดอยเต่าสหศึกษา</p>
-          <p class="text-secondary text-[10px] sm:text-xs font-mono">กีฬา-กรีฑา 2569</p>
+        <div>
+          <p class="font-heading font-bold text-white text-base leading-tight">ดอยเต่าสหศึกษา</p>
+          <p class="text-secondary text-xs font-mono">กีฬา-กรีฑา 2569</p>
         </div>
       </a>
-      <div class="hidden lg:flex items-center gap-1">
+      <div class="flex items-center gap-1">
         <button onclick="showPage('home'); scrollToId('home')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">หน้าหลัก</button>
         <button onclick="showPage('home'); scrollToId('medal-tally')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">🏅 สรุปอันดับเหรียญ</button>
         <button onclick="showPage('sports-table')" class="px-4 py-2 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition text-sm">📊 เหรียญรายกีฬา</button>
@@ -592,16 +785,26 @@
       </div>
     </div>
   </div>
+
+  <!-- ✅ v36: Mobile: Logo + 6 menus in same band (3:3) -->
   <div class="lg:hidden glass-dark border-t border-white/10">
-    <div class="mobile-nav-grid" id="mobileNavGrid">
-      <button onclick="showPage('home'); scrollToId('home')"><span>🏠</span><span>หน้าหลัก</span></button>
-      <button onclick="showPage('home'); scrollToId('medal-tally')"><span>🏅</span><span>สรุปอันดับเหรียญ</span></button>
-      <button onclick="showPage('sports-table')"><span>📊</span><span>เหรียญรายกีฬา</span></button>
-      <button onclick="showPage('home'); scrollToId('schedule')"><span>⚽</span><span>กีฬา</span></button>
-      <button onclick="showPage('home'); scrollToId('athletics')"><span>🏃</span><span>กรีฑา</span></button>
-      <button onclick="showPage('bracket')" class="live-btn"><span class="w-2 h-2 rounded-full bg-white animate-pulse"></span><span>ผลการแข่งขัน สด</span></button>
+    <div class="mobile-nav-top">
+      <div class="mobile-nav-logo">
+        <div class="logo-fallback">ด</div>
+        <img src="saha.jpg" alt="saha" onload="this.previousElementSibling.style.display='none';" onerror="this.style.display='none';">
+      </div>
+      <div class="mobile-nav-grid" id="mobileNavGrid">
+        <button onclick="showPage('home'); scrollToId('home')"><span class="nav-icon">🏠</span><span class="nav-label">หน้าหลัก</span></button>
+        <button onclick="showPage('home'); scrollToId('medal-tally')"><span class="nav-icon">🏅</span><span class="nav-label">สรุปอันดับ</span></button>
+        <button onclick="showPage('sports-table')"><span class="nav-icon">📊</span><span class="nav-label">เหรียญรายกีฬา</span></button>
+        <button onclick="showPage('home'); scrollToId('schedule')"><span class="nav-icon">⚽</span><span class="nav-label">กีฬา</span></button>
+        <button onclick="showPage('home'); scrollToId('athletics')"><span class="nav-icon">🏃</span><span class="nav-label">กรีฑา</span></button>
+        <button onclick="showPage('bracket')" class="live-btn"><span class="nav-icon">🏆</span><span class="nav-label">ผลการแข่ง</span></button>
+      </div>
     </div>
   </div>
+
+  <!-- Announcement marquee (below nav bands) -->
   <div id="announcementBar" class="announcement-bar hidden">
     <div id="announcementContent" class="announcement-content"></div>
   </div>
@@ -923,7 +1126,7 @@ let selectedSport = "";
 let athleticsData = [];
 let athleticsMedals = {};
 let announcements = [];
-let lastBracketHash = '';  // ✅ v35: เก็บ hash ของข้อมูล bracket ล่าสุด เพื่อเช็คว่ามีการเปลี่ยนแปลงจริงหรือไม่
+let lastBracketHash = '';
 
 let trophiesOther = {
   parade:   { large: {first:null,second:null,third:null}, small: {first:null,second:null,third:null} },
@@ -1888,6 +2091,42 @@ function renderFinalsTable(sport, semiMatches, thirdMatches, finalMatches) {
   </div>`;
 }
 
+// ✅ v36: Group Table (responsive, no horizontal scroll)
+function renderGroupTable(groupLabel, teams) {
+  const headHTML = `<div class="group-table-head">
+    <span class="gt-col-team">ทีม</span>
+    <span class="gt-col-stat">แข่ง</span>
+    <span class="gt-col-stat">ชนะ</span>
+    <span class="gt-col-stat gt-hide-md">เสมอ</span>
+    <span class="gt-col-stat gt-hide-xs">แพ้</span>
+    <span class="gt-col-stat gt-hide-md">ได้</span>
+    <span class="gt-col-stat gt-hide-md">เสีย</span>
+    <span class="gt-col-stat pts">แต้ม</span>
+  </div>`;
+  const rowsHTML = teams.map((t, idx) => {
+    const logo = getLogoPath(t.name);
+    const initial = getSchoolInitial(t.name);
+    const logoInner = logo
+      ? `<div class="gt-logo"><span class="gt-logo-fallback">${initial}</span><img src="${logo}" onload="this.previousElementSibling.style.display='none';" onerror="this.style.display='none';"></div>`
+      : `<div class="gt-logo"><span class="gt-logo-fallback">${initial}</span></div>`;
+    const star = idx < 2 ? '<span class="gt-star">★</span>' : '';
+    return `<div class="group-table-row ${idx < 2 ? 'qualified' : ''}">
+      <div class="gt-col-team">${logoInner}<span class="gt-name">${shortTeamName(t.name)}</span>${star}</div>
+      <span class="gt-col-stat">${t.played}</span>
+      <span class="gt-col-stat">${t.win}</span>
+      <span class="gt-col-stat gt-hide-md">${t.draw}</span>
+      <span class="gt-col-stat gt-hide-xs">${t.loss}</span>
+      <span class="gt-col-stat gt-hide-md">${t.gf}</span>
+      <span class="gt-col-stat gt-hide-md">${t.ga}</span>
+      <span class="gt-col-stat pts">${t.pts}</span>
+    </div>`;
+  }).join("");
+  return `<div class="group-table">
+    <div class="group-table-title">${groupLabel}</div>
+    ${headHTML}${rowsHTML}
+  </div>`;
+}
+
 function renderSportTabs() {
   let sports = [...new Set(allMatches.map(m => m.sport).filter(Boolean))];
   sports = sortSportsByOrder(sports);
@@ -1941,7 +2180,7 @@ function renderBracketContent() {
       html += `<div class="grid grid-cols-1 md:grid-cols-2 gap-4">`;
       Object.keys(groups).sort().forEach(g => {
         const groupLabel = g === "RR" ? "จัดอันดับรวม" : `สาย ${g}`;
-        html += `<div class="group-table"><div class="px-3 sm:px-4 py-3 bg-gradient-to-r from-primary-800 to-primary-900 border-b border-yellow-500/30"><h4 class="font-heading font-bold text-secondary text-base sm:text-lg">${groupLabel}</h4></div><div class="overflow-x-auto"><table class="w-full min-w-[480px]"><thead><tr><th class="text-left px-2 sm:px-3 py-2 text-xs sm:text-sm">ทีม</th><th class="text-center px-2 py-2 text-xs sm:text-sm">แข่ง</th><th class="text-center px-2 py-2 text-xs sm:text-sm">ชนะ</th><th class="text-center px-2 py-2 text-xs sm:text-sm">เสมอ</th><th class="text-center px-2 py-2 text-xs sm:text-sm">แพ้</th><th class="text-center px-2 py-2 text-xs sm:text-sm">ได้</th><th class="text-center px-2 py-2 text-xs sm:text-sm">เสีย</th><th class="text-center px-2 py-2 text-xs sm:text-sm">แต้ม</th></tr></thead><tbody>${groups[g].map((t, idx) => `<tr class="${idx < 2 ? 'qualified' : ''}"><td class="px-2 sm:px-3 py-2"><div class="flex items-center gap-2">${getLogoHTML(t.name, "md")}<span class="font-semibold text-xs sm:text-sm">${shortTeamName(t.name)}</span>${idx < 2 ? '<span class="text-yellow-400 text-xs ml-1">★</span>' : ''}</div></td><td class="text-center font-mono text-xs sm:text-sm">${t.played}</td><td class="text-center font-mono text-xs sm:text-sm text-green-400">${t.win}</td><td class="text-center font-mono text-xs sm:text-sm text-yellow-400">${t.draw}</td><td class="text-center font-mono text-xs sm:text-sm text-red-400">${t.loss}</td><td class="text-center font-mono text-xs sm:text-sm">${t.gf}</td><td class="text-center font-mono text-xs sm:text-sm">${t.ga}</td><td class="text-center font-mono font-bold text-secondary text-xs sm:text-sm">${t.pts}</td></tr>`).join("")}</tbody></table></div></div>`;
+        html += renderGroupTable(groupLabel, groups[g]);
       });
       html += `</div>`;
     } else {
@@ -2059,7 +2298,6 @@ async function fetchAllData() {
         if (matches.length > 0) {
           allMatches = matches;
           processTournamentData(allMatches);
-          // ✅ v35: เช็ค hash ก่อน re-render — ถ้าข้อมูลไม่เปลี่ยน ให้ข้าม (ไม่กระพริบ)
           const newHash = allMatches.map(m =>
             `${m.no}|${m.sport}|${m.teamA}|${m.teamB}|${m.scoreA}|${m.scoreB}|${m.status}|${m.winnerOverride}|${m.loserOverride}|${m.goldSchool}|${m.silverSchool}|${m.bronzeSchool}|${m.group}`
           ).join('||');
@@ -2319,7 +2557,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAllData();
   setInterval(() => { fetchAllData(); }, CONFIG.REFRESH_INTERVAL);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) fetchAllData(); });
-  console.log("✅ Doitao Sports 2026 - v35 (No-flicker Podium + Smooth Finals Table)");
+  console.log("✅ Doitao Sports 2026 - v36 (Compact Mobile Nav + Responsive Group Table)");
 });
 </script>
 
