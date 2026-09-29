@@ -125,22 +125,22 @@
     .announcement-content { font-size: 14px; }
   }
 
-  /* ===== Mobile Nav (shrunk to avoid covering hero title) ===== */
+  /* ===== Mobile Nav (bigger buttons, bigger icons/text — badge stays proportional) ===== */
   .mobile-nav-top {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 4px 6px;
+    gap: 9px;
+    padding: 6px 8px;
   }
   .mobile-nav-logo {
     position: relative;
-    width: 52px;
-    height: 52px;
-    min-width: 52px;
-    min-height: 52px;
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
     border-radius: 50%;
     overflow: hidden;
-    border: 2px solid rgba(252,211,77,0.7);
+    border: 2px solid rgba(252,211,77,0.75);
     box-shadow: 0 0 12px rgba(252,211,77,0.5), 0 2px 6px rgba(0,0,0,0.5), inset 0 0 8px rgba(0,0,0,0.35);
     background: linear-gradient(135deg, #4C1D95, #6B21A8);
     display: flex;
@@ -164,7 +164,7 @@
     justify-content: center;
     font-family: 'Kanit', sans-serif;
     font-weight: 900;
-    font-size: 20px;
+    font-size: 22px;
     color: #FCD34D;
     z-index: 1;
     text-shadow: 0 2px 4px rgba(0,0,0,0.5);
@@ -173,7 +173,7 @@
     flex: 1;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 3px;
+    gap: 4px;
     min-width: 0;
   }
   .mobile-nav-grid > button {
@@ -181,18 +181,18 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2px;
-    padding: 4px 3px;
-    border-radius: 8px;
-    font-size: 9px;
+    gap: 3px;
+    padding: 6px 4px;
+    border-radius: 10px;
+    font-size: 11px;
     font-weight: 700;
     color: #FCD34D;
     background: linear-gradient(135deg, rgba(107,33,168,0.65), rgba(76,29,149,0.92));
-    border: 1.5px solid rgba(252,211,77,0.35);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
+    border: 1.5px solid rgba(252,211,77,0.4);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
     transition: all 0.2s ease;
-    min-height: 34px;
-    line-height: 1.05;
+    min-height: 46px;
+    line-height: 1.1;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
@@ -202,8 +202,8 @@
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 8px;
-    background: linear-gradient(135deg, rgba(252,211,77,0.08), transparent 60%);
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(252,211,77,0.10), transparent 60%);
     pointer-events: none;
   }
   .mobile-nav-grid > button:active {
@@ -211,16 +211,17 @@
     box-shadow: inset 0 2px 6px rgba(0,0,0,0.45);
   }
   .mobile-nav-grid > button .nav-icon {
-    font-size: 12px;
+    font-size: 17px;
     line-height: 1;
-    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.45));
   }
   .mobile-nav-grid > button .nav-label {
-    font-size: 8px;
+    font-size: 10.5px;
     letter-spacing: 0;
-    line-height: 1;
+    line-height: 1.05;
     color: rgba(252,211,77,0.98);
-    font-weight: 700;
+    font-weight: 800;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.45);
   }
   .mobile-nav-grid > button:hover {
     background: linear-gradient(135deg, rgba(107,33,168,0.85), rgba(88,28,135,1));
@@ -235,12 +236,12 @@
   .mobile-nav-grid > button.live-btn .nav-label {
     color: #FFFFFF;
     font-weight: 900;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.4px;
   }
   .mobile-nav-grid > button.live-btn .live-dot {
     display: inline-block;
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: #FFFFFF;
     box-shadow: 0 0 0 0 rgba(255,255,255,0.85);
@@ -251,13 +252,13 @@
     background: linear-gradient(135deg, #EF4444, #B91C1C);
   }
   @media (min-width: 400px) {
-    .mobile-nav-top { padding: 5px 8px; gap: 9px; }
-    .mobile-nav-grid { gap: 4px; }
-    .mobile-nav-grid > button .nav-label { font-size: 9px; }
-    .mobile-nav-grid > button { min-height: 38px; padding: 5px 4px; }
-    .mobile-nav-grid > button .nav-icon { font-size: 14px; }
-    .mobile-nav-logo { width: 58px; height: 58px; min-width: 58px; min-height: 58px; }
-    .mobile-nav-logo .logo-fallback { font-size: 22px; }
+    .mobile-nav-top { padding: 7px 10px; gap: 10px; }
+    .mobile-nav-grid { gap: 5px; }
+    .mobile-nav-grid > button .nav-label { font-size: 11.5px; }
+    .mobile-nav-grid > button { min-height: 50px; padding: 7px 5px; }
+    .mobile-nav-grid > button .nav-icon { font-size: 19px; }
+    .mobile-nav-logo { width: 64px; height: 64px; min-width: 64px; min-height: 64px; }
+    .mobile-nav-logo .logo-fallback { font-size: 26px; }
   }
 
   .athletics-table-wrapper {
@@ -687,7 +688,7 @@
     </div>
     <div class="bg-overlay"></div>
     <div class="bg-blur-edges"></div>
-    <div class="relative z-10 max-w-7xl mx-auto px-4 py-24 sm:py-32 text-center">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 pt-44 pb-12 sm:pt-44 sm:pb-16 md:pt-40 md:pb-20 lg:pt-32 lg:pb-24 text-center">
       <h1 class="font-heading font-black text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-white mb-4 sm:mb-6 leading-tight animate-slide-up" style="text-shadow: 0 4px 24px rgba(0,0,0,0.7);">
         การแข่งขันกีฬา-กรีฑา<br>
         <span class="bg-gradient-to-r from-secondary via-yellow-300 to-secondary bg-clip-text text-transparent">ดอยเต่าสหศึกษา</span>
@@ -818,7 +819,7 @@
   </footer>
 </div>
 
-<div id="page-sports-table" class="page-view bg-gray-50 min-h-screen pt-32 lg:pt-24 pb-12">
+<div id="page-sports-table" class="page-view bg-gray-50 min-h-screen pt-44 sm:pt-44 md:pt-40 lg:pt-32 pb-12">
   <section class="max-w-6xl mx-auto px-3 sm:px-4">
     <button class="back-btn-light" onclick="showPage('home')" title="ย้อนกลับหน้าหลัก">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -881,7 +882,7 @@
 </div>
 
 <div id="page-bracket" class="page-view bracket-bg text-white">
-  <section class="max-w-7xl mx-auto px-3 sm:px-4 pt-32 lg:pt-40 pb-4 sm:pb-8">
+  <section class="max-w-7xl mx-auto px-3 sm:px-4 pt-44 sm:pt-44 md:pt-40 lg:pt-32 pb-4 sm:pb-8">
     <div id="fallbackWarning" class="hidden mb-4 sm:mb-6 p-3 sm:p-4 rounded-xl bg-orange-500/20 border border-orange-500/50 text-orange-200 text-xs sm:text-sm flex items-center gap-3">
       <span class="text-xl">⚠️</span>
       <div>
@@ -2418,7 +2419,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAllData();
   setInterval(() => { fetchAllData(); }, CONFIG.REFRESH_INTERVAL);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) fetchAllData(); });
-  console.log("✅ Doitao Sports 2026 - v39 (Slim nav + smooth slideshow)");
+  console.log("✅ Doitao Sports 2026 - v40 (Bigger nav + no overlap)");
 });
 </script>
 
