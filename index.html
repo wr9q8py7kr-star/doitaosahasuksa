@@ -4,11 +4,24 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
 <title>ติดตามผลการแข่งขัน กีฬากีฑา ดอยเต่าสหศึกษา</title>
+
+<!-- ✅ อัปเดต Meta Tags สำหรับ Thumbnail (เปลี่ยนเป็น thumbnail.jpg) -->
+<meta name="description" content="ติดตามผลการแข่งขันกีฬา-กรีฑา เครือข่ายพัฒนาการศึกษาดอยเต่าสหศึกษา ปีการศึกษา 2569 วันที่ 5 - 8 ตุลาคม พ.ศ. 2569" />
 <meta property="og:type" content="website" />
+<meta property="og:site_name" content="Doitao Sports Network" />
 <meta property="og:title" content="ติดตามผลการแข่งขัน กีฬากีฑา ดอยเต่าสหศึกษา" />
+<meta property="og:description" content="เครือข่ายพัฒนาการศึกษาดอยเต่าสหศึกษา ปีการศึกษา 2569 วันที่ 5 - 8 ตุลาคม พ.ศ. 2569" />
 <meta property="og:url" content="https://wr9q8py7kr-star.github.io/doitaosahasuka/" />
-<meta property="og:image" content="https://wr9q8py7kr-star.github.io/doitaosahasuka/saha.jpg" />
+<meta property="og:image" content="https://wr9q8py7kr-star.github.io/doitaosahasuka/thumbnail.jpg" />
+<meta property="og:image:secure_url" content="https://wr9q8py7kr-star.github.io/doitaosahasuka/thumbnail.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="การแข่งขันกีฬา-กรีฑา ดอยเต่าสหศึกษา" />
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="ติดตามผลการแข่งขัน กีฬากีฑา ดอยเต่าสหศึกษา" />
+<meta name="twitter:description" content="เครือข่ายพัฒนาการศึกษาดอยเต่าสหศึกษา ปีการศึกษา 2569" />
+<meta name="twitter:image" content="https://wr9q8py7kr-star.github.io/doitaosahasuka/thumbnail.jpg" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700;900&family=Sarabun:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -632,7 +645,7 @@
     <div class="flex items-center justify-between h-20">
       <a href="#" onclick="showPage('home'); scrollToId('home'); return false;" class="flex items-center gap-2 flex-shrink-0">
         <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary-700 to-secondary flex items-center justify-center overflow-hidden flex-shrink-0 border-2 border-white/30">
-          <img src="saha.jpg" alt="saha" class="w-full h-full object-cover" onerror="this.style.display='none';">
+          <img src="thumbnail.jpg" alt="thumbnail" class="w-full h-full object-cover" onerror="this.style.display='none';">
         </div>
         <div>
           <p class="font-heading font-bold text-white text-base leading-tight">ดอยเต่าสหศึกษา</p>
@@ -656,7 +669,7 @@
     <div class="mobile-nav-top">
       <div class="mobile-nav-logo">
         <div class="logo-fallback">ด</div>
-        <img src="saha.jpg" alt="saha" onload="this.previousElementSibling.style.display='none';" onerror="this.style.display='none';">
+        <img src="thumbnail.jpg" alt="thumbnail" onload="this.previousElementSibling.style.display='none';" onerror="this.style.display='none';">
       </div>
       <div class="mobile-nav-grid" id="mobileNavGrid">
         <button onclick="showPage('home'); scrollToId('home')"><span class="nav-icon">🏠</span><span class="nav-label">หน้าหลัก</span></button>
@@ -1114,7 +1127,17 @@ const DATA = {
 // UTILITY
 // ================================================================
 function normalizeKey(s) { return (s || "").replace(/[\s\u00A0\u200B\.]+/g, '').trim().toLowerCase(); }
-function shortTeamName(name) { if (!name) return ""; return String(name).replace("โรงเรียน", "").replace("ชุมชนบ้าน", "ชุมชน").trim(); }
+
+// ✅ ปรับให้ตัดคำ "บ้าน" ออก ยกเว้น "บ้านไร่" และ "บ้านโปง"
+function shortTeamName(name) {
+  if (!name) return "";
+  let result = String(name).replace(/^โรงเรียน/, "").trim();
+  // ข้อยกเว้น: เก็บ "บ้าน" ไว้สำหรับ บ้านไร่ และ บ้านโปง (รวมถึง บ้านโปงทุ่ง? — ตามเงื่อนไขจะตัดออกให้เหลือ โปงทุ่ง)
+  if (result === "บ้านไร่" || result === "บ้านโปง") return result;
+  result = result.replace(/^ชุมชนบ้าน/, "ชุมชน").replace(/^บ้าน/, "").trim();
+  return result;
+}
+
 function isPlaceholder(text) { if (!text) return true; return /^(ที่\s*[0-9๑๒๓๔๕๖๗๘๙]|ผู้ชนะ|ผู้แพ้|ผู้พัสดุ|ผู้แคชู่|ผู้แพ|มัธยม|VIP|รอง|knockout)/.test(String(text).trim()); }
 
 const SPORT_ICONS = {
@@ -1138,7 +1161,7 @@ const LOGO_MAP = {
   "โรงเรียนบ้านโปงทุ่ง": "pongtoong.jpg", "โรงเรียนบ้านงิ้วสูง": "kiwsoong.jpg", "โรงเรียนบ้านแม่บวน": "maebuan.jpg",
   "โรงเรียนบ้านไร่": "banrai.jpg", "โรงเรียนบ้านฉิมพลี": "shimplee.jpg", "โรงเรียนชุมชนบ้านดอยเต่า": "choomchon.jpg",
   "โรงเรียนบ้านถิ่นสำราญ": "tinsamran.jpg", "โรงเรียนบ้านผาจุก": "phajook.jpg", "โรงเรียนบ้านสันติสุข": "santisuk.jpg",
-  "ดอยเต่าสหศึกษา": "saha.jpg",
+  "ดอยเต่าสหศึกษา": "thumbnail.jpg",
   "บ้านโปง": "banpong.jpg", "บ้านแม่ตูบ": "maetoop.jpg", "บ้านเกาะหลวง": "kohluang.jpg",
   "บ้านโปงทุ่ง": "pongtoong.jpg", "บ้านงิ้วสูง": "kiwsoong.jpg", "บ้านแม่บวน": "maebuan.jpg",
   "บ้านไร่": "banrai.jpg", "บ้านฉิมพลี": "shimplee.jpg", "ชุมชนบ้านดอยเต่า": "choomchon.jpg",
@@ -1157,12 +1180,17 @@ function getLogoPath(teamName) {
   for (const key of LOGO_KEYS_SORTED) { if (clean.includes(key)) return LOGO_MAP[key]; }
   return null;
 }
+
+// ✅ ปรับให้ตัวอักษรย่อสอดคล้องกับ shortTeamName (ยกเว้น บ้านไร่/บ้านโปง ให้ใช้ "บ")
 function getSchoolInitial(teamName) {
   if (!teamName) return "?";
-  const clean = String(teamName).replace(/^โรงเรียน/, '').replace(/^บ้าน/, '').trim();
+  let clean = String(teamName).replace(/^โรงเรียน/, '').trim();
+  if (clean === "บ้านไร่" || clean === "บ้านโปง") return clean.charAt(0); // "บ"
+  clean = clean.replace(/^ชุมชนบ้าน/, "ชุมชน").replace(/^บ้าน/, '').trim();
   if (!clean) return "?";
   return clean.charAt(0);
 }
+
 function getLogoHTML(teamName, size = "md", extraClass = "") {
   const path = getLogoPath(teamName);
   const sizeClass = size === "lg" ? "lg" : "";
