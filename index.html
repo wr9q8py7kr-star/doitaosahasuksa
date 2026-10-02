@@ -145,11 +145,11 @@
   .section-semi .finals-section-title { background: linear-gradient(90deg, rgba(107,33,168,0.5), rgba(88,28,135,0.8), rgba(107,33,168,0.5)); color: #E9D5FF; }
   .section-third .finals-section-title { background: linear-gradient(90deg, rgba(217,119,6,0.5), rgba(146,64,14,0.85), rgba(217,119,6,0.5)); color: #FED7AA; }
   .section-final .finals-section-title { background: linear-gradient(90deg, rgba(252,211,77,0.5), rgba(245,158,11,0.85), rgba(252,211,77,0.5)); color: #78350F; font-weight: 900; }
-  .battle-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; padding: 10px 16px; border-bottom: 1px dashed rgba(252,211,77,0.15); }
+  .battle-row { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); align-items: center; gap: 12px; padding: 10px 16px; border-bottom: 1px dashed rgba(252,211,77,0.15); }
   .team-cell { display: flex; align-items: center; gap: 8px; min-width: 0; }
   .team-left { justify-content: flex-end; }
   .team-right { justify-content: flex-start; }
-  .team-name { font-family: 'Kanit', sans-serif; font-weight: 700; font-size: 14px; color: rgba(255,255,255,0.85); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .team-name { font-family: 'Kanit', sans-serif; font-weight: 700; font-size: 14px; color: rgba(255,255,255,0.85); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
   .team-name.winner { color: #FCD34D; font-weight: 900; }
   .team-name.loser { opacity: 0.55; }
   .team-logo { width: 32px; height: 32px; border-radius: 50%; border: 2px solid rgba(252,211,77,0.4); overflow: hidden; flex-shrink: 0; background: linear-gradient(135deg, #4C1D95, #6B21A8); position: relative; }
@@ -168,11 +168,11 @@
   .group-table-row.qualified { background: linear-gradient(90deg, rgba(16,185,129,0.18), rgba(16,185,129,0.05)); }
   .gt-col-stat { text-align: center; font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 12px; }
   .gt-col-stat.pts { color: #FCD34D; font-weight: 900; font-size: 14px; }
-  .gt-col-team { display: flex; align-items: center; gap: 6px; min-width: 0; }
+  .gt-col-team { display: flex; align-items: center; gap: 6px; min-width: 0; overflow: hidden; }
   .gt-logo { position: relative; width: 26px; height: 26px; border-radius: 50%; overflow: hidden; border: 2px solid rgba(252,211,77,0.5); background: linear-gradient(135deg, #4C1D95, #6B21A8); flex-shrink: 0; }
   .gt-logo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
   .gt-logo .gt-logo-fallback { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Kanit', sans-serif; font-weight: 900; font-size: 11px; color: white; z-index: 1; }
-  .gt-name { font-family: 'Kanit', sans-serif; font-weight: 700; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .gt-name { font-family: 'Kanit', sans-serif; font-weight: 700; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
   .gt-star { color: #FCD34D; font-size: 11px; }
   @media (max-width: 767px) { .group-table-head, .group-table-row { grid-template-columns: minmax(0, 1fr) 32px 32px 32px 42px; padding: 7px 8px; } .gt-hide-md { display: none !important; } }
   @media (max-width: 479px) { .group-table-head, .group-table-row { grid-template-columns: minmax(0, 1fr) 32px 32px 42px; padding: 6px 8px; } .gt-hide-xs { display: none !important; } }
@@ -187,32 +187,125 @@
   .school-logo-large { position: relative; width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid #FCD34D; background: linear-gradient(135deg, #4C1D95, #6B21A8); }
   .school-logo-large .fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
   .school-logo-large img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
+
+  /* ===== MEDAL TABLE ===== */
   .medal-table { background: linear-gradient(135deg, #1E1B4B, #4C1D95); border-radius: 20px; overflow: hidden; border: 2px solid rgba(252,211,77,0.4); }
   .medal-table-header { background: linear-gradient(135deg, #6B21A8, #4C1D95); padding: 16px 20px; border-bottom: 2px solid rgba(252,211,77,0.4); }
   .medal-table-title { font-family: 'Kanit', sans-serif; font-weight: 900; font-size: 20px; color: #FCD34D; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
-  .medal-table-scroll { max-height: 65vh; overflow-y: auto; }
-  .medal-row { display: grid; grid-template-columns: 50px 1fr 55px 55px 55px 65px; align-items: center; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); color: white; cursor: pointer; }
-  .medal-row.header { background: #4C1D95 !important; color: #FCD34D; font-weight: 700; font-size: 12px; text-transform: uppercase; padding: 10px 16px; position: sticky; top: 0; z-index: 10; }
+  .medal-table-scroll { max-height: 65vh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; position: relative; }
+
+  /* ★★★ FIX: ใช้ minmax(0, 1fr) เพื่อป้องกัน overflow ★★★ */
+  .medal-row {
+    display: grid;
+    grid-template-columns: 50px minmax(0, 1fr) 55px 55px 55px 65px;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    transition: background 0.2s;
+    color: white;
+    cursor: pointer;
+    gap: 0;
+  }
+  .medal-row:hover { background: rgba(252,211,77,0.12) !important; }
+  .medal-row.header {
+    background: #4C1D95 !important;
+    color: #FCD34D;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 16px;
+    cursor: default;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    border-bottom: 2px solid rgba(252,211,77,0.4);
+  }
+  .medal-row.header:hover { background: #4C1D95 !important; }
   .medal-row.top-1 { background: linear-gradient(90deg, rgba(252,211,77,0.15), transparent); border-left: 4px solid #FCD34D; }
   .medal-row.top-2 { background: linear-gradient(90deg, rgba(192,192,192,0.12), transparent); border-left: 4px solid #D0D0D0; }
   .medal-row.top-3 { background: linear-gradient(90deg, rgba(205,127,50,0.12), transparent); border-left: 4px solid #E8A33D; }
   .medal-rank { font-family: 'JetBrains Mono', monospace; font-weight: 900; font-size: 18px; color: #FCD34D; text-align: center; }
-  .medal-school { display: flex; align-items: center; gap: 10px; }
+  .medal-rank.rank-1 { color: #FCD34D; }
+  .medal-rank.rank-2 { color: #D0D0D0; }
+  .medal-rank.rank-3 { color: #E8A33D; }
+  .medal-school { display: flex; align-items: center; gap: 10px; overflow: hidden; min-width: 0; }
   .medal-school-logo { position: relative; width: 38px; height: 38px; border-radius: 50%; border: 2px solid rgba(252,211,77,0.5); overflow: hidden; flex-shrink: 0; background: linear-gradient(135deg, #4C1D95, #6B21A8); }
   .medal-school-logo img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
   .medal-school-logo .fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 16px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
-  .medal-school-name { font-family: 'Kanit', sans-serif; font-weight: 700; font-size: 14px; color: white; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .medal-school-name { font-family: 'Kanit', sans-serif; font-weight: 700; font-size: 14px; color: white; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; flex: 1; }
   .medal-count { text-align: center; font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 16px; }
-  .medal-count.gold { color: #FCD34D; } .medal-count.silver { color: #D0D0D0; } .medal-count.bronze { color: #E8A33D; }
-  .medal-count.total { color: #FFFFFF; font-weight: 900; font-size: 18px; background: linear-gradient(135deg, #6B21A8, #4C1D95); border-radius: 8px; padding: 2px 8px; display: inline-block; min-width: 36px; }
+  .medal-count.gold { color: #FCD34D; }
+  .medal-count.silver { color: #D0D0D0; }
+  .medal-count.bronze { color: #E8A33D; }
+  .medal-count.total { color: #FFFFFF; font-weight: 900; font-size: 18px; background: linear-gradient(135deg, #6B21A8, #4C1D95); border-radius: 8px; padding: 2px 8px; margin: 0 auto; display: inline-block; min-width: 36px; }
+  .medal-emoji { font-size: 14px; margin-right: 2px; }
+
+  /* ★★★ MOBILE FIX ★★★ */
+  @media (max-width: 640px) {
+    .medal-row {
+      grid-template-columns: 32px minmax(0, 1fr) 34px 34px 40px 42px;
+      padding: 8px 8px;
+      font-size: 11px;
+    }
+    .medal-row.header {
+      grid-template-columns: 32px minmax(0, 1fr) 34px 34px 40px 42px;
+      padding: 8px 8px;
+      font-size: 10px;
+      letter-spacing: 0;
+    }
+    .medal-rank { font-size: 14px; }
+    .medal-school { gap: 4px; }
+    .medal-school-logo { width: 26px; height: 26px; border-width: 1.5px; }
+    .medal-school-logo .fallback { font-size: 12px; }
+    .medal-school-name { font-size: 11px; }
+    .medal-count { font-size: 12px; }
+    .medal-count.total { font-size: 13px; min-width: 28px; padding: 2px 5px; }
+    .medal-emoji { display: none; }
+    .medal-table-header { padding: 12px 14px; }
+    .medal-table-title { font-size: 16px; }
+  }
+  @media (max-width: 380px) {
+    .medal-row {
+      grid-template-columns: 28px minmax(0, 1fr) 30px 30px 36px 38px;
+      padding: 6px 6px;
+      font-size: 10px;
+    }
+    .medal-row.header {
+      grid-template-columns: 28px minmax(0, 1fr) 30px 30px 36px 38px;
+      padding: 6px 6px;
+      font-size: 9px;
+    }
+    .medal-rank { font-size: 12px; }
+    .medal-school-logo { width: 22px; height: 22px; }
+    .medal-school-logo .fallback { font-size: 10px; }
+    .medal-school-name { font-size: 10px; }
+    .medal-count { font-size: 11px; }
+    .medal-count.total { font-size: 11px; min-width: 24px; }
+  }
+
+  /* ★★★ MOBILE BRACKET FIX ★★★ */
+  @media (max-width: 640px) {
+    .battle-row { gap: 6px; padding: 8px 10px; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); }
+    .team-name { font-size: 11px; }
+    .team-logo { width: 26px; height: 26px; }
+    .team-logo .fallback { font-size: 10px; }
+    .score-box { width: 70px; padding: 6px 0; font-size: 14px; border-radius: 10px; }
+    .score-box.empty { font-size: 12px; }
+    .finals-table-title { font-size: 13px; padding: 10px 12px; }
+    .finals-section-title { font-size: 11px; padding: 6px 12px; letter-spacing: 0.5px; }
+  }
+
   .sport-icon { width: 48px; height: 48px; object-fit: contain; border-radius: 10px; }
   .sport-tab-icon { width: 22px; height: 22px; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 6px; }
   .sport-title-icon { width: 48px; height: 48px; object-fit: contain; border-radius: 10px; border: 2px solid rgba(252,211,77,0.5); }
   .bracket-match { background: rgba(34, 34, 34, 0.95); border: 2px solid #f1c40f; border-radius: 10px; padding: 10px; }
-  .bracket-team { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 14px; font-weight: 600; border-bottom: 1px dashed #444; }
-  .bracket-team-name { color: #e0e0e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+  .bracket-team { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 14px; font-weight: 600; border-bottom: 1px dashed #444; gap: 6px; }
+  .bracket-team:last-of-type { border-bottom: none; }
+  .bracket-team-name { color: #e0e0e0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; }
   .bracket-team-name.placeholder { color: #888; font-style: italic; }
-  .bracket-team-score { color: #f1c40f; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .bracket-team-score { color: #f1c40f; font-weight: 700; font-family: 'JetBrains Mono', monospace; min-width: 24px; text-align: center; }
   .bracket-match .bracket-time { font-size: 10px; color: #888; text-align: center; margin-top: 6px; padding-top: 6px; border-top: 1px solid #333; }
   .bracket-column-title { font-family: 'Kanit', sans-serif; font-weight: 700; color: #FCD34D; font-size: 13px; text-align: center; padding: 8px 10px; background: linear-gradient(135deg, rgba(107,33,168,0.6), rgba(107,33,168,0.3)); border-radius: 10px; border: 1px solid rgba(252,211,77,0.3); }
   .tabs-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; }
@@ -234,7 +327,7 @@
     .sports-table tbody { display: block; }
     .sports-table tbody tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 6px; background: white; border-radius: 14px; padding: 12px 10px; margin-bottom: 10px; border: 1px solid #F1F5F9; }
     .sports-table tbody tr[class*="bg-purple"] { background: linear-gradient(135deg, #FAF5FF, #F3E8FF) !important; }
-    .sports-table tbody td { display: block; padding: 0; border: none; }
+    .sports-table tbody td { display: block; padding: 0; border: none; min-width: 0; }
     .sports-table tbody td:first-child { grid-column: 1 / -1; padding: 0 0 8px 0; border-bottom: 2px solid #F3E8FF; }
     .sports-table tbody td:first-child img { width: 30px !important; height: 30px !important; }
     .sports-table tbody td:first-child span { font-size: 14px !important; color: #6B21A8; }
@@ -243,7 +336,7 @@
     .sports-table .school-cell { flex-direction: column; gap: 3px; }
     .sports-table .school-logo-sm { width: 34px; height: 34px; }
     .sports-table .school-logo-sm .fallback { font-size: 14px; }
-    .sports-table .school-cell > span { font-size: 11px !important; text-align: center; font-weight: 700; }
+    .sports-table .school-cell > span { font-size: 11px !important; text-align: center; font-weight: 700; word-break: break-word; }
   }
   .trophy-section { background: linear-gradient(135deg, #1E1B4B, #4C1D95); border-radius: 20px; padding: 24px; margin-top: 24px; border: 2px solid rgba(252,211,77,0.4); }
   .trophy-title { font-family: 'Kanit', sans-serif; font-weight: 900; color: #FCD34D; font-size: 20px; text-align: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid rgba(252,211,77,0.2); }
@@ -255,8 +348,8 @@
   .trophy-logo { position: relative; width: 48px; height: 48px; border-radius: 50%; overflow: hidden; border: 3px solid rgba(252,211,77,0.6); flex-shrink: 0; background: linear-gradient(135deg, #4C1D95, #6B21A8); }
   .trophy-logo img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
   .trophy-logo .fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
-  .trophy-info { flex: 1; color: white; }
-  .trophy-name { font-family: 'Kanit', sans-serif; font-weight: 700; font-size: 16px; color: #FCD34D; }
+  .trophy-info { flex: 1; color: white; min-width: 0; }
+  .trophy-name { font-family: 'Kanit', sans-serif; font-weight: 700; font-size: 16px; color: #FCD34D; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .trophy-detail { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 2px; }
   #modalSchoolLogo { position: relative; overflow: hidden; }
   #modalSchoolLogo > span { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
@@ -371,9 +464,9 @@
           <div class="medal-row header">
             <div class="text-center">อันดับ</div>
             <div>โรงเรียน</div>
-            <div class="text-center">🥇 ทอง</div>
-            <div class="text-center">🥈 เงิน</div>
-            <div class="text-center">🥉 ทองแดง</div>
+            <div class="text-center"><span class="medal-emoji">🥇</span>ทอง</div>
+            <div class="text-center"><span class="medal-emoji">🥈</span>เงิน</div>
+            <div class="text-center"><span class="medal-emoji">🥉</span>ทองแดง</div>
             <div class="text-center">รวม</div>
           </div>
           <div id="medalTableBody">
@@ -488,11 +581,11 @@
 <div id="schoolDetailModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-sm p-4">
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col animate-slide-up">
     <div class="p-4 sm:p-5 bg-gradient-to-r from-primary-800 to-primary-600 text-white flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <div id="modalSchoolLogo" class="relative w-12 h-12 rounded-full bg-white/20 flex items-center justify-center overflow-hidden border-2 border-white/30"></div>
-        <h3 id="schoolDetailTitle" class="font-heading font-bold text-lg sm:text-xl">ชื่อโรงเรียน</h3>
+      <div class="flex items-center gap-3 min-w-0">
+        <div id="modalSchoolLogo" class="relative w-12 h-12 rounded-full bg-white/20 flex items-center justify-center overflow-hidden border-2 border-white/30 flex-shrink-0"></div>
+        <h3 id="schoolDetailTitle" class="font-heading font-bold text-lg sm:text-xl truncate">ชื่อโรงเรียน</h3>
       </div>
-      <button onclick="closeSchoolModal()" class="text-white/80 hover:text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center">
+      <button onclick="closeSchoolModal()" class="text-white/80 hover:text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center flex-shrink-0">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
     </div>
@@ -560,7 +653,7 @@
 
 <script>
 /* ================================================================
-   CONFIG
+   CONFIG & STATE
    ================================================================ */
 var CONFIG = {
   API_URL: "https://script.google.com/macros/s/AKfycbzP0vPVRSmWOd5VaUrOSCl8kMrKqqFoS-9v7WLZTWiQ5ECWEu1Y1T2I54SKF58o1jPy/exec",
@@ -586,19 +679,10 @@ function sortSportsByOrder(arr){
     return ai - bi;
   });
 }
-function isFinalRound(g){
-  var s = String(g||"").trim().toUpperCase().replace(/\s+/g,'');
-  return /ชิงที่1|ชิงชนะเลิศ|ชิงที่1-2|ไฟนอล|FINAL/.test(s);
-}
-function isThirdPlaceRound(g){
-  var s = String(g||"").trim().toUpperCase().replace(/\s+/g,'');
-  return /ชิงที่3|ชิงที่3-4|ชิงอันดับ3|THIRD/.test(s);
-}
+function isFinalRound(g){ var s = String(g||"").trim().toUpperCase().replace(/\s+/g,''); return /ชิงที่1|ชิงชนะเลิศ|ชิงที่1-2|ไฟนอล|FINAL/.test(s); }
+function isThirdPlaceRound(g){ var s = String(g||"").trim().toUpperCase().replace(/\s+/g,''); return /ชิงที่3|ชิงที่3-4|ชิงอันดับ3|THIRD/.test(s); }
 function isSemiRound(g){ return /รอง/.test(String(g||'')); }
 
-/* ================================================================
-   STATE
-   ================================================================ */
 var isFetching=false, lastTickerHTML='', lastAnnouncementText='', currentSlide=0, slideTimer=null, currentTab='group';
 var currentSportMatches=[], groupStandings={}, matchResults={}, allMatches=[], selectedSport="";
 var athleticsData=[], athleticsMedals={}, announcements=[], lastBracketHash='', debugShownOnce=false;
@@ -746,13 +830,12 @@ function findKeyByKeywords(row, keywords){
   var clean = function(s){ return String(s).toLowerCase().replace(/[\s\u00A0\u200B\/\.\-_]+/g,''); };
   var keys = Object.keys(row);
   for(var i=0;i<keys.length;i++){
-    var k = keys[i];
-    var lk = clean(k);
+    var lk = clean(keys[i]);
     var allMatch = true;
     for(var j=0;j<keywords.length;j++){
       if(lk.indexOf(clean(keywords[j])) === -1){ allMatch = false; break; }
     }
-    if(allMatch) return k;
+    if(allMatch) return keys[i];
   }
   return null;
 }
@@ -1246,7 +1329,7 @@ function updateAnnouncementBar(){
 }
 
 /* ================================================================
-   RENDER FUNCTIONS
+   RENDER
    ================================================================ */
 function startCountdown(){
   var target = new Date("2026-10-05T08:00:00+07:00").getTime();
@@ -1628,9 +1711,9 @@ function renderBracketContent(){
   if(fm2[0]){
     var rA = String(fm2[0].teamA).matchAll(/ผู้ชนะ\s*คู่\s*(?:ที่)?\s*(\d+)/g);
     var rB = String(fm2[0].teamB).matchAll(/ผู้ชนะ\s*คู่\s*(?:ที่)?\s*(\d+)/g);
-    var m;
-    for(m of rA) smn.push(String(m[1]));
-    for(m of rB) smn.push(String(m[1]));
+    var mm;
+    for(mm of rA) smn.push(String(mm[1]));
+    for(mm of rB) smn.push(String(mm[1]));
   }
   var sm2 = km.filter(function(m){ return smn.indexOf(String(m.no)) !== -1; });
   var fMatch = fm2[0];
@@ -1768,11 +1851,8 @@ function convertAPItoMatches(rows){
     var sBR = obj.scoreB !== undefined && obj.scoreB !== null && String(obj.scoreB).trim() !== '' ? String(obj.scoreB).trim() : null;
     var tickerOn = isTickerOn(obj);
     matches.push({
-      no: no,
-      date: String(obj.date || '').trim(),
-      time: String(obj.time || '').trim(),
-      sport: String(obj.sport || '').trim(),
-      teamA: teamA, teamB: teamB, group: gs,
+      no: no, date: String(obj.date || '').trim(), time: String(obj.time || '').trim(),
+      sport: String(obj.sport || '').trim(), teamA: teamA, teamB: teamB, group: gs,
       scoreA: sAR, scoreB: sBR,
       status: String(obj.status || 'upcoming').toLowerCase().trim(),
       referee: String(obj.referee || '').trim(),
@@ -1781,15 +1861,14 @@ function convertAPItoMatches(rows){
       goldSchool: String(obj['ทอง'] || '').trim(),
       silverSchool: String(obj['เงิน'] || '').trim(),
       bronzeSchool: String(obj['ทองแดง'] || '').trim(),
-      knockout1: k1, knockout2: k2,
-      tickerOn: tickerOn
+      knockout1: k1, knockout2: k2, tickerOn: tickerOn
     });
   });
   return matches;
 }
 
 /* ================================================================
-   TICKER BUILD
+   TICKER
    ================================================================ */
 function getTeamLogoHTML(teamName){
   var l = getLogoPath(teamName);
@@ -1829,14 +1908,12 @@ function renderSemiTeam(rawTeam, sport, isWinner){
 
 function buildSportNews(sport, sportMatches){
   var news = [];
-  var finalMatch = sportMatches.find(function(m){ return isFinalRound(m.group) && m.status === 'finished'; });
-  var thirdMatch = sportMatches.find(function(m){ return isThirdPlaceRound(m.group) && m.status === 'finished'; });
+  var finalMatch = sportMatches.filter(function(m){ return isFinalRound(m.group) && m.status === 'finished'; })[0];
+  var thirdMatch = sportMatches.filter(function(m){ return isThirdPlaceRound(m.group) && m.status === 'finished'; })[0];
   var doneSemiMatches = sportMatches.filter(function(m){ return isSemiRound(m.group) && m.status === 'finished'; });
 
   if(finalMatch && thirdMatch){
-    var goldRaw = getWinner(finalMatch);
-    var silverRaw = getLoser(finalMatch);
-    var bronzeRaw = getWinner(thirdMatch);
+    var goldRaw = getWinner(finalMatch), silverRaw = getLoser(finalMatch), bronzeRaw = getWinner(thirdMatch);
     var gold = goldRaw ? (findSchoolName(resolveTeamName(goldRaw, sport)) || resolveTeamName(goldRaw, sport)) : null;
     var silver = silverRaw ? (findSchoolName(resolveTeamName(silverRaw, sport)) || resolveTeamName(silverRaw, sport)) : null;
     var bronze = bronzeRaw ? (findSchoolName(resolveTeamName(bronzeRaw, sport)) || resolveTeamName(bronzeRaw, sport)) : null;
@@ -1845,60 +1922,44 @@ function buildSportNews(sport, sportMatches){
     if(bronze && !isPlaceholder(bronze)) news.push('<span class="ticker-medal">🥉</span>' + getTeamLogoHTML(bronze) + '<span class="ticker-school-name">' + shortTeamName(bronze) + '</span>');
     return {type:'single', news:news};
   }
-
   if(finalMatch){
-    var goldRaw2 = getWinner(finalMatch);
-    var silverRaw2 = getLoser(finalMatch);
+    var goldRaw2 = getWinner(finalMatch), silverRaw2 = getLoser(finalMatch);
     var gold2 = goldRaw2 ? (findSchoolName(resolveTeamName(goldRaw2, sport)) || resolveTeamName(goldRaw2, sport)) : null;
     var silver2 = silverRaw2 ? (findSchoolName(resolveTeamName(silverRaw2, sport)) || resolveTeamName(silverRaw2, sport)) : null;
     if(gold2 && !isPlaceholder(gold2)) news.push('<span class="ticker-medal">🥇</span>' + getTeamLogoHTML(gold2) + '<span class="ticker-school-name winner">' + shortTeamName(gold2) + '</span>');
     if(silver2 && !isPlaceholder(silver2)) news.push('<span class="ticker-medal">🥈</span>' + getTeamLogoHTML(silver2) + '<span class="ticker-school-name">' + shortTeamName(silver2) + '</span>');
     return {type:'single', news:news};
   }
-
   if(thirdMatch){
     var bronzeRaw2 = getWinner(thirdMatch);
     var bronze2 = bronzeRaw2 ? (findSchoolName(resolveTeamName(bronzeRaw2, sport)) || resolveTeamName(bronzeRaw2, sport)) : null;
     if(bronze2 && !isPlaceholder(bronze2)) news.push('<span class="ticker-medal">🥉</span>' + getTeamLogoHTML(bronze2) + '<span class="ticker-school-name winner">' + shortTeamName(bronze2) + '</span>');
     return {type:'single', news:news};
   }
-
   if(doneSemiMatches.length > 0){
     var sortedSemis = doneSemiMatches.slice().sort(function(a,b){ return parseInt(a.no) - parseInt(b.no); });
-
     sortedSemis.forEach(function(m, idx){
-      var aRaw = m.knockout1 || m.teamA;
-      var bRaw = m.knockout2 || m.teamB;
+      var aRaw = m.knockout1 || m.teamA, bRaw = m.knockout2 || m.teamB;
       var winRaw = getWinner(m);
       var aWon = winRaw && (winRaw === aRaw || winRaw === m.teamA);
       var bWon = winRaw && (winRaw === bRaw || winRaw === m.teamB);
-
       var aInfo = renderSemiTeam(aRaw, sport, aWon);
       var bInfo = renderSemiTeam(bRaw, sport, bWon);
-
       var hasScore = m.scoreA != null && m.scoreB != null && String(m.scoreA).trim() !== '' && String(m.scoreB).trim() !== '';
       var scoreHTML = hasScore ? '<span class="ticker-score">' + m.scoreA + ' : ' + m.scoreB + '</span>' : '<span class="ticker-vs">vs</span>';
-
       var semiLabel = sortedSemis.length > 1 ? ('รอบรอง ' + (idx+1)) : 'รอบรอง';
       news.push('<span class="ticker-round-label">' + semiLabel + ':</span> ' + aInfo.labelHTML + aInfo.logoHTML + aInfo.nameHTML + ' ' + scoreHTML + ' ' + bInfo.logoHTML + bInfo.nameHTML + bInfo.labelHTML);
     });
-
     if(doneSemiMatches.length >= 2){
-      var semi1 = sortedSemis[0];
-      var semi2 = sortedSemis[1];
-
+      var semi1 = sortedSemis[0], semi2 = sortedSemis[1];
       var resolveName = function(raw){
         if(!raw) return null;
         var r = resolveTeamName(raw, sport);
         if(isPlaceholder(r)) return null;
         return findSchoolName(r) || r;
       };
-
-      var s1WName = resolveName(getWinner(semi1));
-      var s1LName = resolveName(getLoser(semi1));
-      var s2WName = resolveName(getWinner(semi2));
-      var s2LName = resolveName(getLoser(semi2));
-
+      var s1WName = resolveName(getWinner(semi1)), s1LName = resolveName(getLoser(semi1));
+      var s2WName = resolveName(getWinner(semi2)), s2LName = resolveName(getLoser(semi2));
       if(s1WName && s2WName){
         news.push('<span class="ticker-pair">🏆 ชิงที่ 1:</span> ' + getTeamLogoHTML(s1WName) + '<span class="ticker-school-name winner">' + shortTeamName(s1WName) + '</span> <span class="ticker-vs">vs</span> ' + getTeamLogoHTML(s2WName) + '<span class="ticker-school-name winner">' + shortTeamName(s2WName) + '</span>');
       }
@@ -1914,10 +1975,8 @@ function buildSportNews(sport, sportMatches){
         news.push('<span class="ticker-qualifier">→ เข้ารอบชิงที่ 1:</span> ' + getTeamLogoHTML(winName) + '<span class="ticker-school-name winner">' + shortTeamName(winName) + '</span>');
       }
     }
-
     return {type:'single', news:news};
   }
-
   var groups = groupStandings[normalizeKey(sport)];
   if(groups){
     var tickerGroups = {};
@@ -1938,7 +1997,6 @@ function buildSportNews(sport, sportMatches){
     });
     if(groupResults.length > 0) return {type:'groups', groups: groupResults};
   }
-
   return {type:'single', news:[]};
 }
 
@@ -1956,7 +2014,6 @@ function buildTickerContent(){
     var sif = getSportIcon(sport);
     var sih = sif ? '<img src="' + sif + '" class="ticker-sport-icon" onerror="this.style.display=\'none\';">' : '<span style="font-size:20px;">🏆</span>';
     var result = buildSportNews(sport, sportMatches);
-
     if(result.type === 'groups'){
       result.groups.forEach(function(g){
         items.push('<span class="ticker-item">' + sih + '<span class="ticker-sport-name">' + sport + '</span> <span class="ticker-group-label">· ' + g.label + ':</span> ' + g.list + '</span>');
@@ -2138,7 +2195,7 @@ document.addEventListener("DOMContentLoaded", function(){
   fetchAllData();
   setInterval(function(){ fetchAllData(); }, CONFIG.REFRESH_INTERVAL);
   document.addEventListener("visibilitychange", function(){ if(!document.hidden) fetchAllData(); });
-  console.log("✅ Doitao Sports 2026 - v54 (ES5 + Athletics 1-2-3 together)");
+  console.log("✅ Doitao Sports 2026 - v55 (Mobile medal table fix with minmax(0,1fr))");
   if(DEBUG) console.log("🐛 Debug mode: ON");
 });
 </script>
