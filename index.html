@@ -555,20 +555,156 @@
   .sports-table .school-logo-sm img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
   .sports-table .school-logo-sm .fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
 
+  /* ===== MOBILE: การ์ดเหรียญรายกีฬา แบบ Grid 3 คอลัมน์ สวยงามเหมือนเดสก์ท็อป ===== */
   @media (max-width: 768px) {
-    .sports-table-wrapper { max-height: none; overflow-y: visible; background: transparent; box-shadow: none; }
-    .sports-table { display: block; }
+    .sports-table-wrapper {
+      max-height: none;
+      overflow-y: visible;
+      background: transparent;
+      box-shadow: none;
+      border-radius: 0;
+      padding: 0;
+    }
+    .sports-table { display: block; width: 100%; }
     .sports-table thead { display: none; }
     .sports-table tbody { display: block; }
-    .sports-table tbody tr { display: block; background: white; border-radius: 14px; padding: 14px; margin-bottom: 12px; box-shadow: 0 3px 12px rgba(107,33,168,0.08); border: 1px solid #F1F5F9; }
-    .sports-table tbody td { display: block; padding: 8px 0; border: none; border-bottom: 1px solid #F1F5F9; }
-    .sports-table tbody td:last-child { border-bottom: none; }
-    .sports-table tbody td::before { content: attr(data-label); display: block; font-size: 11px; font-weight: 700; color: #6B21A8; margin-bottom: 6px; font-family: 'Kanit', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
-    .sports-table tbody td:first-child { border-bottom: 2px solid #F3E8FF; margin-bottom: 8px; padding-bottom: 10px; }
-    .sports-table tbody td:first-child::before { display: none; }
-    .sports-table .school-cell { justify-content: flex-start; }
-    .sports-table .school-logo-sm { width: 40px; height: 40px; border-width: 2px; }
-    .sports-table .school-logo-sm .fallback { font-size: 16px; }
+
+    .sports-table tbody tr {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px 6px;
+      background: white;
+      border-radius: 14px;
+      padding: 12px 10px;
+      margin-bottom: 10px;
+      box-shadow: 0 3px 12px rgba(107,33,168,0.10);
+      border: 1px solid #F1F5F9;
+      align-items: start;
+    }
+    /* แถวกรีฑา: ใช้พื้นหลังโทนม่วงอ่อน */
+    .sports-table tbody tr[class*="bg-purple"] {
+      background: linear-gradient(135deg, #FAF5FF, #F3E8FF) !important;
+      border-color: #E9D5FF;
+    }
+
+    .sports-table tbody td {
+      display: block;
+      padding: 0;
+      border: none;
+      min-width: 0;
+      vertical-align: top;
+    }
+    .sports-table tbody td[colspan] {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 20px 0;
+      color: #9CA3AF;
+      font-size: 14px;
+    }
+
+    /* หัวการ์ด: ชื่อกีฬา + ไอคอน (เต็มความกว้าง) */
+    .sports-table tbody td:first-child {
+      grid-column: 1 / -1;
+      padding: 0 0 8px 0;
+      margin-bottom: 2px;
+      border-bottom: 2px solid #F3E8FF;
+    }
+    .sports-table tbody td:first-child > div {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+    }
+    .sports-table tbody td:first-child img {
+      width: 30px !important;
+      height: 30px !important;
+      flex-shrink: 0;
+      border-radius: 8px;
+    }
+    .sports-table tbody td:first-child span {
+      font-size: 14px !important;
+      line-height: 1.25;
+      color: #6B21A8;
+    }
+    /* ไอคอนกรีฑา (ตัวอิโมจิ 🏃) ที่อยู่ในหัวการ์ด */
+    .sports-table tbody td:first-child > div > span:first-child {
+      font-size: 22px !important;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    /* คอลัมน์เหรียญ (ทอง/เงิน/ทองแดง) */
+    .sports-table tbody td[data-label]:not(:first-child) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+      min-height: 74px;
+      padding: 0 2px;
+    }
+    .sports-table tbody td[data-label]:not(:first-child)::before {
+      content: attr(data-label);
+      display: block;
+      font-size: 16px;
+      line-height: 1;
+      margin-bottom: 6px;
+      text-align: center;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.08));
+    }
+
+    /* กล่องโรงเรียน */
+    .sports-table .school-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 3px;
+      width: 100%;
+      text-align: center;
+      min-width: 0;
+    }
+    .sports-table .school-logo-sm {
+      width: 34px;
+      height: 34px;
+      border-width: 2px;
+      flex-shrink: 0;
+    }
+    .sports-table .school-logo-sm .fallback { font-size: 14px; }
+    .sports-table .school-cell > span {
+      font-size: 11px !important;
+      line-height: 1.15;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      width: 100%;
+      display: block;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    /* เครื่องหมาย — (ไม่มีข้อมูล) */
+    .sports-table tbody td[data-label]:not(:first-child) > span.text-gray-300 {
+      display: block;
+      padding-top: 14px;
+      font-size: 20px;
+      line-height: 1;
+      color: #D1D5DB;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .sports-table tbody tr { padding: 10px 8px; gap: 6px 4px; }
+    .sports-table tbody td:first-child > div { gap: 6px; }
+    .sports-table tbody td:first-child img { width: 26px !important; height: 26px !important; }
+    .sports-table tbody td:first-child span { font-size: 13px !important; }
+    .sports-table tbody td:first-child > div > span:first-child { font-size: 20px !important; }
+    .sports-table tbody td[data-label]:not(:first-child) { min-height: 68px; }
+    .sports-table tbody td[data-label]:not(:first-child)::before { font-size: 15px; margin-bottom: 4px; }
+    .sports-table .school-logo-sm { width: 30px; height: 30px; }
+    .sports-table .school-logo-sm .fallback { font-size: 12px; }
+    .sports-table .school-cell > span { font-size: 10.5px !important; }
   }
 
   .trophy-section { background: linear-gradient(135deg, #1E1B4B, #4C1D95); border-radius: 20px; padding: 24px; margin-top: 24px; border: 2px solid rgba(252,211,77,0.4); box-shadow: 0 12px 40px rgba(107,33,168,0.3); }
@@ -1788,7 +1924,7 @@ function renderSportsMedalTable() {
     }
     const sportIconFile = getSportIcon(sport);
     const iconHTML = sportIconFile ? `<img src="${sportIconFile}" class="w-10 h-10 object-contain flex-shrink-0" onerror="this.style.display='none';">` : '';
-    rows += `<tr><td class="font-medium text-dark" data-label="รายการ" style="font-size:17px;"><div class="flex items-center gap-3">${iconHTML}<span style="font-family:'Kanit',sans-serif;font-weight:700;">${sport}</span></div></td><td class="text-center" data-label="🥇 ทอง">${goldSchool ? `<div class="school-cell">${getSmallLogoHTML(goldSchool)}<span class="font-semibold text-yellow-700" style="font-size:15px;">${shortTeamName(goldSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td><td class="text-center" data-label="🥈 เงิน">${silverSchool ? `<div class="school-cell">${getSmallLogoHTML(silverSchool)}<span class="font-semibold text-gray-600" style="font-size:15px;">${shortTeamName(silverSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td><td class="text-center" data-label="🥉 ทองแดง">${bronzeSchool ? `<div class="school-cell">${getSmallLogoHTML(bronzeSchool)}<span class="font-semibold text-orange-700" style="font-size:15px;">${shortTeamName(bronzeSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td></tr>`;
+    rows += `<tr><td class="font-medium text-dark" data-label="รายการ" style="font-size:17px;"><div class="flex items-center gap-3">${iconHTML}<span style="font-family:'Kanit',sans-serif;font-weight:700;">${sport}</span></div></td><td class="text-center" data-label="🥇">${goldSchool ? `<div class="school-cell">${getSmallLogoHTML(goldSchool)}<span class="font-semibold text-yellow-700" style="font-size:15px;">${shortTeamName(goldSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td><td class="text-center" data-label="🥈">${silverSchool ? `<div class="school-cell">${getSmallLogoHTML(silverSchool)}<span class="font-semibold text-gray-600" style="font-size:15px;">${shortTeamName(silverSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td><td class="text-center" data-label="🥉">${bronzeSchool ? `<div class="school-cell">${getSmallLogoHTML(bronzeSchool)}<span class="font-semibold text-orange-700" style="font-size:15px;">${shortTeamName(bronzeSchool)}</span></div>` : '<span class="text-gray-300">—</span>'}</td></tr>`;
   });
   const athMap = {};
   athleticsData.forEach(row => {
@@ -1803,7 +1939,7 @@ function renderSportsMedalTable() {
     if (!athMap[id]) return;
     const ath = athMap[id];
     const genderIcon = ath.detail.includes('ชาย') ? '♂' : ath.detail.includes('หญิง') ? '♀' : '';
-    rows += `<tr class="bg-purple-50/50"><td class="font-medium text-dark" data-label="รายการ" style="font-size:17px;"><div class="flex items-center gap-3"><span style="font-size:22px;">🏃</span><span style="font-family:'Kanit',sans-serif;font-weight:700;">${id} ${ath.detail} ${genderIcon}</span></div></td><td class="text-center" data-label="🥇 ทอง">${ath.gold ? `<div class="school-cell">${getSmallLogoHTML(ath.gold)}<span class="font-semibold text-yellow-700" style="font-size:15px;">${shortTeamName(ath.gold)}</span></div>` : '<span class="text-gray-300">—</span>'}</td><td class="text-center" data-label="🥈 เงิน">${ath.silver ? `<div class="school-cell">${getSmallLogoHTML(ath.silver)}<span class="font-semibold text-gray-600" style="font-size:15px;">${shortTeamName(ath.silver)}</span></div>` : '<span class="text-gray-300">—</span>'}</td><td class="text-center" data-label="🥉 ทองแดง">${ath.bronze ? `<div class="school-cell">${getSmallLogoHTML(ath.bronze)}<span class="font-semibold text-orange-700" style="font-size:15px;">${shortTeamName(ath.bronze)}</span></div>` : '<span class="text-gray-300">—</span>'}</td></tr>`;
+    rows += `<tr class="bg-purple-50/50"><td class="font-medium text-dark" data-label="รายการ" style="font-size:17px;"><div class="flex items-center gap-3"><span style="font-size:22px;">🏃</span><span style="font-family:'Kanit',sans-serif;font-weight:700;">${id} ${ath.detail} ${genderIcon}</span></div></td><td class="text-center" data-label="🥇">${ath.gold ? `<div class="school-cell">${getSmallLogoHTML(ath.gold)}<span class="font-semibold text-yellow-700" style="font-size:15px;">${shortTeamName(ath.gold)}</span></div>` : '<span class="text-gray-300">—</span>'}</td><td class="text-center" data-label="🥈">${ath.silver ? `<div class="school-cell">${getSmallLogoHTML(ath.silver)}<span class="font-semibold text-gray-600" style="font-size:15px;">${shortTeamName(ath.silver)}</span></div>` : '<span class="text-gray-300">—</span>'}</td><td class="text-center" data-label="🥉">${ath.bronze ? `<div class="school-cell">${getSmallLogoHTML(ath.bronze)}<span class="font-semibold text-orange-700" style="font-size:15px;">${shortTeamName(ath.bronze)}</span></div>` : '<span class="text-gray-300">—</span>'}</td></tr>`;
   });
   if (rows === '') rows = `<tr><td colspan="4" class="text-center py-8 text-gray-400">ยังไม่มีข้อมูล</td></tr>`;
   tbody.innerHTML = rows;
@@ -2431,7 +2567,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAllData();
   setInterval(() => { fetchAllData(); }, CONFIG.REFRESH_INTERVAL);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) fetchAllData(); });
-  console.log("✅ Doitao Sports 2026 - v41 (shortTeamName: ตัด บ้าน ยกเว้น บ้านไร่/บ้านโปง)");
+  console.log("✅ Doitao Sports 2026 - v42 (Mobile Grid Layout เหรียญรายกีฬา)");
 });
 </script>
 
