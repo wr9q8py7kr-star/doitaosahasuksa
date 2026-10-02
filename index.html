@@ -78,12 +78,13 @@
   .ticker-medal { font-size: 16px; margin: 0 2px; }
   .ticker-sport-name { color: #FFFFFF; font-weight: 800; font-size: 15px; margin-right: 4px; }
   .ticker-sep { color: #9333EA; font-size: 18px; margin: 0 6px; font-weight: 900; }
-  .ticker-sep-inner { color: #A855F7; font-size: 14px; margin: 0 6px; font-weight: 700; opacity: 0.7; }
+  .ticker-sep-inner { color: #A855F7; font-size: 14px; margin: 0 8px; font-weight: 700; opacity: 0.7; }
   .ticker-school-name { color: #FCD34D; font-weight: 700; }
   .ticker-school-name.winner { color: #FCD34D; font-weight: 900; text-shadow: 0 0 8px rgba(252,211,77,0.6); }
   .ticker-score { color: #FCD34D; font-weight: 900; font-size: 16px; margin: 0 4px; padding: 2px 8px; background: rgba(252,211,77,0.15); border-radius: 6px; letter-spacing: 1px; }
   .ticker-round-label { color: #E9D5FF; font-weight: 700; font-size: 13px; margin: 0 4px; }
   .ticker-qualifier { color: #FCD34D; font-weight: 900; font-size: 14px; margin: 0 4px; }
+  .ticker-group-label { color: #C4B5FD; font-weight: 800; font-size: 14px; margin: 0 4px; }
   .live-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 9999px; font-size: 10px; font-weight: 700; letter-spacing: 1px; }
   .live-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: blink 1s infinite; }
   .page-view { display: none; }
@@ -576,6 +577,7 @@ const ATHLETICS_ORDER = ["101","102","103","104","105","106","107","108","109","
 function sortSportsByOrder(arr){return [...arr].sort((a,b)=>{const ai=SPORTS_ORDER.indexOf(a),bi=SPORTS_ORDER.indexOf(b);if(ai===-1&&bi===-1)return a.localeCompare(b,'th');if(ai===-1)return 1;if(bi===-1)return -1;return ai-bi;});}
 function isFinalRound(g){const s=String(g||"").trim().toUpperCase().replace(/\s+/g,'');return /ชิงที่1|ชิงชนะเลิศ|ชิงที่1-2|ไฟนอล|FINAL/.test(s);}
 function isThirdPlaceRound(g){const s=String(g||"").trim().toUpperCase().replace(/\s+/g,'');return /ชิงที่3|ชิงที่3-4|ชิงอันดับ3|THIRD/.test(s);}
+function isSemiRound(g){return /รอง/.test(String(g||''));}
 
 // ================================================================
 // STATE
@@ -886,27 +888,119 @@ function convertAPItoMatches(rows){
 }
 
 // ================================================================
-// ★★★ TICKER v48 ★★★
-// - ถ้าชิงที่ 1 + ชิงที่ 3 เสร็จทั้งคู่ → แสดงแค่ 🥇 🥈 🥉
-// - โลโก้กีฬาแสดงครั้งเดียวต่อ 1 กีฬา
-// - ข่าวแต่ละรอบของกีฬาเดียวกันคั่นด้วย " | "
+// ★★★ TICKER v50 — Group-by-group Announcement ★★★
 // ================================================================
-function formatRoundLabel(groupStr) {
-  const g = String(groupStr || '').trim();
-  if (!g) return '';
-  const up = g.toUpperCase();
-  if (up === 'RR') return 'จัดอันดับรวม';
-  if (/^[A-Z]$/.test(up)) return `รอบแบ่งกลุ่ม ${up}`;
-  if (g.includes('รอง')) {
-    const suffix = g.replace(/รอง/g,'').replace(/[\(\)]/g,'').trim();
-    return suffix ? `รอบรอง ${suffix}` : 'รอบรองชนะเลิศ';
-  }
-  return g;
-}
+// ลำดับความสำคัญ (แสดงเฉพาะขั้นที่สูงสุด):
+//  1. ชิงที่ 1 + ชิงที่ 3 พร้อมกัน  → 🥇 🥈 🥉
+//  2. ชิงที่ 1 เท่านั้น            → 🥇 🥈
+//  3. ชิงที่ 3 เท่านั้น            → 🥉
+//  4. รอบรองทั้ง 2 คู่จบพร้อมกัน    → ⭐ 4 ทีมสุดท้าย
+//  5. รอบรองคู่เดียว               → แสดงคู่นั้น
+//  6. รอบแบ่งกลุ่ม                → แสดงเป็นบล็อกแยกทีละกลุ่ม A, B, C, D
+// ================================================================
 
 function getTeamLogoHTML(teamName) {
   const l = getLogoPath(teamName);
   return l ? `<img src="${l}" class="ticker-school-logo" onerror="this.style.display='none';">` : '';
+}
+
+// คืนค่า: { type: 'single', news: [...] } หรือ { type: 'groups', groups: [ {label, list}, ... ] }
+function buildSportNews(sport, sportMatches) {
+  const news = [];
+
+  const finalMatch = sportMatches.find(m => isFinalRound(m.group) && m.status === 'finished');
+  const thirdMatch = sportMatches.find(m => isThirdPlaceRound(m.group) && m.status === 'finished');
+  const doneSemiMatches = sportMatches.filter(m => isSemiRound(m.group) && m.status === 'finished');
+
+  // ===== Priority 1: ชิงที่ 1 + ชิงที่ 3 ครบ =====
+  if (finalMatch && thirdMatch) {
+    const goldRaw = getWinner(finalMatch);
+    const silverRaw = getLoser(finalMatch);
+    const bronzeRaw = getWinner(thirdMatch);
+    const gold = goldRaw ? (findSchoolName(resolveTeamName(goldRaw, sport)) || resolveTeamName(goldRaw, sport)) : null;
+    const silver = silverRaw ? (findSchoolName(resolveTeamName(silverRaw, sport)) || resolveTeamName(silverRaw, sport)) : null;
+    const bronze = bronzeRaw ? (findSchoolName(resolveTeamName(bronzeRaw, sport)) || resolveTeamName(bronzeRaw, sport)) : null;
+    if (gold && !isPlaceholder(gold)) news.push(`<span class="ticker-medal">🥇</span>${getTeamLogoHTML(gold)}<span class="ticker-school-name winner">${shortTeamName(gold)}</span>`);
+    if (silver && !isPlaceholder(silver)) news.push(`<span class="ticker-medal">🥈</span>${getTeamLogoHTML(silver)}<span class="ticker-school-name">${shortTeamName(silver)}</span>`);
+    if (bronze && !isPlaceholder(bronze)) news.push(`<span class="ticker-medal">🥉</span>${getTeamLogoHTML(bronze)}<span class="ticker-school-name">${shortTeamName(bronze)}</span>`);
+    return { type: 'single', news };
+  }
+
+  // ===== Priority 2: ชิงที่ 1 เท่านั้น =====
+  if (finalMatch) {
+    const goldRaw = getWinner(finalMatch);
+    const silverRaw = getLoser(finalMatch);
+    const gold = goldRaw ? (findSchoolName(resolveTeamName(goldRaw, sport)) || resolveTeamName(goldRaw, sport)) : null;
+    const silver = silverRaw ? (findSchoolName(resolveTeamName(silverRaw, sport)) || resolveTeamName(silverRaw, sport)) : null;
+    if (gold && !isPlaceholder(gold)) news.push(`<span class="ticker-medal">🥇</span>${getTeamLogoHTML(gold)}<span class="ticker-school-name winner">${shortTeamName(gold)}</span>`);
+    if (silver && !isPlaceholder(silver)) news.push(`<span class="ticker-medal">🥈</span>${getTeamLogoHTML(silver)}<span class="ticker-school-name">${shortTeamName(silver)}</span>`);
+    return { type: 'single', news };
+  }
+
+  // ===== Priority 3: ชิงที่ 3 เท่านั้น =====
+  if (thirdMatch) {
+    const bronzeRaw = getWinner(thirdMatch);
+    const bronze = bronzeRaw ? (findSchoolName(resolveTeamName(bronzeRaw, sport)) || resolveTeamName(bronzeRaw, sport)) : null;
+    if (bronze && !isPlaceholder(bronze)) news.push(`<span class="ticker-medal">🥉</span>${getTeamLogoHTML(bronze)}<span class="ticker-school-name winner">${shortTeamName(bronze)}</span>`);
+    return { type: 'single', news };
+  }
+
+  // ===== Priority 4: รอบรองทั้ง 2 คู่จบ → ⭐ 4 ทีมสุดท้าย =====
+  if (doneSemiMatches.length >= 2) {
+    const semiTeams = new Set();
+    doneSemiMatches.forEach(m => {
+      const a = resolveTeamName(m.knockout1 || m.teamA, sport);
+      const b = resolveTeamName(m.knockout2 || m.teamB, sport);
+      if (a && !isPlaceholder(a)) { const f = findSchoolName(a) || a; if (f && !isPlaceholder(f)) semiTeams.add(f); }
+      if (b && !isPlaceholder(b)) { const f = findSchoolName(b) || b; if (f && !isPlaceholder(f)) semiTeams.add(f); }
+    });
+    if (semiTeams.size > 0) {
+      const list = Array.from(semiTeams).map(t => `${getTeamLogoHTML(t)}<span class="ticker-school-name">${shortTeamName(t)}</span>`).join(' · ');
+      news.push(`<span class="ticker-qualifier">⭐ 4 ทีมสุดท้าย:</span> ${list}`);
+    }
+    return { type: 'single', news };
+  }
+
+  // ===== Priority 5: รอบรองคู่เดียว =====
+  if (doneSemiMatches.length === 1) {
+    const m = doneSemiMatches[0];
+    const aRaw = m.knockout1 || m.teamA;
+    const bRaw = m.knockout2 || m.teamB;
+    const aName = findSchoolName(resolveTeamName(aRaw, sport)) || resolveTeamName(aRaw, sport);
+    const bName = findSchoolName(resolveTeamName(bRaw, sport)) || resolveTeamName(bRaw, sport);
+    if (!isPlaceholder(aName) && !isPlaceholder(bName)) {
+      const winRaw = getWinner(m);
+      const aWon = winRaw && (winRaw === aRaw || winRaw === m.teamA);
+      const bWon = winRaw && (winRaw === bRaw || winRaw === m.teamB);
+      const hasScore = m.scoreA != null && m.scoreB != null && String(m.scoreA).trim() !== '' && String(m.scoreB).trim() !== '';
+      const scoreTxt = hasScore ? `${m.scoreA} : ${m.scoreB}` : 'vs';
+      news.push(`<span class="ticker-round-label">รอบรอง</span> ${getTeamLogoHTML(aName)}<span class="ticker-school-name ${aWon ? 'winner' : ''}">${shortTeamName(aName)}</span> <span class="ticker-score">${scoreTxt}</span> ${getTeamLogoHTML(bName)}<span class="ticker-school-name ${bWon ? 'winner' : ''}">${shortTeamName(bName)}</span>`);
+    }
+    return { type: 'single', news };
+  }
+
+  // ===== Priority 6: รอบแบ่งกลุ่ม → แยกทีละกลุ่ม =====
+  const groups = groupStandings[normalizeKey(sport)];
+  if (groups) {
+    const tickerGroups = new Set();
+    sportMatches.filter(m => isGroupStage(m.group)).forEach(m => {
+      tickerGroups.add(extractGroupLetter(m.group));
+    });
+    const groupResults = [];
+    Object.keys(groups).sort().forEach(g => {
+      if (!tickerGroups.has(g)) return;
+      const top2 = groups[g].slice(0, 2);
+      if (top2.length === 0) return;
+      const label = g === 'RR' ? 'จัดอันดับ' : `กลุ่ม ${g}`;
+      const list = top2.map(t => `${getTeamLogoHTML(t.name)}<span class="ticker-school-name">${shortTeamName(t.name)}</span>`).join(' · ');
+      groupResults.push({ label, list });
+    });
+    if (groupResults.length > 0) {
+      return { type: 'groups', groups: groupResults };
+    }
+  }
+
+  return { type: 'single', news: [] };
 }
 
 function buildTickerContent() {
@@ -926,121 +1020,19 @@ function buildTickerContent() {
       ? `<img src="${sif}" class="ticker-sport-icon" onerror="this.style.display='none';">`
       : `<span style="font-size:20px;">🏆</span>`;
 
-    const finalMatch = sportMatches.find(m => isFinalRound(m.group) && m.status === 'finished');
-    const thirdMatch = sportMatches.find(m => isThirdPlaceRound(m.group) && m.status === 'finished');
+    const result = buildSportNews(sport, sportMatches);
 
-    // เก็บข่าวแต่ละส่วนของกีฬานี้
-    const sportNews = [];
-
-    if (finalMatch && thirdMatch) {
-      // ====== MODE: FULL RESULT (แสดงแค่ 🥇 🥈 🥉) ======
-      const goldRaw = getWinner(finalMatch);
-      const silverRaw = getLoser(finalMatch);
-      const bronzeRaw = getWinner(thirdMatch);
-
-      const goldName = goldRaw ? (findSchoolName(resolveTeamName(goldRaw, sport)) || resolveTeamName(goldRaw, sport)) : null;
-      const silverName = silverRaw ? (findSchoolName(resolveTeamName(silverRaw, sport)) || resolveTeamName(silverRaw, sport)) : null;
-      const bronzeName = bronzeRaw ? (findSchoolName(resolveTeamName(bronzeRaw, sport)) || resolveTeamName(bronzeRaw, sport)) : null;
-
-      if (goldName && !isPlaceholder(goldName)) {
-        const l = getTeamLogoHTML(goldName);
-        sportNews.push(`<span class="ticker-medal">🥇</span>${l}<span class="ticker-school-name winner">${shortTeamName(goldName)}</span>`);
-      }
-      if (silverName && !isPlaceholder(silverName)) {
-        const l = getTeamLogoHTML(silverName);
-        sportNews.push(`<span class="ticker-medal">🥈</span>${l}<span class="ticker-school-name">${shortTeamName(silverName)}</span>`);
-      }
-      if (bronzeName && !isPlaceholder(bronzeName)) {
-        const l = getTeamLogoHTML(bronzeName);
-        sportNews.push(`<span class="ticker-medal">🥉</span>${l}<span class="ticker-school-name">${shortTeamName(bronzeName)}</span>`);
-      }
-    } else {
-      // ====== MODE: MIXED (แต่ละรอบแสดงแยก) ======
-
-      // 1) ชิงที่ 1 (ถ้าจบแล้ว)
-      if (finalMatch) {
-        const winRaw = getWinner(finalMatch);
-        const loseRaw = getLoser(finalMatch);
-        if (winRaw && loseRaw) {
-          const winName = findSchoolName(resolveTeamName(winRaw, sport)) || resolveTeamName(winRaw, sport);
-          const loseName = findSchoolName(resolveTeamName(loseRaw, sport)) || resolveTeamName(loseRaw, sport);
-          if (!isPlaceholder(winName) && !isPlaceholder(loseName)) {
-            const wlh = getTeamLogoHTML(winName);
-            const llh = getTeamLogoHTML(loseName);
-            sportNews.push(`<span class="ticker-round-label">ชิงที่ 1</span> <span class="ticker-medal">🥇</span>${wlh}<span class="ticker-school-name winner">${shortTeamName(winName)}</span> <span class="ticker-medal">🥈</span>${llh}<span class="ticker-school-name">${shortTeamName(loseName)}</span>`);
-          }
-        }
-      }
-
-      // 2) ชิงที่ 3 (ถ้าจบแล้ว)
-      if (thirdMatch) {
-        const winRaw = getWinner(thirdMatch);
-        const loseRaw = getLoser(thirdMatch);
-        if (winRaw && loseRaw) {
-          const winName = findSchoolName(resolveTeamName(winRaw, sport)) || resolveTeamName(winRaw, sport);
-          const loseName = findSchoolName(resolveTeamName(loseRaw, sport)) || resolveTeamName(loseRaw, sport);
-          if (!isPlaceholder(winName) && !isPlaceholder(loseName)) {
-            const wlh = getTeamLogoHTML(winName);
-            const llh = getTeamLogoHTML(loseName);
-            sportNews.push(`<span class="ticker-round-label">ชิงที่ 3</span> <span class="ticker-medal">🥉</span>${wlh}<span class="ticker-school-name winner">${shortTeamName(winName)}</span> <span class="ticker-medal">4️⃣</span>${llh}<span class="ticker-school-name">${shortTeamName(loseName)}</span>`);
-          }
-        }
-      }
-
-      // 3) รอบอื่น (แบ่งกลุ่ม/รอบรอง) — แสดงผลคะแนน (ไม่มี 🏆)
-      sportMatches
-        .filter(m => !isFinalRound(m.group) && !isThirdPlaceRound(m.group) && m.status === 'finished')
-        .sort((a, b) => parseInt(a.no) - parseInt(b.no))
-        .forEach(m => {
-          const aRaw = m.knockout1 || m.teamA;
-          const bRaw = m.knockout2 || m.teamB;
-          const aName = findSchoolName(resolveTeamName(aRaw, sport)) || resolveTeamName(aRaw, sport);
-          const bName = findSchoolName(resolveTeamName(bRaw, sport)) || resolveTeamName(bRaw, sport);
-          if (isPlaceholder(aName) || isPlaceholder(bName)) return;
-
-          const alh = getTeamLogoHTML(aName);
-          const blh = getTeamLogoHTML(bName);
-
-          const winRaw = getWinner(m);
-          const aWon = winRaw && (winRaw === aRaw || winRaw === m.teamA);
-          const bWon = winRaw && (winRaw === bRaw || winRaw === m.teamB);
-
-          const hasScore = m.scoreA !== null && m.scoreB !== null
-            && String(m.scoreA).trim() !== '' && String(m.scoreB).trim() !== '';
-          const scoreTxt = hasScore ? `${m.scoreA} : ${m.scoreB}` : 'vs';
-
-          const roundLabel = formatRoundLabel(m.group);
-
-          sportNews.push(`${roundLabel ? `<span class="ticker-round-label">${roundLabel}</span> ` : ''}${alh}<span class="ticker-school-name ${aWon ? 'winner' : ''}">${shortTeamName(aName)}</span> <span class="ticker-score">${scoreTxt}</span> ${blh}<span class="ticker-school-name ${bWon ? 'winner' : ''}">${shortTeamName(bName)}</span>`);
-        });
-
-      // 4) ⭐ เข้ารอบ 4 ทีมสุดท้าย (ถ้ามี)
-      const semiMatches = sportMatches.filter(m => /รอง/.test(String(m.group || '')));
-      if (semiMatches.length > 0) {
-        const semiTeams = new Set();
-        semiMatches.forEach(m => {
-          const a = resolveTeamName(m.knockout1 || m.teamA, sport);
-          const b = resolveTeamName(m.knockout2 || m.teamB, sport);
-          if (a && !isPlaceholder(a)) { const f = findSchoolName(a) || a; if (f && !isPlaceholder(f)) semiTeams.add(f); }
-          if (b && !isPlaceholder(b)) { const f = findSchoolName(b) || b; if (f && !isPlaceholder(f)) semiTeams.add(f); }
-        });
-        if (semiTeams.size > 0) {
-          const teamList = Array.from(semiTeams).map(t => {
-            const lh = getTeamLogoHTML(t);
-            return `${lh}<span class="ticker-school-name">${shortTeamName(t)}</span>`;
-          }).join(' · ');
-          sportNews.push(`<span class="ticker-qualifier">⭐ เข้ารอบ 4 ทีมสุดท้าย:</span> ${teamList}`);
-        }
-      }
-    }
-
-    // รวมข่าวของกีฬานี้เป็น 1 item — ใส่โลโก้กีฬาแค่ครั้งเดียว
-    if (sportNews.length > 0) {
-      items.push(`<span class="ticker-item">${sih}<span class="ticker-sport-name">${sport}</span> <span class="ticker-round-label">·</span> ${sportNews.join(' <span class="ticker-sep-inner">|</span> ')}</span>`);
+    if (result.type === 'groups') {
+      // แต่ละกลุ่มเป็น ticker-item ของตัวเอง → แยกด้วย ★
+      result.groups.forEach(g => {
+        items.push(`<span class="ticker-item">${sih}<span class="ticker-sport-name">${sport}</span> <span class="ticker-group-label">· ${g.label}:</span> ${g.list}</span>`);
+      });
+    } else if (result.news.length > 0) {
+      items.push(`<span class="ticker-item">${sih}<span class="ticker-sport-name">${sport}</span> <span class="ticker-round-label">·</span> ${result.news.join(' ')}</span>`);
     }
   });
 
-  // กรีฑา — โลโก้แสดงครั้งเดียว
+  // กรีฑา — โลโก้กีฬาแสดงครั้งเดียว
   if (athleticsData.length > 0) {
     const athNews = [];
     athleticsData.slice(-5).forEach(row => {
@@ -1113,7 +1105,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   fetchAllData();
   setInterval(()=>{fetchAllData();},CONFIG.REFRESH_INTERVAL);
   document.addEventListener("visibilitychange",()=>{if(!document.hidden)fetchAllData();});
-  console.log("✅ Doitao Sports 2026 - v48 (Full result mode + Single sport icon)");
+  console.log("✅ Doitao Sports 2026 - v50 (Group-by-group Announcement)");
   if(DEBUG) console.log("🐛 Debug mode: ON");
 });
 </script>
