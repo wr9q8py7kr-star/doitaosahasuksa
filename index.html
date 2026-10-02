@@ -125,132 +125,22 @@
     .announcement-content { font-size: 14px; }
   }
 
-  /* ===== Mobile Nav (bigger buttons, bigger icons/text — badge stays proportional) ===== */
-  .mobile-nav-top {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    padding: 6px 8px;
-  }
-  .mobile-nav-logo {
-    position: relative;
-    width: 56px;
-    height: 56px;
-    min-width: 56px;
-    min-height: 56px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 2px solid rgba(252,211,77,0.75);
-    box-shadow: 0 0 12px rgba(252,211,77,0.5), 0 2px 6px rgba(0,0,0,0.5), inset 0 0 8px rgba(0,0,0,0.35);
-    background: linear-gradient(135deg, #4C1D95, #6B21A8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .mobile-nav-logo img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 2;
-  }
-  .mobile-nav-logo .logo-fallback {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Kanit', sans-serif;
-    font-weight: 900;
-    font-size: 22px;
-    color: #FCD34D;
-    z-index: 1;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-  }
-  .mobile-nav-grid {
-    flex: 1;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
-    min-width: 0;
-  }
-  .mobile-nav-grid > button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    padding: 6px 4px;
-    border-radius: 10px;
-    font-size: 11px;
-    font-weight: 700;
-    color: #FCD34D;
-    background: linear-gradient(135deg, rgba(107,33,168,0.65), rgba(76,29,149,0.92));
-    border: 1.5px solid rgba(252,211,77,0.4);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
-    transition: all 0.2s ease;
-    min-height: 46px;
-    line-height: 1.1;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    position: relative;
-  }
-  .mobile-nav-grid > button::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 10px;
-    background: linear-gradient(135deg, rgba(252,211,77,0.10), transparent 60%);
-    pointer-events: none;
-  }
-  .mobile-nav-grid > button:active {
-    transform: scale(0.94);
-    box-shadow: inset 0 2px 6px rgba(0,0,0,0.45);
-  }
-  .mobile-nav-grid > button .nav-icon {
-    font-size: 17px;
-    line-height: 1;
-    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.45));
-  }
-  .mobile-nav-grid > button .nav-label {
-    font-size: 10.5px;
-    letter-spacing: 0;
-    line-height: 1.05;
-    color: rgba(252,211,77,0.98);
-    font-weight: 800;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.45);
-  }
-  .mobile-nav-grid > button:hover {
-    background: linear-gradient(135deg, rgba(107,33,168,0.85), rgba(88,28,135,1));
-    border-color: #FCD34D;
-  }
-  .mobile-nav-grid > button.live-btn {
-    background: linear-gradient(135deg, #DC2626, #991B1B);
-    border-color: #FCA5A5;
-    color: white;
-    animation: liveBtnGlow 1.8s ease-in-out infinite;
-  }
-  .mobile-nav-grid > button.live-btn .nav-label {
-    color: #FFFFFF;
-    font-weight: 900;
-    letter-spacing: 0.4px;
-  }
-  .mobile-nav-grid > button.live-btn .live-dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #FFFFFF;
-    box-shadow: 0 0 0 0 rgba(255,255,255,0.85);
-    animation: liveDotPulse 1.2s ease-in-out infinite;
-    margin-bottom: 1px;
-  }
-  .mobile-nav-grid > button.live-btn:hover {
-    background: linear-gradient(135deg, #EF4444, #B91C1C);
-  }
+  /* ===== Mobile Nav ===== */
+  .mobile-nav-top { display: flex; align-items: center; gap: 9px; padding: 6px 8px; }
+  .mobile-nav-logo { position: relative; width: 56px; height: 56px; min-width: 56px; min-height: 56px; border-radius: 50%; overflow: hidden; border: 2px solid rgba(252,211,77,0.75); box-shadow: 0 0 12px rgba(252,211,77,0.5), 0 2px 6px rgba(0,0,0,0.5), inset 0 0 8px rgba(0,0,0,0.35); background: linear-gradient(135deg, #4C1D95, #6B21A8); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .mobile-nav-logo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
+  .mobile-nav-logo .logo-fallback { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Kanit', sans-serif; font-weight: 900; font-size: 22px; color: #FCD34D; z-index: 1; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+  .mobile-nav-grid { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; min-width: 0; }
+  .mobile-nav-grid > button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 6px 4px; border-radius: 10px; font-size: 11px; font-weight: 700; color: #FCD34D; background: linear-gradient(135deg, rgba(107,33,168,0.65), rgba(76,29,149,0.92)); border: 1.5px solid rgba(252,211,77,0.4); box-shadow: 0 2px 6px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.1); transition: all 0.2s ease; min-height: 46px; line-height: 1.1; text-align: center; white-space: nowrap; overflow: hidden; position: relative; }
+  .mobile-nav-grid > button::before { content: ''; position: absolute; inset: 0; border-radius: 10px; background: linear-gradient(135deg, rgba(252,211,77,0.10), transparent 60%); pointer-events: none; }
+  .mobile-nav-grid > button:active { transform: scale(0.94); box-shadow: inset 0 2px 6px rgba(0,0,0,0.45); }
+  .mobile-nav-grid > button .nav-icon { font-size: 17px; line-height: 1; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.45)); }
+  .mobile-nav-grid > button .nav-label { font-size: 10.5px; letter-spacing: 0; line-height: 1.05; color: rgba(252,211,77,0.98); font-weight: 800; text-shadow: 0 1px 2px rgba(0,0,0,0.45); }
+  .mobile-nav-grid > button:hover { background: linear-gradient(135deg, rgba(107,33,168,0.85), rgba(88,28,135,1)); border-color: #FCD34D; }
+  .mobile-nav-grid > button.live-btn { background: linear-gradient(135deg, #DC2626, #991B1B); border-color: #FCA5A5; color: white; animation: liveBtnGlow 1.8s ease-in-out infinite; }
+  .mobile-nav-grid > button.live-btn .nav-label { color: #FFFFFF; font-weight: 900; letter-spacing: 0.4px; }
+  .mobile-nav-grid > button.live-btn .live-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 0 0 0 rgba(255,255,255,0.85); animation: liveDotPulse 1.2s ease-in-out infinite; margin-bottom: 1px; }
+  .mobile-nav-grid > button.live-btn:hover { background: linear-gradient(135deg, #EF4444, #B91C1C); }
   @media (min-width: 400px) {
     .mobile-nav-top { padding: 7px 10px; gap: 10px; }
     .mobile-nav-grid { gap: 5px; }
@@ -261,119 +151,26 @@
     .mobile-nav-logo .logo-fallback { font-size: 26px; }
   }
 
-  .athletics-table-wrapper {
-    max-height: 75vh;
-    overflow: auto;
-    position: relative;
-    -webkit-overflow-scrolling: touch;
-    border-radius: 16px;
-    background: rgba(59, 7, 100, 0.55);
-  }
-  .athletics-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    min-width: 720px;
-  }
-  .athletics-table thead th {
-    background: #4C1D95;
-    color: #FCD34D;
-    font-family: 'Kanit', sans-serif;
-    font-weight: 700;
-    text-align: center;
-    white-space: nowrap;
-    padding: 8px 8px;
-    font-size: 12px;
-    border-bottom: 1px solid rgba(252,211,77,0.25);
-  }
-  .athletics-table thead tr:nth-child(1) th {
-    position: sticky;
-    top: 0;
-    z-index: 14;
-    height: 38px;
-    background: #4C1D95;
-    box-shadow: 0 1px 0 rgba(252,211,77,0.25);
-  }
-  .athletics-table thead tr:nth-child(2) th {
-    position: sticky;
-    top: 38px;
-    z-index: 13;
-    height: 34px;
-    background: #4C1D95;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.35);
-    font-size: 11px;
-    padding: 6px 6px;
-  }
-  .athletics-table thead th.col-rank,
-  .athletics-table thead th.col-name {
-    z-index: 24;
-    background: #4C1D95;
-    text-align: left;
-    padding-left: 12px;
-  }
+  .athletics-table-wrapper { max-height: 75vh; overflow: auto; position: relative; -webkit-overflow-scrolling: touch; border-radius: 16px; background: rgba(59, 7, 100, 0.55); }
+  .athletics-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 720px; }
+  .athletics-table thead th { background: #4C1D95; color: #FCD34D; font-family: 'Kanit', sans-serif; font-weight: 700; text-align: center; white-space: nowrap; padding: 8px 8px; font-size: 12px; border-bottom: 1px solid rgba(252,211,77,0.25); }
+  .athletics-table thead tr:nth-child(1) th { position: sticky; top: 0; z-index: 14; height: 38px; background: #4C1D95; box-shadow: 0 1px 0 rgba(252,211,77,0.25); }
+  .athletics-table thead tr:nth-child(2) th { position: sticky; top: 38px; z-index: 13; height: 34px; background: #4C1D95; box-shadow: 0 2px 5px rgba(0,0,0,0.35); font-size: 11px; padding: 6px 6px; }
+  .athletics-table thead th.col-rank, .athletics-table thead th.col-name { z-index: 24; background: #4C1D95; text-align: left; padding-left: 12px; }
   .athletics-table thead th.col-rank { left: 0; width: 52px; min-width: 52px; }
   .athletics-table thead th.col-name { left: 52px; width: 130px; min-width: 130px; }
-
-  .athletics-table tbody td {
-    padding: 8px 10px;
-    font-size: 13px;
-    color: #fff;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    background: rgba(59, 7, 100, 0.55);
-    text-align: center;
-  }
-  .athletics-table tbody tr:nth-child(even) td {
-    background: rgba(76, 29, 149, 0.55);
-  }
-  .athletics-table tbody td.col-rank,
-  .athletics-table tbody td.col-name {
-    position: sticky;
-    z-index: 8;
-    text-align: left;
-    padding-left: 12px;
-    background: #3B0764;
-  }
-  .athletics-table tbody tr:nth-child(even) td.col-rank,
-  .athletics-table tbody tr:nth-child(even) td.col-name {
-    background: #4C1D95;
-  }
-  .athletics-table tbody tr:hover td {
-    background: #581C87;
-  }
-  .athletics-table tbody tr:hover td.col-rank,
-  .athletics-table tbody tr:hover td.col-name {
-    background: #581C87;
-  }
+  .athletics-table tbody td { padding: 8px 10px; font-size: 13px; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(59, 7, 100, 0.55); text-align: center; }
+  .athletics-table tbody tr:nth-child(even) td { background: rgba(76, 29, 149, 0.55); }
+  .athletics-table tbody td.col-rank, .athletics-table tbody td.col-name { position: sticky; z-index: 8; text-align: left; padding-left: 12px; background: #3B0764; }
+  .athletics-table tbody tr:nth-child(even) td.col-rank, .athletics-table tbody tr:nth-child(even) td.col-name { background: #4C1D95; }
+  .athletics-table tbody tr:hover td { background: #581C87; }
+  .athletics-table tbody tr:hover td.col-rank, .athletics-table tbody tr:hover td.col-name { background: #581C87; }
   .athletics-table tbody td.col-rank { left: 0; width: 52px; min-width: 52px; font-family: 'JetBrains Mono', monospace; }
   .athletics-table tbody td.col-name { left: 52px; width: 130px; min-width: 130px; font-weight: 600; }
-  .athletics-table thead th.col-name,
-  .athletics-table tbody td.col-name {
-    box-shadow: 6px 0 8px -4px rgba(0,0,0,0.55);
-  }
+  .athletics-table thead th.col-name, .athletics-table tbody td.col-name { box-shadow: 6px 0 8px -4px rgba(0,0,0,0.55); }
 
-  .podium-kahoot {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 6px 0;
-    min-height: 220px;
-    width: 100%;
-    margin: 0 auto;
-    max-width: 560px;
-  }
-  .podium-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1 1 0;
-    min-width: 0;
-    max-width: 150px;
-    animation: podiumFloat 2.4s ease-in-out infinite;
-    backface-visibility: hidden;
-    transform: translateZ(0);
-    will-change: transform;
-  }
+  .podium-kahoot { display: flex; align-items: flex-end; justify-content: center; gap: 8px; padding: 12px 6px 0; min-height: 220px; width: 100%; margin: 0 auto; max-width: 560px; }
+  .podium-item { display: flex; flex-direction: column; align-items: center; flex: 1 1 0; min-width: 0; max-width: 150px; animation: podiumFloat 2.4s ease-in-out infinite; backface-visibility: hidden; transform: translateZ(0); will-change: transform; }
   .podium-1 { animation-delay: 0s; }
   .podium-2 { animation-delay: 0.3s; }
   .podium-3 { animation-delay: 0.6s; }
@@ -555,145 +352,28 @@
   .sports-table .school-logo-sm img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
   .sports-table .school-logo-sm .fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
 
-  /* ===== MOBILE: การ์ดเหรียญรายกีฬา แบบ Grid 3 คอลัมน์ สวยงามเหมือนเดสก์ท็อป ===== */
   @media (max-width: 768px) {
-    .sports-table-wrapper {
-      max-height: none;
-      overflow-y: visible;
-      background: transparent;
-      box-shadow: none;
-      border-radius: 0;
-      padding: 0;
-    }
+    .sports-table-wrapper { max-height: none; overflow-y: visible; background: transparent; box-shadow: none; border-radius: 0; padding: 0; }
     .sports-table { display: block; width: 100%; }
     .sports-table thead { display: none; }
     .sports-table tbody { display: block; }
-
-    .sports-table tbody tr {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px 6px;
-      background: white;
-      border-radius: 14px;
-      padding: 12px 10px;
-      margin-bottom: 10px;
-      box-shadow: 0 3px 12px rgba(107,33,168,0.10);
-      border: 1px solid #F1F5F9;
-      align-items: start;
-    }
-    /* แถวกรีฑา: ใช้พื้นหลังโทนม่วงอ่อน */
-    .sports-table tbody tr[class*="bg-purple"] {
-      background: linear-gradient(135deg, #FAF5FF, #F3E8FF) !important;
-      border-color: #E9D5FF;
-    }
-
-    .sports-table tbody td {
-      display: block;
-      padding: 0;
-      border: none;
-      min-width: 0;
-      vertical-align: top;
-    }
-    .sports-table tbody td[colspan] {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 20px 0;
-      color: #9CA3AF;
-      font-size: 14px;
-    }
-
-    /* หัวการ์ด: ชื่อกีฬา + ไอคอน (เต็มความกว้าง) */
-    .sports-table tbody td:first-child {
-      grid-column: 1 / -1;
-      padding: 0 0 8px 0;
-      margin-bottom: 2px;
-      border-bottom: 2px solid #F3E8FF;
-    }
-    .sports-table tbody td:first-child > div {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 8px;
-    }
-    .sports-table tbody td:first-child img {
-      width: 30px !important;
-      height: 30px !important;
-      flex-shrink: 0;
-      border-radius: 8px;
-    }
-    .sports-table tbody td:first-child span {
-      font-size: 14px !important;
-      line-height: 1.25;
-      color: #6B21A8;
-    }
-    /* ไอคอนกรีฑา (ตัวอิโมจิ 🏃) ที่อยู่ในหัวการ์ด */
-    .sports-table tbody td:first-child > div > span:first-child {
-      font-size: 22px !important;
-      line-height: 1;
-      flex-shrink: 0;
-    }
-
-    /* คอลัมน์เหรียญ (ทอง/เงิน/ทองแดง) */
-    .sports-table tbody td[data-label]:not(:first-child) {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      text-align: center;
-      min-height: 74px;
-      padding: 0 2px;
-    }
-    .sports-table tbody td[data-label]:not(:first-child)::before {
-      content: attr(data-label);
-      display: block;
-      font-size: 16px;
-      line-height: 1;
-      margin-bottom: 6px;
-      text-align: center;
-      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.08));
-    }
-
-    /* กล่องโรงเรียน */
-    .sports-table .school-cell {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 3px;
-      width: 100%;
-      text-align: center;
-      min-width: 0;
-    }
-    .sports-table .school-logo-sm {
-      width: 34px;
-      height: 34px;
-      border-width: 2px;
-      flex-shrink: 0;
-    }
+    .sports-table tbody tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 6px; background: white; border-radius: 14px; padding: 12px 10px; margin-bottom: 10px; box-shadow: 0 3px 12px rgba(107,33,168,0.10); border: 1px solid #F1F5F9; align-items: start; }
+    .sports-table tbody tr[class*="bg-purple"] { background: linear-gradient(135deg, #FAF5FF, #F3E8FF) !important; border-color: #E9D5FF; }
+    .sports-table tbody td { display: block; padding: 0; border: none; min-width: 0; vertical-align: top; }
+    .sports-table tbody td[colspan] { grid-column: 1 / -1; text-align: center; padding: 20px 0; color: #9CA3AF; font-size: 14px; }
+    .sports-table tbody td:first-child { grid-column: 1 / -1; padding: 0 0 8px 0; margin-bottom: 2px; border-bottom: 2px solid #F3E8FF; }
+    .sports-table tbody td:first-child > div { display: flex; align-items: center; justify-content: flex-start; gap: 8px; }
+    .sports-table tbody td:first-child img { width: 30px !important; height: 30px !important; flex-shrink: 0; border-radius: 8px; }
+    .sports-table tbody td:first-child span { font-size: 14px !important; line-height: 1.25; color: #6B21A8; }
+    .sports-table tbody td:first-child > div > span:first-child { font-size: 22px !important; line-height: 1; flex-shrink: 0; }
+    .sports-table tbody td[data-label]:not(:first-child) { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center; min-height: 74px; padding: 0 2px; }
+    .sports-table tbody td[data-label]:not(:first-child)::before { content: attr(data-label); display: block; font-size: 16px; line-height: 1; margin-bottom: 6px; text-align: center; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.08)); }
+    .sports-table .school-cell { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 3px; width: 100%; text-align: center; min-width: 0; }
+    .sports-table .school-logo-sm { width: 34px; height: 34px; border-width: 2px; flex-shrink: 0; }
     .sports-table .school-logo-sm .fallback { font-size: 14px; }
-    .sports-table .school-cell > span {
-      font-size: 11px !important;
-      line-height: 1.15;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
-      width: 100%;
-      display: block;
-      text-align: center;
-      font-weight: 700;
-    }
-
-    /* เครื่องหมาย — (ไม่มีข้อมูล) */
-    .sports-table tbody td[data-label]:not(:first-child) > span.text-gray-300 {
-      display: block;
-      padding-top: 14px;
-      font-size: 20px;
-      line-height: 1;
-      color: #D1D5DB;
-    }
+    .sports-table .school-cell > span { font-size: 11px !important; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; width: 100%; display: block; text-align: center; font-weight: 700; }
+    .sports-table tbody td[data-label]:not(:first-child) > span.text-gray-300 { display: block; padding-top: 14px; font-size: 20px; line-height: 1; color: #D1D5DB; }
   }
-
   @media (max-width: 420px) {
     .sports-table tbody tr { padding: 10px 8px; gap: 6px 4px; }
     .sports-table tbody td:first-child > div { gap: 6px; }
@@ -1238,7 +918,7 @@ const DATA = {
     ]},
     { title: "6. ฝ่ายกรีฑา", icon: "🏃", members: [
       { name: "ว่าที่ ร.ต.ธิติพงศ์ ต่อติด", role: "ผู้อำนวยการโรงเรียนบ้านแม่บวน", position: "ประธานกรรมการ" },
-      { name: "นายรัตติศาสตร์ อินต๊ะ", role: "ครู คศ.3 โรงเรียนบ้านโปง", position: "ผู้ปล่อยตัวนักกรีฑา" },
+      { name: "นายรัตติศาสตร์ อินต๊ะ", role: "ครู คศ.3 โรงเรียนบ้านโปง", position: "ปล่อยตัวนักกรีฑา" },
       { name: "นายทนงศักดิ์ แก้ววงษ์", role: "ครู คศ.2 โรงเรียนบ้านแม่ตูบ", position: "ผู้กำกับช่องวิ่ง" },
       { name: "นายตรีวุธ ปูนพันธ์ฉาย", role: "ครู คศ.2 โรงเรียนบ้านโปง", position: "ผู้กำกับช่องวิ่ง" },
       { name: "นายวรรณเศรษฐ์ ศรีสวัสดิ์", role: "ครู คศ.1 โรงเรียนบ้านแม่ตูบ", position: "ผู้นำนักกรีฑาเข้าช่องวิ่ง" }
@@ -1251,7 +931,7 @@ const DATA = {
 // ================================================================
 function normalizeKey(s) { return (s || "").replace(/[\s\u00A0\u200B\.]+/g, '').trim().toLowerCase(); }
 
-// ✅ ปรับปรุง: ตัด "บ้าน" ออก ยกเว้น "บ้านไร่" และ "บ้านโปง"
+// ✅ ตัด "บ้าน" ออก ยกเว้น "บ้านไร่" และ "บ้านโปง"
 function shortTeamName(name) {
   if (!name) return "";
   let result = String(name).replace("โรงเรียน", "").replace("ชุมชนบ้าน", "ชุมชน").trim();
@@ -1695,11 +1375,55 @@ function extractAnnouncementText(row) {
   return null;
 }
 
+// ✅ ตรวจสอบค่า on/off จากคอลัมน์ U (เปิด/ปิด ประชาสัมพันธ์)
+function isAnnouncementOn(row) {
+  if (!row) return false;
+  const candidates = ['U', 'u', 'เปิด/ปิด ประชาสัมพันธ์', 'เปิด/ปิดประชาสัมพันธ์', 'เปิดปิดประชาสัมพันธ์', 'announce_on', 'show_announce'];
+  for (const k of candidates) {
+    if (row[k] !== undefined && row[k] !== null) {
+      const v = String(row[k]).trim().toLowerCase();
+      return v === 'on' || v === 'เปิด' || v === '1' || v === 'true';
+    }
+  }
+  // ค้นหา key ที่มีคำว่า ประชาสัมพันธ์ + เปิด/ปิด
+  for (const k of Object.keys(row)) {
+    const lk = k.toLowerCase();
+    if ((lk.includes('เปิด') || lk.includes('ปิด') || lk.includes('on') || lk.includes('off')) && lk.includes('ประชาสัมพันธ์')) {
+      const v = String(row[k] || '').trim().toLowerCase();
+      return v === 'on' || v === 'เปิด' || v === '1' || v === 'true';
+    }
+  }
+  return false;
+}
+
+// ✅ ตรวจสอบค่า on/off จากคอลัมน์ V (เปิด/ปิด ข่าวสาร)
+function isTickerOn(row) {
+  if (!row) return false;
+  const candidates = ['V', 'v', 'เปิด/ปิด ข่าวสาร', 'เปิด/ปิดข่าวสาร', 'เปิดปิดข่าวสาร', 'ticker_on', 'show_ticker', 'ข่าวสาร'];
+  for (const k of candidates) {
+    if (row[k] !== undefined && row[k] !== null) {
+      const v = String(row[k]).trim().toLowerCase();
+      return v === 'on' || v === 'เปิด' || v === '1' || v === 'true';
+    }
+  }
+  for (const k of Object.keys(row)) {
+    const lk = k.toLowerCase();
+    if ((lk.includes('เปิด') || lk.includes('ปิด') || lk.includes('on') || lk.includes('off')) && lk.includes('ข่าว')) {
+      const v = String(row[k] || '').trim().toLowerCase();
+      return v === 'on' || v === 'เปิด' || v === '1' || v === 'true';
+    }
+  }
+  return false;
+}
+
+// ✅ ปรับปรุง: ตรวจสอบคอลัมน์ U ก่อนแสดงประกาศ
 function processAnnouncements(rows) {
   announcements = [];
   if (!rows || !Array.isArray(rows)) return;
   const seen = new Set();
   rows.forEach(row => {
+    // ต้องมี U = on เท่านั้น
+    if (!isAnnouncementOn(row)) return;
     const txt = extractAnnouncementText(row);
     if (txt && !seen.has(txt)) {
       seen.add(txt);
@@ -2309,7 +2033,7 @@ async function fetchAllData() {
           allMatches = matches;
           processTournamentData(allMatches);
           const newHash = allMatches.map(m =>
-            `${m.no}|${m.sport}|${m.teamA}|${m.teamB}|${m.scoreA}|${m.scoreB}|${m.status}|${m.winnerOverride}|${m.loserOverride}|${m.goldSchool}|${m.silverSchool}|${m.bronzeSchool}|${m.group}`
+            `${m.no}|${m.sport}|${m.teamA}|${m.teamB}|${m.scoreA}|${m.scoreB}|${m.status}|${m.winnerOverride}|${m.loserOverride}|${m.goldSchool}|${m.silverSchool}|${m.bronzeSchool}|${m.group}|${m.tickerOn}`
           ).join('||');
           if (newHash !== lastBracketHash) {
             lastBracketHash = newHash;
@@ -2348,6 +2072,7 @@ async function fetchAllData() {
   } finally { isFetching = false; }
 }
 
+// ✅ ปรับปรุง: อ่านค่า V (tickerOn) ด้วย
 function convertAPItoMatches(rows) {
   const matches = [];
   rows.forEach(obj => {
@@ -2364,6 +2089,10 @@ function convertAPItoMatches(rows) {
     if (knockout2 && isKnockoutRow) teamB = knockout2;
     const scoreARaw = obj.scoreA !== undefined && obj.scoreA !== null && String(obj.scoreA).trim() !== '' ? String(obj.scoreA).trim() : null;
     const scoreBRaw = obj.scoreB !== undefined && obj.scoreB !== null && String(obj.scoreB).trim() !== '' ? String(obj.scoreB).trim() : null;
+
+    // ✅ อ่านค่า V (เปิด/ปิด ข่าวสาร)
+    const tickerOn = isTickerOn(obj);
+
     matches.push({
       no, date: String(obj.date || '').trim(), time: String(obj.time || '').trim(),
       sport: String(obj.sport || '').trim(), teamA, teamB, group: groupStr,
@@ -2376,15 +2105,21 @@ function convertAPItoMatches(rows) {
       goldSchool: String(obj['ทอง'] || '').trim(),
       silverSchool: String(obj['เงิน'] || '').trim(),
       bronzeSchool: String(obj['ทองแดง'] || '').trim(),
-      knockout1, knockout2
+      knockout1, knockout2,
+      tickerOn
     });
   });
   return matches;
 }
 
+// ✅ ปรับปรุง: กรองเฉพาะคู่ที่ tickerOn = true
 function buildTickerContent() {
   const bySport = {};
-  allMatches.forEach(m => { if (!bySport[m.sport]) bySport[m.sport] = []; bySport[m.sport].push(m); });
+  allMatches.forEach(m => {
+    if (!m.tickerOn) return;   // 👈 แสดงเฉพาะคู่ที่ V = on
+    if (!bySport[m.sport]) bySport[m.sport] = [];
+    bySport[m.sport].push(m);
+  });
   const items = [];
   sortSportsByOrder(Object.keys(bySport)).forEach(sport => {
     const sportMatches = bySport[sport];
@@ -2567,7 +2302,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAllData();
   setInterval(() => { fetchAllData(); }, CONFIG.REFRESH_INTERVAL);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) fetchAllData(); });
-  console.log("✅ Doitao Sports 2026 - v42 (Mobile Grid Layout เหรียญรายกีฬา)");
+  console.log("✅ Doitao Sports 2026 - v43 (U/V switches for announcement & ticker)");
 });
 </script>
 
