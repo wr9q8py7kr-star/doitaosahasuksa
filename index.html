@@ -27,38 +27,6 @@
     }}
   }
 </script>
-
-<!-- ★★★ GoatCounter - Visitor Tracking ★★★ -->
-<script data-goatcounter="https://sirisak.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
-<script>
-  var checkGoatCounter = setInterval(function() {
-    if (window.goatcounter && window.goatcounter.visit_count) {
-      clearInterval(checkGoatCounter);
-      window.goatcounter.visit_count({
-        append: '#visitor-counter',
-        type: 'html',
-        style: `
-          div {
-            border: 1px solid rgba(252,211,77,0.4);
-            background: rgba(30,27,75,0.85);
-            color: #FCD34D;
-            padding: 8px 14px;
-            border-radius: 12px;
-            font-family: 'Kanit', sans-serif;
-            font-size: 13px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px);
-          }
-          #gcvc-views { font-weight: 900; font-size: 16px; color: #FCD34D; }
-          #gcvc-for, #gcvc-by { display: none; }
-        `
-      });
-    }
-  }, 100);
-</script>
-<!-- ★★★ End GoatCounter ★★★ -->
-
 <style>
   * { scroll-behavior: smooth; -webkit-tap-highlight-color: rgba(252,211,77,0.2); }
   html, body { overflow-x: hidden; }
@@ -219,13 +187,41 @@
   .school-logo-large { position: relative; width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid #FCD34D; background: linear-gradient(135deg, #4C1D95, #6B21A8); }
   .school-logo-large .fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
   .school-logo-large img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
+
+  /* ===== MEDAL TABLE ===== */
   .medal-table { background: linear-gradient(135deg, #1E1B4B, #4C1D95); border-radius: 20px; overflow: hidden; border: 2px solid rgba(252,211,77,0.4); }
   .medal-table-header { background: linear-gradient(135deg, #6B21A8, #4C1D95); padding: 16px 20px; border-bottom: 2px solid rgba(252,211,77,0.4); }
   .medal-table-title { font-family: 'Kanit', sans-serif; font-weight: 900; font-size: 20px; color: #FCD34D; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .medal-table-scroll { max-height: 65vh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; position: relative; }
-  .medal-row { display: grid; grid-template-columns: 50px minmax(0, 1fr) 55px 55px 55px 65px; align-items: center; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); transition: background 0.2s; color: white; cursor: pointer; gap: 0; }
+
+  /* ★★★ FIX: ใช้ minmax(0, 1fr) เพื่อป้องกัน overflow ★★★ */
+  .medal-row {
+    display: grid;
+    grid-template-columns: 50px minmax(0, 1fr) 55px 55px 55px 65px;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    transition: background 0.2s;
+    color: white;
+    cursor: pointer;
+    gap: 0;
+  }
   .medal-row:hover { background: rgba(252,211,77,0.12) !important; }
-  .medal-row.header { background: #4C1D95 !important; color: #FCD34D; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; padding: 10px 16px; cursor: default; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.3); border-bottom: 2px solid rgba(252,211,77,0.4); }
+  .medal-row.header {
+    background: #4C1D95 !important;
+    color: #FCD34D;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 16px;
+    cursor: default;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    border-bottom: 2px solid rgba(252,211,77,0.4);
+  }
   .medal-row.header:hover { background: #4C1D95 !important; }
   .medal-row.top-1 { background: linear-gradient(90deg, rgba(252,211,77,0.15), transparent); border-left: 4px solid #FCD34D; }
   .medal-row.top-2 { background: linear-gradient(90deg, rgba(192,192,192,0.12), transparent); border-left: 4px solid #D0D0D0; }
@@ -246,9 +242,19 @@
   .medal-count.total { color: #FFFFFF; font-weight: 900; font-size: 18px; background: linear-gradient(135deg, #6B21A8, #4C1D95); border-radius: 8px; padding: 2px 8px; margin: 0 auto; display: inline-block; min-width: 36px; }
   .medal-emoji { font-size: 14px; margin-right: 2px; }
 
+  /* ★★★ MOBILE FIX ★★★ */
   @media (max-width: 640px) {
-    .medal-row { grid-template-columns: 32px minmax(0, 1fr) 34px 34px 40px 42px; padding: 8px 8px; font-size: 11px; }
-    .medal-row.header { grid-template-columns: 32px minmax(0, 1fr) 34px 34px 40px 42px; padding: 8px 8px; font-size: 10px; letter-spacing: 0; }
+    .medal-row {
+      grid-template-columns: 32px minmax(0, 1fr) 34px 34px 40px 42px;
+      padding: 8px 8px;
+      font-size: 11px;
+    }
+    .medal-row.header {
+      grid-template-columns: 32px minmax(0, 1fr) 34px 34px 40px 42px;
+      padding: 8px 8px;
+      font-size: 10px;
+      letter-spacing: 0;
+    }
     .medal-rank { font-size: 14px; }
     .medal-school { gap: 4px; }
     .medal-school-logo { width: 26px; height: 26px; border-width: 1.5px; }
@@ -261,8 +267,16 @@
     .medal-table-title { font-size: 16px; }
   }
   @media (max-width: 380px) {
-    .medal-row { grid-template-columns: 28px minmax(0, 1fr) 30px 30px 36px 38px; padding: 6px 6px; font-size: 10px; }
-    .medal-row.header { grid-template-columns: 28px minmax(0, 1fr) 30px 30px 36px 38px; padding: 6px 6px; font-size: 9px; }
+    .medal-row {
+      grid-template-columns: 28px minmax(0, 1fr) 30px 30px 36px 38px;
+      padding: 6px 6px;
+      font-size: 10px;
+    }
+    .medal-row.header {
+      grid-template-columns: 28px minmax(0, 1fr) 30px 30px 36px 38px;
+      padding: 6px 6px;
+      font-size: 9px;
+    }
     .medal-rank { font-size: 12px; }
     .medal-school-logo { width: 22px; height: 22px; }
     .medal-school-logo .fallback { font-size: 10px; }
@@ -271,6 +285,7 @@
     .medal-count.total { font-size: 11px; min-width: 24px; }
   }
 
+  /* ★★★ MOBILE BRACKET FIX ★★★ */
   @media (max-width: 640px) {
     .battle-row { gap: 6px; padding: 8px 10px; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); }
     .team-name { font-size: 11px; }
@@ -632,9 +647,6 @@
   </footer>
 </div>
 
-<!-- ★★★ ตัวเลขผู้เข้าชม (มุมล่างขวา) ★★★ -->
-<div id="visitor-counter" class="fixed bottom-24 right-4 z-50 no-print"></div>
-
 <div id="scoreTicker" class="score-ticker-bar hidden-ticker no-print">
   <div id="scoreTickerContent" class="score-ticker-content"></div>
 </div>
@@ -671,7 +683,7 @@ function isFinalRound(g){ var s = String(g||"").trim().toUpperCase().replace(/\s
 function isThirdPlaceRound(g){ var s = String(g||"").trim().toUpperCase().replace(/\s+/g,''); return /ชิงที่3|ชิงที่3-4|ชิงอันดับ3|THIRD/.test(s); }
 function isSemiRound(g){ return /รอง/.test(String(g||'')); }
 
-var isFetching=false, lastTickerHTML='', lastAnnouncementText='', currentSlide=0, slideTimer=null, currentTab='knockout';
+var isFetching=false, lastTickerHTML='', lastAnnouncementText='', currentSlide=0, slideTimer=null, currentTab='group';
 var currentSportMatches=[], groupStandings={}, matchResults={}, allMatches=[], selectedSport="";
 var athleticsData=[], athleticsMedals={}, announcements=[], lastBracketHash='', debugShownOnce=false;
 var trophiesOther = {
@@ -1373,7 +1385,6 @@ function renderSports(){
 
 function openSportBracket(s){
   showPage('bracket');
-  currentTab = 'knockout';
   setTimeout(function(){
     if(allMatches.length > 0){ selectedSport = s; renderSportTabs(); renderBracketContent(); }
   }, 500);
@@ -1654,7 +1665,7 @@ function renderSportTabs(){
     return '<button onclick="selectSport(\'' + s + '\')" class="px-3 sm:px-4 py-3 rounded-xl whitespace-nowrap text-xs sm:text-sm font-medium transition flex items-center ' + (active ? 'bg-gradient-to-r from-primary-700 to-primary-500 text-white shadow-lg' : 'glass-dark text-white/70 hover:text-white hover:bg-white/10') + '">' + ih + '<span>' + s + '</span></button>';
   }).join("");
 }
-function selectSport(s){ selectedSport = s; currentTab = 'knockout'; renderSportTabs(); renderBracketContent(); }
+function selectSport(s){ selectedSport = s; renderSportTabs(); renderBracketContent(); }
 function isNoGroupStage(s){ return NO_GROUP_STAGE_SPORTS.indexOf(s) !== -1; }
 
 function renderBracketContent(){
@@ -1760,9 +1771,9 @@ function renderBracketMatch(m, isThird){
   var hsb = m.scoreB !== null && m.scoreB !== undefined && String(m.scoreB).trim() !== '';
   var sa = hsa ? m.scoreA : "-";
   var sb = hsb ? m.scoreB : "-";
-  var ap2 = !hr || isPlaceholder(da);
-  var bp2 = !hr || isPlaceholder(db);
-  return '<div class="bracket-match"><div class="bracket-team ' + (aw?'team-winner':(ifin&&bw?'team-loser':'')) + '">' + la + '<span class="bracket-team-name ' + (ap2?'placeholder':'') + '">' + da + '</span><span class="bracket-team-score">' + sa + '</span>' + (aw?'<span>🏆</span>':'') + '</div><div class="bracket-team ' + (bw?'team-winner':(ifin&&aw?'team-loser':'')) + '">' + lb + '<span class="bracket-team-name ' + (bp2?'placeholder':'') + '">' + db + '</span><span class="bracket-team-score">' + sb + '</span>' + (bw?'<span>🏆</span>':'') + '</div><div class="bracket-time">📅 ' + m.date + ' · ' + m.time + (il?'<span class="live-badge bg-accent text-white ml-2">LIVE</span>':ifin?'<span class="text-green-400 ml-2">✅ จบ</span>':m.winnerOverride?'<span class="text-yellow-400 ml-2">⚡ Override</span>':'<span class="text-white/40 ml-2">⏳ รอแข่ง</span>') + '</div></div>';
+  var ap = !hr || isPlaceholder(da);
+  var bp = !hr || isPlaceholder(db);
+  return '<div class="bracket-match"><div class="bracket-team ' + (aw?'team-winner':(ifin&&bw?'team-loser':'')) + '">' + la + '<span class="bracket-team-name ' + (ap?'placeholder':'') + '">' + da + '</span><span class="bracket-team-score">' + sa + '</span>' + (aw?'<span>🏆</span>':'') + '</div><div class="bracket-team ' + (bw?'team-winner':(ifin&&aw?'team-loser':'')) + '">' + lb + '<span class="bracket-team-name ' + (bp?'placeholder':'') + '">' + db + '</span><span class="bracket-team-score">' + sb + '</span>' + (bw?'<span>🏆</span>':'') + '</div><div class="bracket-time">📅 ' + m.date + ' · ' + m.time + (il?'<span class="live-badge bg-accent text-white ml-2">LIVE</span>':ifin?'<span class="text-green-400 ml-2">✅ จบ</span>':m.winnerOverride?'<span class="text-yellow-400 ml-2">⚡ Override</span>':'<span class="text-white/40 ml-2">⏳ รอแข่ง</span>') + '</div></div>';
 }
 
 /* ================================================================
@@ -2118,7 +2129,6 @@ function showPage(page){
   var nb = document.getElementById('navbar');
   var tk = document.getElementById('scoreTicker');
   if(page === 'bracket'){
-    currentTab = 'knockout';
     nb.classList.add('glass-dark','shadow-lg');
     nb.classList.remove('bg-transparent');
     fetchAllData();
@@ -2185,7 +2195,7 @@ document.addEventListener("DOMContentLoaded", function(){
   fetchAllData();
   setInterval(function(){ fetchAllData(); }, CONFIG.REFRESH_INTERVAL);
   document.addEventListener("visibilitychange", function(){ if(!document.hidden) fetchAllData(); });
-  console.log("✅ Doitao Sports 2026 - v57 (GoatCounter + Knockout Default)");
+  console.log("✅ Doitao Sports 2026 - v55 (Mobile medal table fix with minmax(0,1fr))");
   if(DEBUG) console.log("🐛 Debug mode: ON");
 });
 </script>
