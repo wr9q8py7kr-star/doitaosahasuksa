@@ -27,67 +27,6 @@
     }}
   }
 </script>
-
-<!-- ★★★ GoatCounter - Page View Tracking (ไม่ใช้ widget, fetch JSON เอง) ★★★ -->
-<script data-goatcounter="https://sirisak.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
-<script>
-(function(){
-  var GC_PATH = '/doitaosahasuka';   // path ที่ต้องการนับ
-  var GC_BASE = 'https://sirisak.goatcounter.com';
-  var REFRESH_MS = 15000;            // รีเฟรชทุก 15 วินาที
-
-  function fmt(n){
-    n = String(n || '0');
-    return n.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  }
-
-  function fetchCount(){
-    var url = GC_BASE + '/counter' + GC_PATH + '.json?_=' + Date.now();
-    fetch(url, { cache: 'no-store', mode: 'cors' })
-      .then(function(r){
-        if(!r.ok) throw new Error('HTTP ' + r.status);
-        return r.json();
-      })
-      .then(function(data){
-        var total = data.count || '0';
-        var unique = data.count_unique || total;
-        var el = document.getElementById('visitor-counter');
-        if(!el) return;
-        el.innerHTML =
-          '<span class="vc-dot"></span>' +
-          '<span class="vc-label">ผู้เข้าชม</span>' +
-          '<span class="vc-num">' + fmt(total) + '</span>' +
-          '<span class="vc-unit">ครั้ง</span>' +
-          '<span class="vc-sep">·</span>' +
-          '<span class="vc-label">ไม่ซ้ำ</span>' +
-          '<span class="vc-num vc-num-alt">' + fmt(unique) + '</span>' +
-          '<span class="vc-unit">คน</span>';
-        el.classList.add('vc-ready');
-      })
-      .catch(function(err){
-        console.warn('[VisitorCounter]', err.message);
-      });
-  }
-
-  function start(){
-    fetchCount();
-    setInterval(fetchCount, REFRESH_MS);
-    document.addEventListener('visibilitychange', function(){
-      if(!document.hidden) fetchCount();
-    });
-    window.addEventListener('focus', fetchCount);
-  }
-
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', start);
-  } else {
-    start();
-  }
-})();
-</script>
-<!-- ★★★ End GoatCounter ★★★ -->
-
 <style>
   * { scroll-behavior: smooth; -webkit-tap-highlight-color: rgba(252,211,77,0.2); }
   html, body { overflow-x: hidden; }
@@ -121,7 +60,6 @@
   @keyframes neonLogoPulse { 0%, 100% { box-shadow: 0 0 8px #FCD34D, 0 0 14px rgba(252,211,77,0.5); } 50% { box-shadow: 0 0 14px #FCD34D, 0 0 26px rgba(252,211,77,0.85); } }
   @keyframes liveDotPulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.85); transform: scale(1); } 70% { box-shadow: 0 0 0 8px rgba(255,255,255,0); transform: scale(1.18); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); transform: scale(1); } }
   @keyframes liveBtnGlow { 0%, 100% { box-shadow: 0 0 10px rgba(220,38,38,0.5), 0 2px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2); } 50% { box-shadow: 0 0 22px rgba(220,38,38,0.95), 0 2px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2); } }
-  @keyframes vcPulse { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.4); } }
   .animate-fade-in { animation: fadeIn 0.6s ease-in-out; }
   .animate-slide-up { animation: slideUp 0.8s ease-out; }
   .animate-float { animation: float 3s ease-in-out infinite; }
@@ -249,6 +187,8 @@
   .school-logo-large { position: relative; width: 80px; height: 80px; border-radius: 50%; overflow: hidden; border: 3px solid #FCD34D; background: linear-gradient(135deg, #4C1D95, #6B21A8); }
   .school-logo-large .fallback { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
   .school-logo-large img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
+
+  /* ===== MEDAL TABLE ===== */
   .medal-table { background: linear-gradient(135deg, #1E1B4B, #4C1D95); border-radius: 20px; overflow: hidden; border: 2px solid rgba(252,211,77,0.4); }
   .medal-table-header { background: linear-gradient(135deg, #6B21A8, #4C1D95); padding: 16px 20px; border-bottom: 2px solid rgba(252,211,77,0.4); }
   .medal-table-title { font-family: 'Kanit', sans-serif; font-weight: 900; font-size: 20px; color: #FCD34D; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -370,7 +310,7 @@
   #modalSchoolLogo > span { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
   #modalSchoolLogo img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
 
-  /* ★★★ Visitor Counter — ดีไซน์ใหม่ ★★★ */
+  /* ★★★ Visitor Counter (Google Sheets) ★★★ */
   #visitor-counter {
     display: inline-flex;
     align-items: center;
@@ -386,58 +326,33 @@
     color: rgba(255,255,255,0.65);
     letter-spacing: 0.3px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.05);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
     transition: all 0.4s ease;
     opacity: 0;
     transform: translateY(4px);
   }
-  #visitor-counter.vc-ready {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  #visitor-counter.vc-ready { opacity: 1; transform: translateY(0); }
   #visitor-counter:hover {
     background: linear-gradient(135deg, rgba(252,211,77,0.15), rgba(252,211,77,0.06));
     border-color: rgba(252,211,77,0.35);
     box-shadow: 0 4px 18px rgba(252,211,77,0.18), inset 0 1px 0 rgba(255,255,255,0.08);
   }
   #visitor-counter .vc-dot {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #4ADE80;
-    box-shadow: 0 0 8px rgba(74,222,128,0.9);
-    animation: vcPulse 1.8s ease-in-out infinite;
-    flex-shrink: 0;
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: #4ADE80; box-shadow: 0 0 8px rgba(74,222,128,0.9);
+    animation: vcPulse 1.8s ease-in-out infinite; flex-shrink: 0;
   }
-  #visitor-counter .vc-label {
-    font-weight: 500;
-    font-size: 11.5px;
-    color: rgba(255,255,255,0.7);
-    letter-spacing: 0.2px;
-  }
+  #visitor-counter .vc-label { font-weight: 500; font-size: 11.5px; color: rgba(255,255,255,0.7); }
   #visitor-counter .vc-num {
     font-family: 'JetBrains Mono', monospace;
-    font-weight: 800;
-    font-size: 14px;
-    color: #FCD34D;
+    font-weight: 800; font-size: 14px; color: #FCD34D;
     text-shadow: 0 0 10px rgba(252,211,77,0.35);
-    letter-spacing: 0.3px;
   }
-  #visitor-counter .vc-num-alt {
-    color: #FBBF24;
-    text-shadow: 0 0 10px rgba(251,191,36,0.3);
-  }
-  #visitor-counter .vc-unit {
-    font-size: 10.5px;
-    color: rgba(255,255,255,0.5);
-    margin-left: -2px;
-  }
-  #visitor-counter .vc-sep {
-    color: rgba(252,211,77,0.35);
-    margin: 0 4px;
-    font-weight: 900;
+  #visitor-counter .vc-num-alt { color: #FBBF24; }
+  #visitor-counter .vc-unit { font-size: 10.5px; color: rgba(255,255,255,0.5); margin-left: -2px; }
+  #visitor-counter .vc-sep { color: rgba(252,211,77,0.35); margin: 0 4px; font-weight: 900; }
+  @keyframes vcPulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.4); }
   }
   @media (max-width: 640px) {
     #visitor-counter { gap: 4px; padding: 6px 12px; font-size: 11px; }
@@ -634,8 +549,8 @@
     <div class="max-w-7xl mx-auto text-center">
       <p class="text-white/60 text-xs sm:text-sm mb-2">ประกาศ ณ วันที่ 23 กันยายน พ.ศ. 2569</p>
       <p class="text-white/80 text-xs sm:text-sm">(นายวีระ สุรินทร์) ผู้อำนวยการโรงเรียนบ้านถิ่นสำราญ ประธานเครือข่ายพัฒนาการศึกษาดอยเต่าสหศึกษา</p>
-      <p class="text-white/40 text-[10px] sm:text-xs mt-4">© 2026 Doitao Sports Network</p>
-      <!-- ★★★ ตัวเลขผู้เข้าชม (ดึงจาก GoatCounter โดยตรง) ★★★ -->
+      <p class="text-white/40 text-[10px] sm:text-xs mt-3 sm:mt-4">© 2026 Doitao Sports Network</p>
+      <!-- ★★★ Visitor Counter ★★★ -->
       <div id="visitor-counter" class="no-print" aria-live="polite"></div>
     </div>
   </footer>
@@ -746,6 +661,97 @@
 
 <script>
 /* ================================================================
+   ★★★ Visitor Counter (Google Sheets) ★★★
+   ================================================================ */
+(function(){
+  var VISITOR_API = 'https://script.google.com/macros/s/AKfycbzP0vPVRSmWOd5VaUrOSCl8kMrKqqFoS-9v7WLZTWiQ5ECWEu1Y1T2I54SKF58o1jPy/exec';
+  var REFRESH_MS = 30000;
+
+  function fmt(n){
+    return String(n || '0').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function getVisitorId(){
+    try {
+      var vid = localStorage.getItem('doitao_vid');
+      if (!vid) {
+        vid = 'v_' + Date.now() + '_' + Math.random().toString(36).slice(2, 10);
+        localStorage.setItem('doitao_vid', vid);
+      }
+      return vid;
+    } catch(e){ return 'anon_' + Math.random().toString(36).slice(2, 10); }
+  }
+
+  function jsonp(url, cbName, onData, onErr){
+    window[cbName] = function(data){
+      try { onData(data); } catch(e){ console.warn(e); }
+      delete window[cbName];
+      if (s && s.parentNode) s.parentNode.removeChild(s);
+    };
+    var s = document.createElement('script');
+    s.src = url + (url.indexOf('?') === -1 ? '?' : '&') + 'callback=' + cbName + '&_=' + Date.now();
+    s.onerror = function(){
+      delete window[cbName];
+      if (s.parentNode) s.parentNode.removeChild(s);
+      if (onErr) onErr();
+    };
+    document.head.appendChild(s);
+  }
+
+  function trackVisit(){
+    try { if (sessionStorage.getItem('doitao_counted') === '1') return; } catch(e){}
+    var vid = getVisitorId();
+    var url = VISITOR_API + '?action=view'
+      + '&vid=' + encodeURIComponent(vid)
+      + '&ua=' + encodeURIComponent((navigator.userAgent||'').slice(0,100))
+      + '&ref=' + encodeURIComponent((document.referrer||'').slice(0,100));
+    var cb = 'visitorTrack_' + Date.now();
+    jsonp(url, cb, function(){
+      try { sessionStorage.setItem('doitao_counted', '1'); } catch(e){}
+    });
+  }
+
+  function render(data){
+    var el = document.getElementById('visitor-counter');
+    if (!el) return;
+    var total = (data && data.count) || '0';
+    var unique = (data && data.count_unique) || total;
+    el.innerHTML =
+      '<span class="vc-dot"></span>' +
+      '<span class="vc-label">ผู้เข้าชม</span>' +
+      '<span class="vc-num">' + fmt(total) + '</span>' +
+      '<span class="vc-unit">ครั้ง</span>' +
+      '<span class="vc-sep">·</span>' +
+      '<span class="vc-label">ไม่ซ้ำ</span>' +
+      '<span class="vc-num vc-num-alt">' + fmt(unique) + '</span>' +
+      '<span class="vc-unit">คน</span>';
+    el.classList.add('vc-ready');
+  }
+
+  function fetchCount(){
+    var url = VISITOR_API + '?action=count';
+    var cb = 'visitorCount_' + Date.now();
+    jsonp(url, cb, render);
+  }
+
+  function start(){
+    trackVisit();
+    setTimeout(fetchCount, 800);
+    setInterval(fetchCount, REFRESH_MS);
+    document.addEventListener('visibilitychange', function(){
+      if (!document.hidden) fetchCount();
+    });
+    window.addEventListener('focus', fetchCount);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+
+/* ================================================================
    CONFIG & STATE
    ================================================================ */
 var CONFIG = {
@@ -776,7 +782,7 @@ function isFinalRound(g){ var s = String(g||"").trim().toUpperCase().replace(/\s
 function isThirdPlaceRound(g){ var s = String(g||"").trim().toUpperCase().replace(/\s+/g,''); return /ชิงที่3|ชิงที่3-4|ชิงอันดับ3|THIRD/.test(s); }
 function isSemiRound(g){ return /รอง/.test(String(g||'')); }
 
-var isFetching=false, lastTickerHTML='', lastAnnouncementText='', currentSlide=0, slideTimer=null, currentTab='knockout';
+var isFetching=false, lastTickerHTML='', lastAnnouncementText='', currentSlide=0, slideTimer=null, currentTab='group';
 var currentSportMatches=[], groupStandings={}, matchResults={}, allMatches=[], selectedSport="";
 var athleticsData=[], athleticsMedals={}, announcements=[], lastBracketHash='', debugShownOnce=false;
 var trophiesOther = {
@@ -1478,7 +1484,6 @@ function renderSports(){
 
 function openSportBracket(s){
   showPage('bracket');
-  currentTab = 'knockout';
   setTimeout(function(){
     if(allMatches.length > 0){ selectedSport = s; renderSportTabs(); renderBracketContent(); }
   }, 500);
@@ -1759,7 +1764,7 @@ function renderSportTabs(){
     return '<button onclick="selectSport(\'' + s + '\')" class="px-3 sm:px-4 py-3 rounded-xl whitespace-nowrap text-xs sm:text-sm font-medium transition flex items-center ' + (active ? 'bg-gradient-to-r from-primary-700 to-primary-500 text-white shadow-lg' : 'glass-dark text-white/70 hover:text-white hover:bg-white/10') + '">' + ih + '<span>' + s + '</span></button>';
   }).join("");
 }
-function selectSport(s){ selectedSport = s; currentTab = 'knockout'; renderSportTabs(); renderBracketContent(); }
+function selectSport(s){ selectedSport = s; renderSportTabs(); renderBracketContent(); }
 function isNoGroupStage(s){ return NO_GROUP_STAGE_SPORTS.indexOf(s) !== -1; }
 
 function renderBracketContent(){
@@ -2223,7 +2228,6 @@ function showPage(page){
   var nb = document.getElementById('navbar');
   var tk = document.getElementById('scoreTicker');
   if(page === 'bracket'){
-    currentTab = 'knockout';
     nb.classList.add('glass-dark','shadow-lg');
     nb.classList.remove('bg-transparent');
     fetchAllData();
@@ -2290,7 +2294,7 @@ document.addEventListener("DOMContentLoaded", function(){
   fetchAllData();
   setInterval(function(){ fetchAllData(); }, CONFIG.REFRESH_INTERVAL);
   document.addEventListener("visibilitychange", function(){ if(!document.hidden) fetchAllData(); });
-  console.log("✅ Doitao Sports 2026 - v58 (Visitor Counter ใหม่)");
+  console.log("✅ Doitao Sports 2026 - v60 (Visitor Counter via Google Sheets)");
   if(DEBUG) console.log("🐛 Debug mode: ON");
 });
 </script>
