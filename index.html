@@ -28,40 +28,63 @@
   }
 </script>
 
-<!-- ★★★ GoatCounter - Visitor Tracking (ซ่อนแบบเนียน) ★★★ -->
+<!-- ★★★ GoatCounter - Page View Tracking (ไม่ใช้ widget, fetch JSON เอง) ★★★ -->
 <script data-goatcounter="https://sirisak.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 <script>
-  var checkGoatCounter = setInterval(function() {
-    if (window.goatcounter && window.goatcounter.visit_count) {
-      clearInterval(checkGoatCounter);
-      window.goatcounter.visit_count({
-        append: '#visitor-counter',
-        type: 'html',
-        style: `
-          div {
-            display: inline;
-            background: transparent;
-            border: none;
-            box-shadow: none;
-            padding: 0;
-            margin: 0 0 0 3px;
-            font-family: 'Sarabun', sans-serif;
-            font-size: 8px;
-            color: rgba(255,255,255,0.15);
-            letter-spacing: 0;
-            line-height: 1;
-          }
-          #gcvc-views {
-            font-weight: 400;
-            font-size: 8px;
-            color: rgba(255,255,255,0.15);
-          }
-          #gcvc-for, #gcvc-by { display: none; }
-        `
+(function(){
+  var GC_PATH = '/doitaosahasuka';   // path ที่ต้องการนับ
+  var GC_BASE = 'https://sirisak.goatcounter.com';
+  var REFRESH_MS = 15000;            // รีเฟรชทุก 15 วินาที
+
+  function fmt(n){
+    n = String(n || '0');
+    return n.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function fetchCount(){
+    var url = GC_BASE + '/counter' + GC_PATH + '.json?_=' + Date.now();
+    fetch(url, { cache: 'no-store', mode: 'cors' })
+      .then(function(r){
+        if(!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function(data){
+        var total = data.count || '0';
+        var unique = data.count_unique || total;
+        var el = document.getElementById('visitor-counter');
+        if(!el) return;
+        el.innerHTML =
+          '<span class="vc-dot"></span>' +
+          '<span class="vc-label">ผู้เข้าชม</span>' +
+          '<span class="vc-num">' + fmt(total) + '</span>' +
+          '<span class="vc-unit">ครั้ง</span>' +
+          '<span class="vc-sep">·</span>' +
+          '<span class="vc-label">ไม่ซ้ำ</span>' +
+          '<span class="vc-num vc-num-alt">' + fmt(unique) + '</span>' +
+          '<span class="vc-unit">คน</span>';
+        el.classList.add('vc-ready');
+      })
+      .catch(function(err){
+        console.warn('[VisitorCounter]', err.message);
       });
-    }
-  }, 100);
+  }
+
+  function start(){
+    fetchCount();
+    setInterval(fetchCount, REFRESH_MS);
+    document.addEventListener('visibilitychange', function(){
+      if(!document.hidden) fetchCount();
+    });
+    window.addEventListener('focus', fetchCount);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
 </script>
 <!-- ★★★ End GoatCounter ★★★ -->
 
@@ -98,6 +121,7 @@
   @keyframes neonLogoPulse { 0%, 100% { box-shadow: 0 0 8px #FCD34D, 0 0 14px rgba(252,211,77,0.5); } 50% { box-shadow: 0 0 14px #FCD34D, 0 0 26px rgba(252,211,77,0.85); } }
   @keyframes liveDotPulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.85); transform: scale(1); } 70% { box-shadow: 0 0 0 8px rgba(255,255,255,0); transform: scale(1.18); } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); transform: scale(1); } }
   @keyframes liveBtnGlow { 0%, 100% { box-shadow: 0 0 10px rgba(220,38,38,0.5), 0 2px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2); } 50% { box-shadow: 0 0 22px rgba(220,38,38,0.95), 0 2px 6px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2); } }
+  @keyframes vcPulse { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.4); } }
   .animate-fade-in { animation: fadeIn 0.6s ease-in-out; }
   .animate-slide-up { animation: slideUp 0.8s ease-out; }
   .animate-float { animation: float 3s ease-in-out infinite; }
@@ -345,6 +369,82 @@
   #modalSchoolLogo { position: relative; overflow: hidden; }
   #modalSchoolLogo > span { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; font-weight: 900; font-family: 'Kanit', sans-serif; z-index: 1; }
   #modalSchoolLogo img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
+
+  /* ★★★ Visitor Counter — ดีไซน์ใหม่ ★★★ */
+  #visitor-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    padding: 7px 16px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(252,211,77,0.08), rgba(252,211,77,0.03));
+    border: 1px solid rgba(252,211,77,0.18);
+    font-family: 'Kanit', sans-serif;
+    font-size: 12px;
+    line-height: 1;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.4s ease;
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  #visitor-counter.vc-ready {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  #visitor-counter:hover {
+    background: linear-gradient(135deg, rgba(252,211,77,0.15), rgba(252,211,77,0.06));
+    border-color: rgba(252,211,77,0.35);
+    box-shadow: 0 4px 18px rgba(252,211,77,0.18), inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+  #visitor-counter .vc-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #4ADE80;
+    box-shadow: 0 0 8px rgba(74,222,128,0.9);
+    animation: vcPulse 1.8s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  #visitor-counter .vc-label {
+    font-weight: 500;
+    font-size: 11.5px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.2px;
+  }
+  #visitor-counter .vc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 14px;
+    color: #FCD34D;
+    text-shadow: 0 0 10px rgba(252,211,77,0.35);
+    letter-spacing: 0.3px;
+  }
+  #visitor-counter .vc-num-alt {
+    color: #FBBF24;
+    text-shadow: 0 0 10px rgba(251,191,36,0.3);
+  }
+  #visitor-counter .vc-unit {
+    font-size: 10.5px;
+    color: rgba(255,255,255,0.5);
+    margin-left: -2px;
+  }
+  #visitor-counter .vc-sep {
+    color: rgba(252,211,77,0.35);
+    margin: 0 4px;
+    font-weight: 900;
+  }
+  @media (max-width: 640px) {
+    #visitor-counter { gap: 4px; padding: 6px 12px; font-size: 11px; }
+    #visitor-counter .vc-label { font-size: 10.5px; }
+    #visitor-counter .vc-num { font-size: 13px; }
+    #visitor-counter .vc-unit { font-size: 9.5px; }
+  }
 </style>
 </head>
 <body class="antialiased">
@@ -534,9 +634,9 @@
     <div class="max-w-7xl mx-auto text-center">
       <p class="text-white/60 text-xs sm:text-sm mb-2">ประกาศ ณ วันที่ 23 กันยายน พ.ศ. 2569</p>
       <p class="text-white/80 text-xs sm:text-sm">(นายวีระ สุรินทร์) ผู้อำนวยการโรงเรียนบ้านถิ่นสำราญ ประธานเครือข่ายพัฒนาการศึกษาดอยเต่าสหศึกษา</p>
-      <p class="text-white/40 text-[10px] sm:text-xs mt-3 sm:mt-4">
-        © 2026 Doitao Sports Network<span id="visitor-counter"></span>
-      </p>
+      <p class="text-white/40 text-[10px] sm:text-xs mt-4">© 2026 Doitao Sports Network</p>
+      <!-- ★★★ ตัวเลขผู้เข้าชม (ดึงจาก GoatCounter โดยตรง) ★★★ -->
+      <div id="visitor-counter" class="no-print" aria-live="polite"></div>
     </div>
   </footer>
 </div>
@@ -2190,7 +2290,7 @@ document.addEventListener("DOMContentLoaded", function(){
   fetchAllData();
   setInterval(function(){ fetchAllData(); }, CONFIG.REFRESH_INTERVAL);
   document.addEventListener("visibilitychange", function(){ if(!document.hidden) fetchAllData(); });
-  console.log("✅ Doitao Sports 2026 - v57 (GoatCounter + Knockout Default)");
+  console.log("✅ Doitao Sports 2026 - v58 (Visitor Counter ใหม่)");
   if(DEBUG) console.log("🐛 Debug mode: ON");
 });
 </script>
